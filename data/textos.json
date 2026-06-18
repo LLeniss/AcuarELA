@@ -1,0 +1,38 @@
+{
+  "es": {
+    "meta": { "title": "[AcuarELA - Nombre]", "description": "[Descripción para Google en Español]" },
+    "nav": { "home": "Inicio" },
+    "hero": { "title": "[Bienvenidos a mi Galería]", "subtitle": "[Arte que conecta almas]" },
+    "gallery": { "title": "Obras Destacadas" },
+    "obra": {
+      "1": { "titulo": "[Título Obra 1]", "descripcion": "[Técnica mixta sobre lienzo]", "precio": "[$500 USD]" }
+    }
+  },
+  "en": {
+    "meta": { "title": "[AcuarELA - Name]", "description": "[SEO Description in English]" },
+    "nav": { "home": "Home" },
+    "hero": { "title": "[Welcome to my Gallery]", "subtitle": "[Art that connects souls]" },
+    "gallery": { "title": "Featured Works" },
+    "obra": {
+      "1": { "titulo": "[Work Title 1]", "descripcion": "[Mixed media on canvas]", "precio": "[$500 USD]" }
+    }
+  },
+  "fr": {
+    "meta": { "title": "[Nom de l'Artiste]", "description": "[Description en Français]" },
+    "nav": { "home": "Accueil" },
+    "hero": { "title": "[Bienvenue]", "subtitle": "[L'art qui connecte]" },
+    "gallery": { "title": "Œuvres" },
+    "obra": {
+      "1": { "titulo": "[Titre 1]", "descripcion": "[Technique mixte]", "precio": "[500 €]" }
+    }
+  },
+  "pt": {
+    "meta": { "title": "[Nome do Artista]", "description": "[Descrição em Português]" },
+    "nav": { "home": "Início" },
+    "hero": { "title": "[Bem-vindos]", "subtitle": "[Arte que conecta]" },
+    "gallery": { "title": "Obras" },
+    "obra": {
+      "1": { "titulo": "[Título 1]", "descripcion": "[Técnica mista]", "precio": "[R$ 2500]" }
+    }
+  }
+}
