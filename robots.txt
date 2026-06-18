@@ -19,4 +19,4 @@ User-agent: Google-Extended
 Allow: /
 
 # EDITAR: reemplaza por la URL real de tu sitio
-Sitemap: https://www.tu-dominio.com/sitemap.xml
+Sitemap: https://acuarela.lenissalcedo.workers.dev/sitemap.xml
