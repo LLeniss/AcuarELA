@@ -1,0 +1,24 @@
+# Eduvina Parada Cáceres — Artista de acuarela
+
+> Eduvina Parada Cáceres es una artista de acuarela que vive con ELA bulbar (Esclerosis Lateral Amiotrófica de inicio bulbar). Esta página acompaña su primera exposición pública y permite donar, comprar o reservar sus obras, y compartir su historia. La pintura se ha convertido en su forma de expresión y continuidad. Es un proyecto artístico en crecimiento: seguirá creando y poniendo nuevas obras a la venta.
+
+## Qué encontrarás aquí
+- [Historia de la artista](#historia): quién es Eduvina y cómo el arte se volvió su voz.
+- [La obra principal](#obra): ficha técnica, precio y disponibilidad de su primera acuarela.
+- [Catálogo de obras](#catalogo): colección de acuarelas únicas, en crecimiento. Cada obra puede reservarse o comprarse.
+- [Cómo ayudar](#ayudar): tres formas concretas — donar, comprar/reservar una obra, o compartir.
+- [Medios de donación](#donar): Nequi, Daviplata, transferencia bancaria y GoFundMe (donaciones internacionales con tarjeta).
+- [Destino de los fondos](#fondos): tratamiento y terapias, comunicación y movilidad, materiales de arte y cuidado diario.
+- [El evento](#evento): datos de su primera exposición pública.
+- [Preguntas frecuentes](#faq): reservas, compras, donaciones internacionales y obras futuras.
+
+## Datos clave
+- Artista: Eduvina Parada Cáceres
+- Disciplina: acuarela sobre papel de algodón
+- Causa: apoyo ante la ELA bulbar
+- Acciones posibles: donar, comprar/reservar obra, compartir
+- Idiomas del sitio: español, inglés, francés
+- Las obras están a la venta y la artista continuará pintando.
+
+## Notas
+Sitio estático (HTML/CSS, JavaScript mínimo). El contenido y el catálogo se editan en los archivos data/textos.json y data/config.json.

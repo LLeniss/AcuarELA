@@ -1,0 +1,22 @@
+# robots.txt · Eduvina Parada Cáceres
+# Permite a buscadores y a rastreadores de IA indexar todo el sitio.
+
+User-agent: *
+Allow: /
+
+# Rastreadores de IA (búsqueda generativa) · explícitamente permitidos
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+# EDITAR: reemplaza por la URL real de tu sitio
+Sitemap: https://www.tu-dominio.com/sitemap.xml

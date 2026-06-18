@@ -1,2 +1,13 @@
-/data/*.json
-  Cache-Control: no-cache, no-store, must-revalidate
+# Cabeceras para Cloudflare Pages (opcional pero recomendado)
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Caché larga para imágenes y CSS
+/images/*
+  Cache-Control: public, max-age=604800
+
+/styles.css
+  Cache-Control: public, max-age=604800
