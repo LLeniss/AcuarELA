@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title data-i18n="meta.title">[NOMBRE DEL ARTISTA]</title>
+  <meta name="description" data-i18n="meta.description" content="[DESCRIPCIÓN SEO]" />
+  <link rel="canonical" href="https://acuar-ela.pages.dev" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script>
+    (function(){ try { var l = localStorage.getItem('lang'); if(l) document.documentElement.lang = l; } catch(e){} })();
+  </script>
+</head>
+<body>
+  <header class="header">
+    <nav class="container nav">
+      <a href="/" class="logo" data-i18n="nav.home">[INICIO]</a>
+      <select id="lang-select">
+        <option value="es">ES</option>
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+        <option value="pt">PT</option>
+      </select>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 data-i18n="hero.title">[BIENVENIDOS]</h1>
+      <p data-i18n="hero.subtitle">[FRASE INSPIRADORA]</p>
+    </section>
+
+    <section class="gallery">
+      <h2 data-i18n="gallery.title">[MI OBRA]</h2>
+      <div id="art-grid" class="grid">
+        <!-- Obra 1 -->
+        <article class="card">
+          <img src="/assets/obra1.png" alt="Obra" onerror="this.src='https://placehold.co/600x400?text=Imagen+No+Encontrada'">
+          <div class="card-content">
+            <h3 data-i18n="obra.1.titulo">[TÍTULO OBRA]</h3>
+            <p data-i18n="obra.1.descripcion">[DESCRIPCIÓN]</p>
+            <span class="price" data-i18n="obra.1.precio">[PRECIO]</span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    <p>&copy; <span id="year"></span> <span data-i18n="meta.title">[NOMBRE DEL ARTISTA]</span></p>
+  </footer>
+
+  <script src="/i18n.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
