@@ -1,0 +1,9 @@
+:root { --primary: #333; --accent: #0070f3; --space: 20px; }
+body { margin: 0; font-family: sans-serif; color: var(--primary); line-height: 1.6; }
+.container { max-width: 1000px; margin: 0 auto; padding: 0 var(--space); }
+.nav { height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.hero { padding: 80px 0; text-align: center; background: #fafafa; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin: 40px 0; }
+.card img { width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.price { font-weight: bold; color: var(--accent); display: block; margin-top: 10px; }
+.footer { text-align: center; padding: 40px 0; border-top: 1px solid #eee; font-size: 0.9em; }
