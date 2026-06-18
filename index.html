@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- ============================================================= -->
+  <!-- ==== -->
   <!-- SEO  ·  El título y la descripción se traducen automáticamente -->
   <!-- (ver i18n.js). Aquí van los valores por defecto en español.    -->
-  <!-- ============================================================= -->
+  <!-- ==== -->
   <title>Eduvina Parada Cáceres · Artista de acuarela | Su primera obra</title>
   <meta name="description" data-i18n-attr="content:meta_desc"
         content="Eduvina Parada Cáceres es artista. Vive con ELA bulbar. Mañana exhibe su primera obra. Adquiérela, dona o comparte y ayuda a que este camino continúe." />
@@ -16,23 +16,23 @@
   <meta name="robots" content="index, follow" />
 
   <!-- EDITAR: URL real de tu sitio -->
-  <link rel="canonical" href="https://www.tu-dominio.com/" />
+  <link rel="canonical" href="https://acuarela.lenissalcedo.workers.dev/" />
 
   <!-- OPEN GRAPH (Facebook, WhatsApp, LinkedIn) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Eduvina Parada Cáceres · Su primera obra de acuarela" />
   <meta property="og:description" content="Ella es artista. Vive con ELA bulbar. Mañana exhibe su primera obra. Adquiérela, dona o comparte." />
-  <meta property="og:image" content="https://placehold.co/1200x600/e2e8f0/1e293b?text=Cover_image_for_Eduvina_Parada_C_ceres_s_first_wat" />
+  <meta property="og:image" content="https://acuarela.lenissalcedo.workers.dev/images/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:url" content="https://placehold.co/1200x600/e2e8f0/1e293b?text=Artwork_by_Eduvina_Parada_C_ceres__a_watercolor_pa" />
+  <meta property="og:url" content="https://acuarela.lenissalcedo.workers.dev/" />
   <meta property="og:site_name" content="Eduvina Parada Cáceres · Arte de acuarela" />
 
   <!-- TWITTER CARDS -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Eduvina Parada Cáceres · Su primera obra de acuarela" />
   <meta name="twitter:description" content="Ella es artista. Vive con ELA bulbar. Mañana exhibe su primera obra. Adquiérela, dona o comparte." />
-  <meta name="twitter:image" content="https://placehold.co/1200x600/e2e8f0/1e293b?text=Promotional_social_media_card_image_for_artist_Edu" />
+  <meta name="twitter:image" content="https://acuarela.lenissalcedo.workers.dev/images/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="images/favicon.png" />
 
@@ -41,12 +41,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+  <link rel="alternate" href="https://acuarela.lenissalcedo.workers.dev/" hreflang="es" />
+  <link rel="alternate" href="https://acuarela.lenissalcedo.workers.dev/en/" hreflang="en" />
+  <link rel="alternate" href="https://acuarela.lenissalcedo.workers.dev/fr/" hreflang="fr" />
+  <link rel="alternate" href="https://acuarela.lenissalcedo.workers.dev/" hreflang="x-default" />
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- ============================================================= -->
+  <!-- ==== -->
   <!-- SCHEMA.ORG · Datos estructurados (Artista + Evento + Obra)     -->
   <!-- EDITA los valores entre [ ] con los datos reales.             -->
-  <!-- ============================================================= -->
+  <!-- ==== -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -126,9 +130,9 @@
 
 <body>
 
-  <!-- ============================================================= -->
-  <!-- HEADER · navegación + selector de idioma                      -->
-  <!-- ============================================================= -->
+  <!-- ==== -->
+  <!-- HEADER · navegación + selector de idioma                    -->
+  <!-- ==== -->
   <header class="site-header">
     <nav class="nav container" aria-label="Navegación principal">
       <a href="#inicio" class="nav__logo">Eduvina Parada Cáceres</a>
@@ -155,9 +159,9 @@
 
   <main>
 
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <!-- 1. HERO · foto potente + título + 3 CTAs                    -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <section class="hero" id="inicio">
       <!-- EDITAR IMAGEN: reemplaza images/hero.jpg por la foto de la obra o de la artista. -->
       <div class="hero__bg" style="background-image: url('images/hero.jpg');" role="img" aria-label="Obra de Eduvina Parada Cáceres"></div>
@@ -176,9 +180,9 @@
       </div>
     </section>
 
-    <!-- =========================================================== -->
-    <!-- 2. HISTORIA BREVE (3 párrafos)                              -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
+    <!-- 2. HISTORIA BREVE (3 párrafos)                    -->
+    <!-- ==== -->
     <section class="historia section" id="historia">
       <div class="container historia__grid">
         <div class="historia__media">
@@ -195,9 +199,9 @@
       </div>
     </section>
 
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <!-- 3. LA OBRA · ficha técnica + precio/disponibilidad          -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <section class="obra-section section section--alt" id="obra">
       <div class="container">
         <div class="section__head">
@@ -246,10 +250,10 @@
       </div>
     </section>
 
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <!-- 3b. CATÁLOGO DE OBRAS · se genera desde data/config.json     -->
     <!--     (estilo galería de museo · N obras · clic para ampliar)  -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <section class="catalogo section" id="catalogo">
       <div class="container">
         <div class="section__head">
@@ -280,9 +284,9 @@
       </div>
     </dialog>
 
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <!-- 4. CÓMO AYUDAR · 3 formas (donar / comprar / compartir)     -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <section class="ayudar section" id="ayudar">
       <div class="container">
         <div class="section__head">
@@ -314,9 +318,9 @@
       </div>
     </section>
 
-    <!-- =========================================================== -->
-    <!-- 5. MEDIOS DE DONACIÓN                                       -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
+    <!-- 5. MEDIOS DE DONACIÓN                    -->
+    <!-- ==== -->
     <section class="donar section section--cta" id="donar">
       <div class="container">
         <div class="section__head">
@@ -343,7 +347,7 @@
             <span class="donacion-card__icon">🏦</span>
             <h3 class="donacion-card__title" data-i18n="donar_banco_title">Transferencia bancaria</h3>
             <p class="donacion-card__detail" data-i18n="donar_banco_l1">[Banco] · Cuenta [Ahorros]</p>
-            <p class="donacion-card__detail" data-i18n-html="donar_banco_l2">N.º <strong>[000-000000-00]</strong></p>
+            <p class="donacion-card__detail" data-i18n-html="donar_banco_l2">N.º <strong>[000-0000-00]</strong></p>
             <p class="donacion-card__name" data-i18n="donar_banco_name">A nombre de [Nombre completo]</p>
           </div>
           <div class="donacion-card donacion-card--highlight">
@@ -357,9 +361,9 @@
       </div>
     </section>
 
-    <!-- =========================================================== -->
-    <!-- 6. DESTINO DE FONDOS · transparencia                        -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
+    <!-- 6. DESTINO DE FONDOS · transparencia                    -->
+    <!-- ==== -->
     <section class="fondos section" id="fondos">
       <div class="container">
         <div class="section__head">
@@ -392,9 +396,9 @@
       </div>
     </section>
 
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <!-- 7. ESTO RECIÉN EMPIEZA · continuidad del proyecto          -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
     <section class="futuro section section--alt" id="futuro">
       <div class="container futuro__inner">
         <span class="eyebrow" data-i18n="futuro_eyebrow">Esto recién empieza</span>
@@ -405,9 +409,9 @@
       </div>
     </section>
 
-    <!-- =========================================================== -->
-    <!-- 8. EVENTO DE MAÑANA                                         -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
+    <!-- 8. EVENTO DE MAÑANA                    -->
+    <!-- ==== -->
     <section class="evento section" id="evento">
       <div class="container">
         <div class="section__head">
@@ -437,9 +441,9 @@
       </div>
     </section>
 
-    <!-- =========================================================== -->
-    <!-- 9. FAQ CORTA                                                -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
+    <!-- 9. FAQ CORTA                    -->
+    <!-- ==== -->
     <section class="faq section section--alt" id="faq">
       <div class="container faq__inner">
         <div class="section__head">
@@ -466,9 +470,9 @@
       </div>
     </section>
 
-    <!-- =========================================================== -->
-    <!-- CONTACTO                                                    -->
-    <!-- =========================================================== -->
+    <!-- ==== -->
+    <!-- CONTACTO                    -->
+    <!-- ==== -->
     <section class="contacto section section--cta" id="contacto">
       <div class="container contacto__inner">
         <span class="eyebrow eyebrow--light" data-i18n="contacto_eyebrow">Contacto</span>
@@ -480,7 +484,7 @@
             <span class="contacto__link-label" data-i18n="contacto_email_label">Correo</span>
             <span class="contacto__link-value">[correo@ejemplo.com]</span>
           </a>
-          <a href="https://wa.me/[573000000000]" target="_blank" rel="noopener" class="contacto__link">
+          <a href="https://wa.me/[5730000]" target="_blank" rel="noopener" class="contacto__link">
             <span class="contacto__link-label" data-i18n="contacto_wa_label">WhatsApp</span>
             <span class="contacto__link-value">[+57 300 000 0000]</span>
           </a>
@@ -494,9 +498,9 @@
 
   </main>
 
-  <!-- ============================================================= -->
-  <!-- PIE DE PÁGINA                                                 -->
-  <!-- ============================================================= -->
+  <!-- ==== -->
+  <!-- PIE DE PÁGINA                    -->
+  <!-- ==== -->
   <footer class="site-footer">
     <div class="container site-footer__inner">
       <p class="site-footer__brand">Eduvina Parada Cáceres</p>
