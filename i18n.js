@@ -1,537 +1,191 @@
-/* =================================================================
-   SISTEMA MULTILINGÜE (i18n)  ·  ES / EN / FR
-   -----------------------------------------------------------------
-   CÓMO FUNCIONA
-   - Cada texto traducible en index.html lleva el atributo
-       data-i18n="clave"        → cambia el TEXTO del elemento
-       data-i18n-html="clave"   → cambia el HTML (permite <strong>, <br>)
-       data-i18n-attr="atributo:clave"  → cambia un atributo (ej. content, alt)
-   - El objeto TRANSLATIONS de abajo contiene las 3 traducciones.
-   - El idioma elegido se guarda en el navegador (localStorage).
-
-   CÓMO AÑADIR UN IDIOMA NUEVO (ej. portugués "pt")
-   1. Copia el bloque "es" completo, renómbralo a "pt" y traduce los textos.
-   2. Añade un botón en el selector de idioma del index.html:
-        <button class="lang-switch__btn" data-lang="pt">PT</button>
-   ¡Listo! El sistema lo detecta automáticamente.
-
-   CÓMO AÑADIR UN TEXTO NUEVO
-   1. Elige una clave (ej. "obra2_titulo").
-   2. Añádela en es / en / fr aquí abajo.
-   3. En el HTML pon  data-i18n="obra2_titulo"  en el elemento.
-   ================================================================= */
-
-const TRANSLATIONS = {
-
-  /* ============================= ESPAÑOL ============================= */
-  es: {
-    /* --- Meta / SEO --- */
-    meta_title: "Eduvina Parada Cáceres · Artista de acuarela | Su primera obra",
-    meta_desc: "Eduvina Parada Cáceres es artista. Vive con ELA bulbar. Mañana exhibe su primera obra. Adquiérela, dona o comparte y ayuda a que este camino continúe.",
-
-    /* --- Navegación --- */
-    nav_historia: "Historia",
-    nav_obra: "La obra",
-    nav_catalogo: "Catálogo",
-    nav_ayudar: "Cómo ayudar",
-    nav_evento: "El evento",
-    nav_cta: "Donar",
-    catalogo_eyebrow: "Catálogo de obras",
-    catalogo_title: "Una colección que crece",
-    catalogo_lead: "Cada acuarela es una pieza única. Explóralas, ábrelas para ver el detalle y resérvalas. El catálogo se ampliará con cada nueva obra.",
-
-    /* --- Hero --- */
-    hero_kicker: "Su primera obra · Exposición de mañana",
-    hero_title: "Ella es artista.<br>Y esto recién empieza.",
-    hero_subtitle: "<strong>Eduvina Parada Cáceres</strong> vive con ELA bulbar. Mañana exhibe su primera acuarela al público. Puedes ayudar a que este camino continúe.",
-    hero_btn_donar: "❤ Donar ahora",
-    hero_btn_comprar: "🖼 Reservar / comprar la obra",
-    hero_btn_compartir: "↗ Compartir",
-
-    /* --- Historia --- */
-    historia_eyebrow: "Quién es Eduvina",
-    historia_title: "Una artista que encontró su voz en el color",
-    historia_p1: "Eduvina Parada Cáceres es artista. En sus acuarelas, el agua y el pigmento se encuentran para crear paisajes de luz, emoción y serenidad. [EDITAR: añade aquí su trayectoria, de dónde es y qué la inspira.]",
-    historia_p2: "Vive con <strong>ELA bulbar</strong>, una condición que afecta el habla y la deglución. No la define como persona, pero es parte de su presente. Pintar se volvió su forma de comunicarse cuando las palabras se hacen difíciles.",
-    historia_p3: "Mañana, por primera vez, su obra se muestra en público. <strong>Este es apenas el comienzo:</strong> Eduvina seguirá pintando, y cada obra que encuentra un hogar hace posible la siguiente.",
-
-    /* --- La obra --- */
-    obra_eyebrow: "La obra de hoy",
-    obra_title: "Su primera acuarela a la venta",
-    obra_lead: "Una pieza única. Si la adquieres, no solo te llevas una obra: haces posible que Eduvina siga creando.",
-    obra_nombre: "[TÍTULO DE LA OBRA]",
-    obra_ficha_tecnica_label: "Técnica",
-    obra_ficha_tecnica: "[Acuarela sobre papel de algodón]",
-    obra_ficha_medidas_label: "Medidas",
-    obra_ficha_medidas: "[00 × 00 cm]",
-    obra_ficha_anio_label: "Año",
-    obra_ficha_anio: "[2025]",
-    obra_ficha_estado_label: "Disponibilidad",
-    obra_ficha_estado: "Disponible",
-    obra_precio_label: "Precio / aporte sugerido",
-    obra_precio: "[$ 000.000 COP]",
-    obra_btn: "Reservar esta obra",
-    obra_nota: "¿Prefieres una lámina o impresión de alta calidad? También habrá ediciones accesibles. <a href=\"#contacto\">Escríbenos</a>.",
-
-    /* --- Cómo ayudar --- */
-    ayudar_eyebrow: "3 formas de ayudar",
-    ayudar_title: "Elige cómo acompañar este camino",
-    ayudar_lead: "En 30 segundos puedes marcar la diferencia. Toda ayuda, del tamaño que sea, cuenta.",
-
-    ayudar_1_title: "Donar",
-    ayudar_1_text: "Aporta lo que puedas por los medios de abajo. Cada donación sostiene su tratamiento y su arte.",
-    ayudar_1_btn: "Ver medios de donación",
-
-    ayudar_2_title: "Comprar / reservar",
-    ayudar_2_text: "Llévate su obra o resérvala. Es la forma más directa de apoyar a la artista.",
-    ayudar_2_btn: "Reservar la obra",
-
-    ayudar_3_title: "Compartir",
-    ayudar_3_text: "Si no puedes donar hoy, compartir esta página también ayuda muchísimo. 🙏",
-    ayudar_3_btn: "Compartir ahora",
-
-    /* --- Medios de donación --- */
-    donar_eyebrow: "Medios de donación",
-    donar_title: "Dona por el medio que prefieras",
-    donar_lead: "Elige el que te resulte más cómodo. Cada aporte llega directamente al bienestar de Eduvina.",
-    donar_nequi_title: "Nequi",
-    donar_nequi_num: "Número: <strong>[300 000 0000]</strong>",
-    donar_nequi_name: "A nombre de [Nombre completo]",
-    donar_davi_title: "Daviplata",
-    donar_davi_num: "Número: <strong>[300 000 0000]</strong>",
-    donar_davi_name: "A nombre de [Nombre completo]",
-    donar_banco_title: "Transferencia bancaria",
-    donar_banco_l1: "[Banco] · Cuenta [Ahorros]",
-    donar_banco_l2: "N.º <strong>[000-000000-00]</strong>",
-    donar_banco_name: "A nombre de [Nombre completo]",
-    donar_gfm_title: "GoFundMe",
-    donar_gfm_text: "Dona con tarjeta desde cualquier país del mundo.",
-    donar_gfm_btn: "Donar en GoFundMe",
-
-    /* --- Destino de fondos --- */
-    fondos_eyebrow: "Transparencia total",
-    fondos_title: "¿A dónde va tu aporte?",
-    fondos_lead: "Queremos que sepas exactamente cómo se usa cada peso. Así se distribuye:",
-    fondos_1_title: "Tratamiento y terapias",
-    fondos_1_text: "[Atención médica, terapias y medicamentos relacionados con la ELA bulbar.]",
-    fondos_2_title: "Comunicación y movilidad",
-    fondos_2_text: "[Equipos de comunicación asistida y adaptaciones para el día a día.]",
-    fondos_3_title: "Materiales de arte",
-    fondos_3_text: "[Acuarelas, papel y herramientas para que Eduvina siga pintando.]",
-    fondos_4_title: "Cuidado diario",
-    fondos_4_text: "[Apoyo en alimentación, cuidado y gastos básicos.]",
-
-    /* --- Esto recién empieza --- */
-    futuro_eyebrow: "Esto recién empieza",
-    futuro_title: "Un proyecto que continúa",
-    futuro_p1: "Esta exposición es el primer paso de un camino más largo. Eduvina seguirá pintando, y queremos acompañar cada nueva obra que nazca de sus manos.",
-    futuro_p2: "Próximamente: nuevas acuarelas, ediciones accesibles y una galería completa. <strong>Súmate desde el inicio</strong> y sé parte de esta historia que apenas comienza.",
-    futuro_btn: "Quiero estar al tanto",
-
-    /* --- Evento --- */
-    evento_eyebrow: "El evento de mañana",
-    evento_title: "Su primera exposición pública",
-    evento_lead: "Una muestra colectiva donde Eduvina presenta su obra al público por primera vez. ¡Te esperamos!",
-    evento_fecha_label: "📅 Fecha",
-    evento_fecha: "[Mañana · 00 de mes de 2025]",
-    evento_hora_label: "🕐 Hora",
-    evento_hora: "[00:00 – 00:00]",
-    evento_lugar_label: "📍 Lugar",
-    evento_lugar: "[Nombre del lugar, Ciudad]",
-    evento_entrada_label: "🎟 Entrada",
-    evento_entrada: "[Libre / Gratuita]",
-
-    /* --- FAQ --- */
-    faq_eyebrow: "Preguntas frecuentes",
-    faq_title: "Resolvemos tus dudas",
-    faq_q1: "¿Cómo reservo o compro la obra?",
-    faq_a1: "Escríbenos por WhatsApp, correo o Instagram (datos abajo) y te guiamos en el proceso de reserva, pago y entrega.",
-    faq_q2: "¿Mi donación llega directamente a Eduvina?",
-    faq_a2: "Sí. Todos los aportes se destinan a su tratamiento, cuidado y materiales de arte, como se detalla en la sección de transparencia.",
-    faq_q3: "¿Puedo ayudar si no estoy en el país?",
-    faq_a3: "¡Claro! A través de GoFundMe puedes donar con tarjeta desde cualquier lugar del mundo.",
-    faq_q4: "¿Habrá más obras en el futuro?",
-    faq_a4: "Sí. Esto recién empieza: Eduvina seguirá pintando y habrá nuevas obras y ediciones accesibles próximamente.",
-
-    /* --- Contacto / Footer --- */
-    contacto_eyebrow: "Contacto",
-    contacto_title: "¿Hablamos?",
-    contacto_lead: "Para reservas, compras o cualquier pregunta, escríbenos por el medio que prefieras.",
-    contacto_email_label: "Correo",
-    contacto_wa_label: "WhatsApp",
-    contacto_ig_label: "Instagram",
-    footer_tagline: "Artista de acuarela · Esto recién empieza",
-    footer_copy: "Hecho con cariño y esperanza.",
-
-    /* --- Mensajes del sistema --- */
-    share_copied: "¡Enlace copiado! Compártelo con quien quieras 💛",
-  },
-
-  /* ============================= ENGLISH ============================= */
-  en: {
-    meta_title: "Eduvina Parada Cáceres · Watercolor artist | Her first artwork",
-    meta_desc: "Eduvina Parada Cáceres is an artist. She lives with bulbar ALS. Tomorrow she shows her first artwork. Buy it, donate or share to help this journey continue.",
-
-    nav_historia: "Story",
-    nav_obra: "The artwork",
-    nav_catalogo: "Catalog",
-    nav_ayudar: "How to help",
-    nav_evento: "The event",
-    nav_cta: "Donate",
-    catalogo_eyebrow: "Artwork catalog",
-    catalogo_title: "A growing collection",
-    catalogo_lead: "Each watercolor is a unique piece. Explore them, open them to see the detail and reserve them. The catalog grows with every new artwork.",
-
-    hero_kicker: "Her first artwork · Exhibition tomorrow",
-    hero_title: "She is an artist.<br>And this is just beginning.",
-    hero_subtitle: "<strong>Eduvina Parada Cáceres</strong> lives with bulbar ALS. Tomorrow she shows her first watercolor to the public. You can help this journey continue.",
-    hero_btn_donar: "❤ Donate now",
-    hero_btn_comprar: "🖼 Reserve / buy the artwork",
-    hero_btn_compartir: "↗ Share",
-
-    historia_eyebrow: "Who Eduvina is",
-    historia_title: "An artist who found her voice in color",
-    historia_p1: "Eduvina Parada Cáceres is an artist. In her watercolors, water and pigment meet to create landscapes of light, emotion and serenity. [EDIT: add her background, where she's from and what inspires her.]",
-    historia_p2: "She lives with <strong>bulbar ALS</strong>, a condition that affects speech and swallowing. It does not define her as a person, but it is part of her present. Painting became her way of communicating when words grow difficult.",
-    historia_p3: "Tomorrow, for the first time, her work is shown in public. <strong>This is only the beginning:</strong> Eduvina will keep painting, and every artwork that finds a home makes the next one possible.",
-
-    obra_eyebrow: "Today's artwork",
-    obra_title: "Her first watercolor for sale",
-    obra_lead: "A unique piece. By acquiring it, you don't just take home an artwork: you make it possible for Eduvina to keep creating.",
-    obra_nombre: "[ARTWORK TITLE]",
-    obra_ficha_tecnica_label: "Technique",
-    obra_ficha_tecnica: "[Watercolor on cotton paper]",
-    obra_ficha_medidas_label: "Dimensions",
-    obra_ficha_medidas: "[00 × 00 cm]",
-    obra_ficha_anio_label: "Year",
-    obra_ficha_anio: "[2025]",
-    obra_ficha_estado_label: "Availability",
-    obra_ficha_estado: "Available",
-    obra_precio_label: "Price / suggested contribution",
-    obra_precio: "[$ 000 USD]",
-    obra_btn: "Reserve this artwork",
-    obra_nota: "Prefer a high-quality print? Affordable editions will also be available. <a href=\"#contacto\">Write to us</a>.",
-
-    ayudar_eyebrow: "3 ways to help",
-    ayudar_title: "Choose how to walk this path with her",
-    ayudar_lead: "In 30 seconds you can make a difference. Every bit of help, big or small, counts.",
-    ayudar_1_title: "Donate",
-    ayudar_1_text: "Give what you can through the options below. Every donation sustains her treatment and her art.",
-    ayudar_1_btn: "See donation methods",
-    ayudar_2_title: "Buy / reserve",
-    ayudar_2_text: "Take home her artwork or reserve it. It's the most direct way to support the artist.",
-    ayudar_2_btn: "Reserve the artwork",
-    ayudar_3_title: "Share",
-    ayudar_3_text: "If you can't donate today, sharing this page helps enormously too. 🙏",
-    ayudar_3_btn: "Share now",
-
-    donar_eyebrow: "Donation methods",
-    donar_title: "Donate however you prefer",
-    donar_lead: "Pick whatever is easiest for you. Every contribution goes straight to Eduvina's wellbeing.",
-    donar_nequi_title: "Nequi",
-    donar_nequi_num: "Number: <strong>[300 000 0000]</strong>",
-    donar_nequi_name: "Account holder: [Full name]",
-    donar_davi_title: "Daviplata",
-    donar_davi_num: "Number: <strong>[300 000 0000]</strong>",
-    donar_davi_name: "Account holder: [Full name]",
-    donar_banco_title: "Bank transfer",
-    donar_banco_l1: "[Bank] · [Savings] account",
-    donar_banco_l2: "No. <strong>[000-000000-00]</strong>",
-    donar_banco_name: "Account holder: [Full name]",
-    donar_gfm_title: "GoFundMe",
-    donar_gfm_text: "Donate by card from anywhere in the world.",
-    donar_gfm_btn: "Donate on GoFundMe",
-
-    fondos_eyebrow: "Full transparency",
-    fondos_title: "Where does your contribution go?",
-    fondos_lead: "We want you to know exactly how every penny is used. Here's the breakdown:",
-    fondos_1_title: "Treatment & therapies",
-    fondos_1_text: "[Medical care, therapies and medication related to bulbar ALS.]",
-    fondos_2_title: "Communication & mobility",
-    fondos_2_text: "[Assisted communication devices and everyday adaptations.]",
-    fondos_3_title: "Art materials",
-    fondos_3_text: "[Watercolors, paper and tools so Eduvina can keep painting.]",
-    fondos_4_title: "Daily care",
-    fondos_4_text: "[Support for food, care and basic expenses.]",
-
-    futuro_eyebrow: "This is just beginning",
-    futuro_title: "A project that continues",
-    futuro_p1: "This exhibition is the first step on a longer path. Eduvina will keep painting, and we want to support every new artwork born from her hands.",
-    futuro_p2: "Coming soon: new watercolors, affordable editions and a full gallery. <strong>Join from the very start</strong> and be part of this story that's only just beginning.",
-    futuro_btn: "Keep me posted",
-
-    evento_eyebrow: "Tomorrow's event",
-    evento_title: "Her first public exhibition",
-    evento_lead: "A group show where Eduvina presents her work to the public for the first time. We'd love to see you there!",
-    evento_fecha_label: "📅 Date",
-    evento_fecha: "[Tomorrow · Month 00, 2025]",
-    evento_hora_label: "🕐 Time",
-    evento_hora: "[00:00 – 00:00]",
-    evento_lugar_label: "📍 Venue",
-    evento_lugar: "[Venue name, City]",
-    evento_entrada_label: "🎟 Entry",
-    evento_entrada: "[Free / Open]",
-
-    faq_eyebrow: "Frequently asked questions",
-    faq_title: "Your questions, answered",
-    faq_q1: "How do I reserve or buy the artwork?",
-    faq_a1: "Write to us via WhatsApp, email or Instagram (details below) and we'll guide you through reservation, payment and delivery.",
-    faq_q2: "Does my donation go directly to Eduvina?",
-    faq_a2: "Yes. All contributions go to her treatment, care and art materials, as detailed in the transparency section.",
-    faq_q3: "Can I help from outside the country?",
-    faq_a3: "Absolutely! Through GoFundMe you can donate by card from anywhere in the world.",
-    faq_q4: "Will there be more artworks in the future?",
-    faq_a4: "Yes. This is just beginning: Eduvina will keep painting and new artworks and affordable editions are coming soon.",
-
-    contacto_eyebrow: "Contact",
-    contacto_title: "Let's talk",
-    contacto_lead: "For reservations, purchases or any question, write to us however you prefer.",
-    contacto_email_label: "Email",
-    contacto_wa_label: "WhatsApp",
-    contacto_ig_label: "Instagram",
-    footer_tagline: "Watercolor artist · This is just beginning",
-    footer_copy: "Made with care and hope.",
-
-    share_copied: "Link copied! Share it with anyone 💛",
-  },
-
-  /* ============================= FRANÇAIS ============================= */
-  fr: {
-    meta_title: "Eduvina Parada Cáceres · Artiste aquarelliste | Sa première œuvre",
-    meta_desc: "Eduvina Parada Cáceres est artiste. Elle vit avec une SLA bulbaire. Demain elle expose sa première œuvre. Achetez-la, faites un don ou partagez pour aider ce chemin à continuer.",
-
-    nav_historia: "Histoire",
-    nav_obra: "L'œuvre",
-    nav_catalogo: "Catalogue",
-    nav_ayudar: "Comment aider",
-    nav_evento: "L'événement",
-    nav_cta: "Faire un don",
-    catalogo_eyebrow: "Catalogue d'œuvres",
-    catalogo_title: "Une collection qui grandit",
-    catalogo_lead: "Chaque aquarelle est une pièce unique. Explorez-les, ouvrez-les pour voir le détail et réservez-les. Le catalogue s'enrichit à chaque nouvelle œuvre.",
-
-    hero_kicker: "Sa première œuvre · Exposition demain",
-    hero_title: "Elle est artiste.<br>Et tout commence à peine.",
-    hero_subtitle: "<strong>Eduvina Parada Cáceres</strong> vit avec une SLA bulbaire. Demain, elle présente sa première aquarelle au public. Vous pouvez aider ce chemin à continuer.",
-    hero_btn_donar: "❤ Faire un don",
-    hero_btn_comprar: "🖼 Réserver / acheter l'œuvre",
-    hero_btn_compartir: "↗ Partager",
-
-    historia_eyebrow: "Qui est Eduvina",
-    historia_title: "Une artiste qui a trouvé sa voix dans la couleur",
-    historia_p1: "Eduvina Parada Cáceres est artiste. Dans ses aquarelles, l'eau et le pigment se rencontrent pour créer des paysages de lumière, d'émotion et de sérénité. [À ÉDITER : ajoutez son parcours, son origine et ses inspirations.]",
-    historia_p2: "Elle vit avec une <strong>SLA bulbaire</strong>, une condition qui affecte la parole et la déglutition. Cela ne la définit pas en tant que personne, mais fait partie de son présent. La peinture est devenue son moyen de communiquer quand les mots se font difficiles.",
-    historia_p3: "Demain, pour la première fois, son œuvre est montrée au public. <strong>Ce n'est que le début :</strong> Eduvina continuera de peindre, et chaque œuvre qui trouve un foyer rend la suivante possible.",
-
-    obra_eyebrow: "L'œuvre du jour",
-    obra_title: "Sa première aquarelle en vente",
-    obra_lead: "Une pièce unique. En l'acquérant, vous ne repartez pas seulement avec une œuvre : vous permettez à Eduvina de continuer à créer.",
-    obra_nombre: "[TITRE DE L'ŒUVRE]",
-    obra_ficha_tecnica_label: "Technique",
-    obra_ficha_tecnica: "[Aquarelle sur papier coton]",
-    obra_ficha_medidas_label: "Dimensions",
-    obra_ficha_medidas: "[00 × 00 cm]",
-    obra_ficha_anio_label: "Année",
-    obra_ficha_anio: "[2025]",
-    obra_ficha_estado_label: "Disponibilité",
-    obra_ficha_estado: "Disponible",
-    obra_precio_label: "Prix / contribution suggérée",
-    obra_precio: "[000 €]",
-    obra_btn: "Réserver cette œuvre",
-    obra_nota: "Vous préférez une impression de haute qualité ? Des éditions accessibles seront aussi disponibles. <a href=\"#contacto\">Écrivez-nous</a>.",
-
-    ayudar_eyebrow: "3 façons d'aider",
-    ayudar_title: "Choisissez comment accompagner ce chemin",
-    ayudar_lead: "En 30 secondes, vous pouvez faire la différence. Toute aide, grande ou petite, compte.",
-    ayudar_1_title: "Faire un don",
-    ayudar_1_text: "Donnez ce que vous pouvez via les options ci-dessous. Chaque don soutient son traitement et son art.",
-    ayudar_1_btn: "Voir les moyens de don",
-    ayudar_2_title: "Acheter / réserver",
-    ayudar_2_text: "Repartez avec son œuvre ou réservez-la. C'est la façon la plus directe de soutenir l'artiste.",
-    ayudar_2_btn: "Réserver l'œuvre",
-    ayudar_3_title: "Partager",
-    ayudar_3_text: "Si vous ne pouvez pas donner aujourd'hui, partager cette page aide énormément aussi. 🙏",
-    ayudar_3_btn: "Partager maintenant",
-
-    donar_eyebrow: "Moyens de don",
-    donar_title: "Faites un don comme vous préférez",
-    donar_lead: "Choisissez le moyen le plus simple pour vous. Chaque contribution va directement au bien-être d'Eduvina.",
-    donar_nequi_title: "Nequi",
-    donar_nequi_num: "Numéro : <strong>[300 000 0000]</strong>",
-    donar_nequi_name: "Au nom de [Nom complet]",
-    donar_davi_title: "Daviplata",
-    donar_davi_num: "Numéro : <strong>[300 000 0000]</strong>",
-    donar_davi_name: "Au nom de [Nom complet]",
-    donar_banco_title: "Virement bancaire",
-    donar_banco_l1: "[Banque] · Compte [Épargne]",
-    donar_banco_l2: "N° <strong>[000-000000-00]</strong>",
-    donar_banco_name: "Au nom de [Nom complet]",
-    donar_gfm_title: "GoFundMe",
-    donar_gfm_text: "Faites un don par carte depuis n'importe quel pays.",
-    donar_gfm_btn: "Faire un don sur GoFundMe",
-
-    fondos_eyebrow: "Transparence totale",
-    fondos_title: "Où va votre contribution ?",
-    fondos_lead: "Nous voulons que vous sachiez exactement comment chaque euro est utilisé. Voici la répartition :",
-    fondos_1_title: "Traitement et thérapies",
-    fondos_1_text: "[Soins médicaux, thérapies et médicaments liés à la SLA bulbaire.]",
-    fondos_2_title: "Communication et mobilité",
-    fondos_2_text: "[Dispositifs de communication assistée et adaptations du quotidien.]",
-    fondos_3_title: "Matériel d'art",
-    fondos_3_text: "[Aquarelles, papier et outils pour qu'Eduvina continue de peindre.]",
-    fondos_4_title: "Soins quotidiens",
-    fondos_4_text: "[Soutien pour l'alimentation, les soins et les dépenses de base.]",
-
-    futuro_eyebrow: "Tout commence à peine",
-    futuro_title: "Un projet qui continue",
-    futuro_p1: "Cette exposition est le premier pas d'un chemin plus long. Eduvina continuera de peindre, et nous voulons accompagner chaque nouvelle œuvre née de ses mains.",
-    futuro_p2: "Bientôt : de nouvelles aquarelles, des éditions accessibles et une galerie complète. <strong>Rejoignez-nous dès le début</strong> et faites partie de cette histoire qui ne fait que commencer.",
-    futuro_btn: "Tenez-moi informé",
-
-    evento_eyebrow: "L'événement de demain",
-    evento_title: "Sa première exposition publique",
-    evento_lead: "Une exposition collective où Eduvina présente son œuvre au public pour la première fois. Au plaisir de vous y voir !",
-    evento_fecha_label: "📅 Date",
-    evento_fecha: "[Demain · 00 mois 2025]",
-    evento_hora_label: "🕐 Heure",
-    evento_hora: "[00:00 – 00:00]",
-    evento_lugar_label: "📍 Lieu",
-    evento_lugar: "[Nom du lieu, Ville]",
-    evento_entrada_label: "🎟 Entrée",
-    evento_entrada: "[Libre / Gratuite]",
-
-    faq_eyebrow: "Questions fréquentes",
-    faq_title: "Vos questions, nos réponses",
-    faq_q1: "Comment réserver ou acheter l'œuvre ?",
-    faq_a1: "Écrivez-nous via WhatsApp, e-mail ou Instagram (coordonnées ci-dessous) et nous vous guiderons pour la réservation, le paiement et la livraison.",
-    faq_q2: "Mon don va-t-il directement à Eduvina ?",
-    faq_a2: "Oui. Toutes les contributions vont à son traitement, ses soins et son matériel d'art, comme détaillé dans la section transparence.",
-    faq_q3: "Puis-je aider depuis l'étranger ?",
-    faq_a3: "Bien sûr ! Via GoFundMe, vous pouvez faire un don par carte depuis n'importe où dans le monde.",
-    faq_q4: "Y aura-t-il d'autres œuvres à l'avenir ?",
-    faq_a4: "Oui. Tout commence à peine : Eduvina continuera de peindre et de nouvelles œuvres et éditions accessibles arriveront bientôt.",
-
-    contacto_eyebrow: "Contact",
-    contacto_title: "On en parle ?",
-    contacto_lead: "Pour les réservations, achats ou toute question, écrivez-nous comme vous préférez.",
-    contacto_email_label: "E-mail",
-    contacto_wa_label: "WhatsApp",
-    contacto_ig_label: "Instagram",
-    footer_tagline: "Artiste aquarelliste · Tout commence à peine",
-    footer_copy: "Fait avec soin et espoir.",
-
-    share_copied: "Lien copié ! Partagez-le avec qui vous voulez 💛",
-  },
-};
-
-/* =================================================================
-   MOTOR i18n  (no necesitas editar nada de aquí abajo)
-   -----------------------------------------------------------------
-   IMPORTANTE: los textos se editan en  data/textos.json  (ese es el
-   archivo que usa el sitio publicado). El objeto TRANSLATIONS de
-   arriba es solo un RESPALDO para cuando abres el index.html con
-   doble clic (file://) y el navegador no permite leer el JSON.
-   Para probar local con los JSON, usa:  python3 -m http.server
-   ================================================================= */
+/* i18n — versión mejorada
+ - Lee /data/textos.json?t=... (cache-bust)
+ - Soporta JSON anidado (se aplana a claves_con_guion_bajo)
+ - Sólo reemplaza si el valor es distinto (evita parpadeo)
+ - Usa un fallback mínimo embebido si fetch falla
+*/
 (function () {
-  const DEFAULT_LANG = "es";
-  let SUPPORTED = Object.keys(TRANSLATIONS);
+  'use strict';
 
-  function applyLang(lang) {
-    if (!SUPPORTED.includes(lang)) lang = DEFAULT_LANG;
-    const dict = TRANSLATIONS[lang];
+  const DEFAULT_LANG = 'es';
+  const LANGS = ['es','en','fr','pt'];
 
-    // 1) Texto simple
-    document.querySelectorAll("[data-i18n]").forEach((el) => {
-      const key = el.getAttribute("data-i18n");
-      if (dict[key] !== undefined) el.textContent = dict[key];
+  // Fallback muy pequeño para evitar errores si no hay JSON (no mantener aquí textos editables)
+  const FALLBACK = {
+    es: { obra_precio: '[$ 000.000 COP]', nav_historia: 'Historia' },
+    en: { obra_precio: '[$ 000 USD]', nav_historia: 'Story' },
+    fr: { obra_precio: '[000 €]', nav_historia: 'Histoire' },
+    pt: { obra_precio: '[R$ 0]', nav_historia: 'História' }
+  };
+
+  // util: aplana un objeto { a: { b: 'x' } } -> { 'a_b': 'x' }
+  function flatten(obj, prefix = '', out = {}) {
+    Object.keys(obj || {}).forEach((k) => {
+      const val = obj[k];
+      const key = prefix ? prefix + '_' + k : k;
+      if (val && typeof val === 'object' && !Array.isArray(val)) {
+        flatten(val, key, out);
+      } else {
+        out[key] = val;
+      }
     });
-
-    // 2) HTML (permite <strong>, <br>, enlaces)
-    document.querySelectorAll("[data-i18n-html]").forEach((el) => {
-      const key = el.getAttribute("data-i18n-html");
-      if (dict[key] !== undefined) el.innerHTML = dict[key];
-    });
-
-    // 3) Atributos (ej. content de meta, alt de img)
-    document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
-      // formato: "atributo:clave" o varios separados por coma
-      el.getAttribute("data-i18n-attr").split(",").forEach((pair) => {
-        const [attr, key] = pair.split(":").map((s) => s.trim());
-        if (dict[key] !== undefined) el.setAttribute(attr, dict[key]);
-      });
-    });
-
-    // Actualizar <title>, atributo lang del documento y estado de botones
-    if (dict.meta_title) document.title = dict.meta_title;
-    document.documentElement.setAttribute("lang", lang);
-
-    document.querySelectorAll(".lang-switch__btn").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.getAttribute("data-lang") === lang);
-      btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang);
-    });
-
-    try { localStorage.setItem("lang", lang); } catch (e) {}
-
-    // Avisar a app.js (catálogo) que el idioma cambió, para redibujar
-    window.dispatchEvent(new CustomEvent("langchange", { detail: { lang: lang } }));
+    return out;
   }
 
-  // Detecta idioma inicial: guardado → navegador → por defecto
-  function detectLang() {
-    let saved;
-    try { saved = localStorage.getItem("lang"); } catch (e) {}
-    if (saved && SUPPORTED.includes(saved)) return saved;
-    const nav = (navigator.language || "es").slice(0, 2).toLowerCase();
-    return SUPPORTED.includes(nav) ? nav : DEFAULT_LANG;
+  // Obtiene traducción del dict: primero revisa clave plana, si no, undefined.
+  function getVal(dict, key) {
+    if (!dict) return undefined;
+    if (dict[key] !== undefined) return dict[key];
+    return undefined;
   }
 
-  // Exponer función global por si se necesita
-  window.setLanguage = applyLang;
+  // Aplica cambios al DOM de forma segura: sólo si hay diferencia.
+  function applyTranslationsForLang(dict, lang) {
+    if (!dict) dict = {};
+    // Merge fallback (only for missing keys)
+    const merged = Object.assign({}, FALLBACK[lang] || {}, dict);
 
-  document.addEventListener("DOMContentLoaded", function () {
-    // Botones del selector
-    document.querySelectorAll(".lang-switch__btn").forEach((btn) => {
-      btn.addEventListener("click", () => applyLang(btn.getAttribute("data-lang")));
+    // Recolectar cambios -> aplicarlos en rAF para evitar layout thrash
+    const changes = [];
+
+    // data-i18n -> textContent
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      const val = getVal(merged, key);
+      if (val !== undefined && String(el.textContent).trim() !== String(val).trim()) {
+        changes.push(() => { el.textContent = val; });
+      }
     });
 
-    // Año automático del footer
-    const yearEl = document.getElementById("year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
+    // data-i18n-html -> innerHTML
+    document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-html');
+      const val = getVal(merged, key);
+      if (val !== undefined && el.innerHTML !== String(val)) {
+        changes.push(() => { el.innerHTML = val; });
+      }
+    });
 
-    // Botones "Compartir" (Web Share API con fallback a copiar enlace)
-    document.querySelectorAll("[data-share]").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const url = window.location.href;
-        const title = document.title;
-        if (navigator.share) {
-          try { await navigator.share({ title, url }); } catch (e) {}
-        } else {
-          try {
-            await navigator.clipboard.writeText(url);
-            const lang = document.documentElement.getAttribute("lang") || DEFAULT_LANG;
-            alert(TRANSLATIONS[lang].share_copied || "Link copied");
-          } catch (e) {
-            window.prompt("Copia este enlace:", url);
-          }
+    // data-i18n-attr -> "attr:key,attr2:key2"
+    document.querySelectorAll('[data-i18n-attr]').forEach((el) => {
+      const raw = el.getAttribute('data-i18n-attr');
+      raw.split(',').forEach((pair) => {
+        const [attr, key] = pair.split(':').map(s => s.trim());
+        const val = getVal(merged, key);
+        if (val !== undefined && el.getAttribute(attr) !== String(val)) {
+          changes.push(() => { el.setAttribute(attr, String(val)); });
         }
       });
     });
 
-    // Intenta cargar los textos desde data/textos.json (el archivo editable).
-    // Si falla (p. ej. abriste el archivo con file://), usa el respaldo embebido.
-    fetch("data/textos.json", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((data) => {
-        ["es", "en", "fr"].forEach((l) => {
-          if (data[l]) TRANSLATIONS[l] = Object.assign({}, TRANSLATIONS[l] || {}, data[l]);
+    // title/meta special handling:
+    if (merged.meta_title) {
+      if (document.title !== merged.meta_title) changes.push(() => { document.title = merged.meta_title; });
+    }
+    if (merged.meta_description) {
+      const md = document.querySelector('meta[name="description"]');
+      if (md && md.getAttribute('content') !== merged.meta_description) {
+        changes.push(() => md.setAttribute('content', merged.meta_description));
+      }
+    }
+
+    // Apply all changes in one rAF
+    if (changes.length) {
+      requestAnimationFrame(() => {
+        changes.forEach(fn => { try { fn(); } catch(e){} });
+        // update lang attribute and active buttons
+        try {
+          document.documentElement.lang = lang;
+          document.querySelectorAll('.lang-switch__btn').forEach((btn) => {
+            const is = btn.getAttribute('data-lang') === lang;
+            btn.classList.toggle('is-active', is);
+            btn.setAttribute('aria-pressed', String(is));
+          });
+        } catch(e){}
+        // dispatch event so other scripts (app.js) can react
+        window.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+      });
+    } else {
+      // still set lang attribute and buttons even if no visible changes
+      try {
+        document.documentElement.lang = lang;
+        document.querySelectorAll('.lang-switch__btn').forEach((btn) => {
+          const is = btn.getAttribute('data-lang') === lang;
+          btn.classList.toggle('is-active', is);
+          btn.setAttribute('aria-pressed', String(is));
         });
-        SUPPORTED = Object.keys(TRANSLATIONS);
+      } catch(e){}
+    }
+  }
+
+  // Detect current language
+  function detectLang() {
+    try {
+      const saved = localStorage.getItem('lang');
+      if (saved && LANGS.includes(saved)) return saved;
+    } catch(e){}
+    const nav = (navigator.language || 'es').slice(0,2).toLowerCase();
+    return LANGS.includes(nav) ? nav : DEFAULT_LANG;
+  }
+
+  // Global holder for loaded translations (flattened)
+  const REMOTE = {}; // REMOTE[lang] = { key: val, ... }
+
+  // Load remote JSON and flatten per language
+  function loadRemoteAndApply(lang) {
+    const url = '/data/textos.json?t=' + Date.now();
+    fetch(url, { cache: 'no-store' })
+      .then((r) => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
       })
-      .catch(() => {
-        console.warn("[i18n] Usando textos de respaldo (no se pudo leer data/textos.json). " +
-          "Para editar online, modifica data/textos.json. Para probar local usa python3 -m http.server.");
+      .then((json) => {
+        // For each language present in json, flatten and store
+        Object.keys(json || {}).forEach((l) => {
+          if (json[l] && typeof json[l] === 'object') {
+            REMOTE[l] = flatten(json[l]); // keys become like 'obra_precio'
+          }
+        });
+        // If requested lang present apply it; otherwise fallback to DEFAULT_LANG
+        const toApply = REMOTE[lang] || REMOTE[DEFAULT_LANG] || FALLBACK[lang] || {};
+        applyTranslationsForLang(toApply, lang);
       })
-      .finally(() => applyLang(detectLang()));
+      .catch((err) => {
+        console.warn('[i18n] no se pudo leer /data/textos.json; usando fallback', err);
+        const fallback = (FALLBACK[lang] || FALLBACK[DEFAULT_LANG] || {});
+        applyTranslationsForLang(fallback, lang);
+      });
+  }
+
+  // Public: set language (callable desde consola)
+  window.setLanguage = function (lang) {
+    if (!LANGS.includes(lang)) lang = DEFAULT_LANG;
+    try { localStorage.setItem('lang', lang); } catch(e){}
+    // If we already loaded remote translations and it has the lang, use it; otherwise load
+    if (REMOTE[lang]) {
+      applyTranslationsForLang(REMOTE[lang], lang);
+    } else {
+      loadRemoteAndApply(lang);
+    }
+  };
+
+  // Hook buttons and initial load
+  document.addEventListener('DOMContentLoaded', function () {
+    // hookup language buttons
+    document.querySelectorAll('.lang-switch__btn').forEach((btn) => {
+      btn.addEventListener('click', function () {
+        const l = btn.getAttribute('data-lang');
+        window.setLanguage(l);
+      });
+    });
+
+    // detect and apply initial lang quickly:
+    const lang = detectLang();
+    // Try to apply local fallback immediately if exists (prevents empty UI)
+    applyTranslationsForLang(FALLBACK[lang] || {}, lang);
+
+    // load remote and override values when ready (non-blocking)
+    loadRemoteAndApply(lang);
   });
+
 })();
