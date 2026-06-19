@@ -1,43 +1,27 @@
 {
-  "_comentario": "ARCHIVO DE CONFIGURACIÓN EDITABLE · Cambia colores, fuentes y obras del catálogo aquí. No necesitas tocar el código. Tras editar, guarda y recarga la página (en Cloudflare se actualiza solo al subir el archivo).",
-
-  "tema": {
-    "_comentario": "PALETA DE COLORES Y FUENTES. Usa códigos hex (#rrggbb). Para fuentes, escribe el nombre exacto de Google Fonts en 'googleFontsUrl' y repítelo en fuenteTitulos/fuenteCuerpo.",
-    "colorPrimario": "#b8543f",
-    "colorPrimarioOscuro": "#8f3d2c",
-    "colorAcento": "#c79a5b",
-    "colorAcentoOscuro": "#a87f43",
-    "colorFondo": "#faf7f2",
-    "colorAlterno": "#f1ece3",
-    "colorSuperficie": "#ffffff",
-    "colorTexto": "#2b2622",
-    "colorTextoSuave": "#6f675e",
-    "colorOscuro": "#2b2622",
-    "fuenteTitulos": "'Cormorant Garamond', Georgia, serif",
-    "fuenteCuerpo": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+  "site": {
+    "name": "Eduvina Parada Cáceres",
+    "year": 2026
   },
-
   "catalogo": {
-    "_comentario": "CATÁLOGO DE OBRAS · Añade tantas obras como quieras copiando un bloque { ... } dentro de 'obras'. Cada obra necesita: id único, imagen (ruta dentro de images/), y titulo/descripcion/estado en los 3 idiomas (es/en/fr). Si dejas en/fr vacíos, se mostrará el español.",
     "obras": [
       {
-        "id": "obra-1",
-        "imagen": "images/obra-1.jpg",
+        "id": "armonia-en-la-naturaleza",
+        "imagen": "img/obras/obra-1.jpg",
         "titulo": {
-          "es": "Amanecer en agua",
-          "en": "Dawn in Water",
-          "fr": "Aube dans l'eau"
+          "es": "Armonía en la naturaleza",
+          "en": "Armonía en la naturaleza",
+          "fr": "Armonía en la naturaleza"
         },
         "descripcion": {
-          "es": "Primera acuarela pública de Eduvina. Capas suaves de azul y ámbar que evocan el instante en que la luz toca el agua. [EDITAR descripción real]",
-          "en": "Eduvina's first public watercolor. Soft layers of blue and amber evoking the instant light touches the water. [EDIT real description]",
-          "fr": "Première aquarelle publique d'Eduvina. Des couches douces de bleu et d'ambre évoquant l'instant où la lumière touche l'eau. [ÉDITER la description]"
+          "es": "Esta obra captura la unión y la compañía que encontramos en el mundo natural. Colores vivos y pinceladas ligeras para transmitir alegría, afecto y vida.",
+          "en": "This work captures the unity and companionship found in the natural world. Vivid colors and light brushwork convey joy, affection and life.",
+          "fr": "Cette œuvre saisit l'union et la compagnie que l'on trouve dans le monde naturel. Des couleurs vives et des traits légers transmettent la joie, l'affection et la vie."
         },
-        "tecnica": "Acuarela sobre papel de algodón",
-        "dimensiones": "30 × 40 cm",
-        "anio": "2025",
-        "precio": "$ 350.000 COP",
+        "tecnica": "Acuarela sobre papel de grano fino 300GSM",
+        "dimensiones": "10 × 8 in",
+        "anio": "2026",
+        "precio": "$350.000 COP",
         "estado": {
           "es": "Disponible",
           "en": "Available",
@@ -45,49 +29,49 @@
         }
       },
       {
-        "id": "obra-2",
-        "imagen": "images/obra-2.jpg",
+        "id": "Un gato",
+        "imagen": "img/obras/gato.jpg",
         "titulo": {
-          "es": "Silencio en flor",
-          "en": "Silence in Bloom",
-          "fr": "Silence en fleur"
+          "es": "Un gato (proceso)",
+          "en": "A cat (in progress)",
+          "fr": "AUn chat (en cours)"
         },
         "descripcion": {
-          "es": "Estudio botánico en acuarela. La fragilidad del pétalo como metáfora de la presencia. [EDITAR descripción real]",
-          "en": "Botanical watercolor study. The fragility of the petal as a metaphor for presence. [EDIT real description]",
-          "fr": "Étude botanique à l'aquarelle. La fragilité du pétale comme métaphore de la présence. [ÉDITER la description]"
+          "es": "Pieza en desarrollo.",
+          "en": "Piece in development.",
+          "fr": "Œuvre en développement."
         },
-        "tecnica": "Acuarela sobre papel de algodón",
-        "dimensiones": "25 × 35 cm",
-        "anio": "2025",
-        "precio": "$ 280.000 COP",
+        "tecnica": "Acuarela sobre papel de grano fino 300GSM",
+        "dimensiones": "10 × 8 in",
+        "anio": "2026",
+        "precio": "--",
         "estado": {
-          "es": "Disponible",
-          "en": "Available",
-          "fr": "Disponible"
+          "es": "En proceso",
+          "en": "In progress",
+          "fr": "En cours"
         }
       },
       {
-        "id": "obra-3",
-        "imagen": "images/obra-3.jpg",
+        "id": "Manzanilla",
+        "imagen": "img/obras/pmanzanilla.jpg",
         "titulo": {
-          "es": "Horizonte interior",
-          "en": "Inner Horizon",
-          "fr": "Horizon intérieur"
+          "es": "SManzanilla (proceso)",
+          "en": "Chamomile (in progress)",
+          "fr": "Camomille (en cours)"
         },
         "descripcion": {
-          "es": "Paisaje abstracto donde el color se vuelve emoción. Una ventana a la serenidad. [EDITAR descripción real]",
-          "en": "Abstract landscape where color becomes emotion. A window into serenity. [EDIT real description]",
-          "fr": "Paysage abstrait où la couleur devient émotion. Une fenêtre sur la sérénité. [ÉDITER la description]"
+          "es": "Pieza en desarrollo.",
+          "en": "Piece in development.",
+          "fr": "Œuvre en développement."
         },
-        "tecnica": "Acuarela sobre papel de algodón",
-        "dimensiones": "40 × 50 cm",
-        "anio": "2025",
-        "precio": "$ 420.000 COP",
+        "tecnica": "Acuarela sobre papel de grano fino 300GSM",
+        "dimensiones": "10 × 8 in",
+        "anio": "2026",
+        "precio": "--",
         "estado": {
-          "es": "Reservada",
-          "en": "Reserved",
-          "fr": "Réservée"
+          "es": "En proceso",
+          "en": "In progress",
+          "fr": "En cours"
         }
       }
     ]
