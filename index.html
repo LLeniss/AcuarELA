@@ -1,247 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title data-i18n="meta_title">Eduvina Parada Cáceres · Su primera obra</title>
-  <meta name="description" data-i18n-attr="content:meta_desc" content="" />
-  <link rel="stylesheet" href="styles.css" />
+  <title>AcuarELA — Catálogo</title>
+  <meta name="description" content="Catálogo de obras - AcuarELA">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
-    <nav class="nav container" aria-label="Navegación principal">
-      <a href="#inicio" class="nav__logo" data-i18n="site_name">Eduvina Parada Cáceres</a>
-      <ul class="nav__links">
-        <li><a href="#historia" data-i18n="nav_historia">Historia</a></li>
-        <li><a href="#obra" data-i18n="nav_obra">La obra</a></li>
-        <li><a href="#catalogo" data-i18n="nav_catalogo">Catálogo</a></li>
-        <li><a href="#ayudar" data-i18n="nav_ayudar">Cómo ayudar</a></li>
-        <li><a href="#evento" data-i18n="nav_evento">Evento</a></li>
-        <li><a href="#donar" class="nav__cta" data-i18n="nav_cta">Donar</a></li>
-      </ul>
+    <div class="container header-inner">
+      <h1 class="site-title">AcuarELA</h1>
 
-      <div class="nav__right">
-        <div class="lang-switch" role="group" aria-label="Idioma">
-          <button class="lang-switch__btn" data-lang="es">ES</button>
-          <button class="lang-switch__btn" data-lang="en">EN</button>
-          <button class="lang-switch__btn" data-lang="fr">FR</button>
-        </div>
-      </div>
-    </nav>
+      <!-- Selector de idioma simple -->
+      <nav class="lang-switch">
+        <button data-lang="es" class="lang-btn">ES</button>
+        <button data-lang="en" class="lang-btn">EN</button>
+        <button data-lang="fr" class="lang-btn">FR</button>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <!-- HERO: solo el título solicitado -->
-    <section class="hero" id="inicio">
-      <div class="hero__bg" style="background-image: url('images/hero.jpg');"></div>
-      <div class="hero__overlay"></div>
-      <div class="hero__content container">
-        <h1 class="hero__title" data-i18n-html="hero_title">Vina - artista de acuarELA</h1>
-        <!-- no hay subtítulo aquí según tu petición -->
-        <div class="hero__actions">
-          <a href="#donar" class="btn btn--primary" data-i18n="hero_btn_donar">❤ Donar ahora</a>
-          <button class="btn btn--accent" data-reserve data-reserve-title-key="obra_nombre" data-i18n="hero_btn_reservar">🖼 Reservar / comprar</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- HISTORIA -->
-    <section class="historia section" id="historia">
-      <div class="container historia__grid">
-        <div class="historia__media">
-          <img src="images/artista.jpg" alt="Foto de la artista" class="historia__img" id="artist-photo" loading="lazy" />
-        </div>
-        <div class="historia__text">
-          <h2 class="section__title" data-i18n="historia_title">Una artista que descubre su voz en el color.</h2>
-          <p data-i18n-html="historia_p1"></p>
-          <p data-i18n-html="historia_p2"></p>
-          <p data-i18n-html="historia_p3"></p>
-        </div>
-      </div>
-    </section>
-
-    <!-- OBRA -->
-    <section class="obra section" id="obra">
+    <section id="catalogo" class="section">
       <div class="container">
-        <h2 class="section__title" data-i18n="obra_title">Obra debut</h2>
+        <h2 class="section__title" data-i18n="catalogo_title">Colección</h2>
+        <p class="section__lead" data-i18n="catalogo_lead">Explora las piezas</p>
 
-        <div class="obra-card">
-          <div class="obra-card__media">
-            <img src="images/obra-1.jpg" alt="Armonía en la naturaleza" class="obra-card__img" id="obra-1-img" loading="lazy" />
-          </div>
-
-          <div class="obra-card__body">
-            <h3 class="obra-card__title" data-i18n="obra_nombre">Armonía en la naturaleza</h3>
-
-            <p class="obra-card__quote" data-i18n-html="obra_descripcion"></p>
-
-            <ul class="ficha">
-              <li><strong data-i18n="obra_ficha_tecnica_label">Técnica:</strong> <span data-i18n="obra_ficha_tecnica">Acuarela sobre papel de grano fino 300GSM g/m2</span></li>
-              <li><strong data-i18n="obra_ficha_medidas_label">Dimensiones:</strong> <span data-i18n="obra_ficha_medidas">10 × 8 in</span></li>
-              <li><strong data-i18n="obra_ficha_anio_label">Año:</strong> <span data-i18n="obra_ficha_anio">2026</span></li>
-              <li><strong data-i18n="obra_ficha_estado_label">Disponibilidad:</strong> <span data-i18n="obra_ficha_estado">Disponible</span></li>
-            </ul>
-
-            <p class="obra-card__price-wrap">
-              <span class="obra-card__price-label" data-i18n="obra_precio_label">Valor sugerido:</span>
-              <span class="obra-card__price" data-i18n="obra_precio">$350.000 pesos colombianos</span>
-            </p>
-
-            <div class="obra-actions">
-              <button class="btn btn--block" data-reserve data-reserve-title-key="obra_nombre" data-i18n="obra_btn">Reservar esta obra</button>
-            </div>
-          </div>
-        </div>
+        <!-- Aquí inyecta app.js las tarjetas -->
+        <div id="catalogo-grid" class="catalogo__grid"></div>
       </div>
     </section>
-
-    <!-- CATALOGO -->
-    <section class="catalogo section section--alt" id="catalogo">
-      <div class="container">
-        <h2 class="section__title" data-i18n="catalogo_title">Una colección que crece</h2>
-        <p class="section__lead" data-i18n-html="catalogo_lead"></p>
-
-        <div id="catalogo-grid" class="catalogo__grid">
-          <!-- Mensaje elegante para catálogo en progreso -->
-          <div class="catalogo__empty">
-            <p data-i18n-html="catalogo_empty_message"></p>
-            <div class="catalogo__in-progress">
-              <div class="progress-item">
-                <img src="images/inprogress-1.jpg" alt="En progreso 1" loading="lazy" />
-              </div>
-              <div class="progress-item">
-                <img src="images/inprogress-2.jpg" alt="En progreso 2" loading="lazy" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- COMO AYUDAR: tiene Donar / Reservar / Compartir -->
-    <section class="ayudar section" id="ayudar">
-      <div class="container">
-        <h2 class="section__title" data-i18n="ayudar_title">Elige cómo acompañar este camino</h2>
-
-        <div class="ayudar__grid">
-          <div class="ayuda-card">
-            <h3 data-i18n="ayudar_1_title">Donar</h3>
-            <p data-i18n="ayudar_1_text">Aporta lo que puedas para su cuidado y su arte.</p>
-            <a href="#donar" class="btn" data-i18n="ayudar_1_btn">Donar por Bre‑B</a>
-          </div>
-
-          <div class="ayuda-card">
-            <h3 data-i18n="ayudar_2_title">Reservar</h3>
-            <p data-i18n="ayudar_2_text">Reserva una acuarela y contribuye directamente.</p>
-            <button class="btn" data-reserve data-reserve-title-key="obra_nombre" data-i18n="ayudar_2_btn">Reservar obra</button>
-          </div>
-
-          <div class="ayuda-card">
-            <h3 data-i18n="ayudar_3_title">Compartir</h3>
-            <p data-i18n="ayudar_3_text">Comparte la historia y el evento con tu red.</p>
-            <button class="btn" data-share data-i18n="ayudar_3_btn">Compartir</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- DONAR: tarjeta centrada con bandera Colombia -->
-    <section class="donar section section--cta" id="donar">
-      <div class="container">
-        <h2 class="section__title" data-i18n="donar_title">Dona por Bre‑B</h2>
-        <p class="section__lead" data-i18n="donar_lead"></p>
-
-        <div class="donaciones__grid donaciones__grid--center">
-          <div class="donacion-card donacion-card--highlight">
-            <div class="donacion-card__title-wrap">
-              <!-- Bandera Colombia inline SVG pequeña -->
-              <svg width="22" height="14" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="vertical-align:middle; margin-right:8px;">
-                <rect width="3" height="2" fill="#FFD100"/>
-                <rect y="0.66" width="3" height="0.67" fill="#0038A8"/>
-                <rect y="1.33" width="3" height="0.67" fill="#CE1126"/>
-              </svg>
-              <h3 class="donacion-card__title" data-i18n="donar_breb_title">Bre‑B</h3>
-            </div>
-
-            <p class="donacion-card__detail" data-i18n-html="donar_breb_num">Número: <strong>315 542 7152</strong></p>
-            <p class="donacion-card__name" data-i18n="donar_breb_name">A nombre de Eduvina Parada</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FONDOS -->
-    <section class="fondos section" id="fondos">
-      <div class="container">
-        <h2 class="section__title" data-i18n="fondos_title">¿A dónde va tu aporte?</h2>
-        <div class="fondos__grid">
-          <div class="fondo-card">
-            <h3 data-i18n="fondos_1_title">Tratamiento y terapias</h3>
-            <p data-i18n="fondos_1_text"></p>
-          </div>
-          <div class="fondo-card">
-            <h3 data-i18n="fondos_2_title">Comunicación asistida</h3>
-            <p data-i18n="fondos_2_text"></p>
-          </div>
-          <div class="fondo-card">
-            <h3 data-i18n="fondos_3_title">Materiales de arte</h3>
-            <p data-i18n="fondos_3_text"></p>
-          </div>
-          <div class="fondo-card">
-            <h3 data-i18n="fondos_4_title">Cuidado diario</h3>
-            <p data-i18n="fondos_4_text"></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- EVENTO -->
-    <section class="evento section section--alt" id="evento">
-      <div class="container">
-        <h2 class="section__title" data-i18n="evento_title">Exposición pública</h2>
-        <p data-i18n="evento_info">La exposición es de entrada libre.</p>
-        <div class="evento-info">
-          <div>
-            <strong data-i18n="evento_fecha_label">Fecha:</strong>
-            <span data-i18n="evento_fecha">Viernes 19 de junio de 2026</span>
-          </div>
-          <div>
-            <strong data-i18n="evento_lugar_label">Lugar:</strong>
-            <span data-i18n="evento_lugar">Museo Casa Galán · Calle 36 # 24-74, Bucaramanga</span>
-          </div>
-        </div>
-        <div style="margin-top:24px; display:flex; justify-content:center;">
-          <img src="images/flyer.jpg" alt="Flyer del evento" style="max-width:500px; width:100%; border-radius:12px;" loading="lazy" />
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACTO (cajas centradas) -->
-    <section class="contacto section" id="contacto">
-      <div class="container" style="text-align:center;">
-        <h2 class="section__title" data-i18n="contacto_title">¿Hablamos?</h2>
-        <div class="contacto__links" style="display:inline-flex; gap:18px; margin-top:18px;">
-          <a data-i18n-attr="href:contact_mail" class="contacto__link contacto__link--box">
-            <span class="contacto__link-label" data-i18n="contacto_email_label">Correo</span>
-            <span class="contacto__link-value" data-i18n="contact_email">vinapc2611@gmail.com</span>
-          </a>
-          <a data-i18n-attr="href:contact_whatsapp_href" class="contacto__link contacto__link--box" target="_blank" rel="noopener">
-            <span class="contacto__link-label" data-i18n="contacto_wa_label">WhatsApp</span>
-            <span class="contacto__link-value" data-i18n="contact_whatsapp_text">315 542 7152</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
   </main>
 
+  <!-- Lightbox/Dialog para ficha ampliada -->
+  <dialog id="cat-lightbox" class="cat-lightbox" aria-hidden="true">
+    <button class="lb__close" aria-label="Cerrar">&times;</button>
+    <div class="lb__inner">
+      <div class="lb__media">
+        <img class="lb__img" src="" alt="">
+      </div>
+      <div class="lb__body">
+        <h2 class="lb__title"></h2>
+        <div class="lb__desc"></div>
+        <div class="lb__ficha"></div>
+        <div class="lb__actions">
+          <button class="btn btn--primary lb__reserve">Reservar</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
   <footer class="site-footer">
-    <div class="container" style="text-align:center;">
-      <p>© 2026 <span data-i18n="site_name">Eduvina Parada Cáceres</span> · <span data-i18n="footer_copy">Hecho con cariño y esperanza.</span></p>
+    <div class="container">
+      <p>&copy; AcuarELA</p>
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <!-- Cargar i18n antes de app para que idioma esté disponible en render -->
   <script src="i18n.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    // Enlazar botones del selector de idioma
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const lang = btn.getAttribute('data-lang');
+          if (window.i18n && typeof window.i18n.setLanguage === 'function') {
+            window.i18n.setLanguage(lang);
+          } else {
+            localStorage.setItem('lang', lang);
+            // si i18n no está listo, fijamos atributo y forzamos event
+            document.documentElement.setAttribute('lang', lang);
+            window.dispatchEvent(new Event('langchange'));
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
