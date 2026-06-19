@@ -99,3 +99,53 @@ body{
   .modal__content img{width:100%}
   .proceso__media img{width:100%}
 }
+
+/* --- Ajustes para estética de galería / separación de secciones --- */
+
+/* Secciones con bandas sutiles y separadores */
+.section { padding: 72px 0; }
+.section + .section { border-top: 1px solid rgba(43,38,35,0.04); }
+
+/* Bandas alternas más definidas */
+.section:nth-of-type(odd) { background: linear-gradient(180deg, rgba(255,250,247,0.6), transparent); }
+
+/* Títulos con estilo galería */
+.section__title {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: 22px;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+/* Más espacio para hero y mayor contraste */
+.hero__content { padding: 80px 0; }
+.hero__overlay { background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.85)); }
+
+/* Galería: imágenes más grandes, cards respirando */
+.catalogo__grid { grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 28px; }
+.card { padding: 18px; border-radius: 14px; background: #fff; }
+.card__img { height: 260px; border-radius: 10px; box-shadow: 0 10px 30px rgba(43,38,35,0.06); }
+
+/* Estado y precio en línea propia, tipografía elegante */
+.card__meta { flex-direction: column; align-items: flex-start; gap: 10px; margin-top: 12px; }
+.card__meta small { font-style: italic; color: var(--muted); }
+
+/* Modal: imagen a la izquierda, info a la derecha, mejor lectura */
+.modal__content { display:flex; gap:28px; align-items:flex-start; padding:24px; }
+.modal__content img { width:48%; height:auto; border-radius:10px; }
+.modal__info { width:52%; }
+
+/* Acciones: destacar Collect */
+.modal__actions .btn--primary { background:var(--accent); padding:12px 18px; font-weight:600; }
+
+/* Separadores visuales dentro de secciones */
+.section .container { border-left: 1px solid transparent; border-right: 1px solid transparent; padding-left:18px; padding-right:18px; }
+
+/* Mobile: mantener lectura y jerarquía */
+@media (max-width:880px){
+  .card__img { height:200px; }
+  .modal__content{flex-direction:column}
+  .modal__content img{width:100%}
+}
