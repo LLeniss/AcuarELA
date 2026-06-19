@@ -1,9 +1,12 @@
 /* =================================================================
    app.js  ·  TEMA EDITABLE + CATÁLOGO DINÁMICO (desde data/config.json)
    -----------------------------------------------------------------
-   Adaptado para usar el modal existente #obra-modal (ids: modal-img,
-   modal-title, modal-desc, modal-ficha, modal-collect) en lugar de
-   buscar #cat-lightbox.
+   QUÉ HACE ESTE ARCHIVO:
+   1) Lee data/config.json
+   2) Aplica la paleta de colores y las fuentes que definiste ahí
+   3) Dibuja el catálogo de obras (N obras) leyendo el JSON
+   4) Abre cada obra ampliada en una ventana (lightbox) con su ficha
+   5) Genera datos estructurados (Schema.org) de cada obra para SEO/IA
    ================================================================= */
 
 (function () {
@@ -19,8 +22,7 @@
   let CONFIG = null;
 
   function currentLang() {
-    // toma lang desde <html lang="..."> si existe, sino fallback a 'es'
-    return document.documentElement.getAttribute("lang") || localStorage.getItem("lang") || "es";
+    return document.documentElement.getAttribute("lang") || "es";
   }
 
   // Devuelve el texto en el idioma actual, con respaldo en español
@@ -96,116 +98,139 @@
       </article>`;
     }).join("");
 
-    // Activar apertura de lightbox (usa el modal existente #obra-modal)
-    grid.querySelectorAll("[data-open]").forEach((el) => {
-      el.addEventListener("click", (ev) => {
-        ev.preventDefault();
-        const idx = parseInt(el.getAttribute("data-open"), 10);
-        if (Number.isFinite(idx)) openLightbox(idx);
+    // --- Reemplazo: delegación de click en el grid para abrir lightbox ---
+    // Evitar múltiples registros del listener si renderCatalog se llama varias veces
+    if (!grid.dataset.listenerAttached) {
+      grid.addEventListener("click", function (ev) {
+        const btn = ev.target.closest("[data-open]");
+        if (!btn || !grid.contains(btn)) return;
+        const idx = parseInt(btn.getAttribute("data-open"), 10);
+        if (Number.isNaN(idx)) {
+          console.warn("[catalogo] data-open no es un número:", btn.getAttribute("data-open"));
+          return;
+        }
+        openLightbox(idx);
       });
-    });
+      grid.dataset.listenerAttached = "1";
+    }
   }
 
-  /* ---------- 3) LIGHTBOX (ventana de obra ampliada) ----------
-     Esta versión usa el modal existente con id="obra-modal" y nodos:
-     #modal-img, #modal-title, #modal-desc, #modal-ficha, #modal-collect
-  ----------------------------------------------------------------- */
+  /* ---------- 3) LIGHTBOX (ventana de obra ampliada) ---------- */
   function openLightbox(index) {
-    const modal = document.getElementById("obra-modal");
-    if (!modal || !CONFIG || !CONFIG.catalogo) {
-      console.warn("[catalogo] Modal o CONFIG no disponible", modal, CONFIG);
-      return;
-    }
-    const obras = CONFIG.catalogo.obras || [];
-    const o = obras[index];
-    if (!o) {
-      console.warn("[catalogo] Obra no encontrada index=", index);
+    const dlg = document.getElementById("cat-lightbox");
+    if (!dlg || !CONFIG) {
+      console.warn("[lightbox] Elemento #cat-lightbox no existe o CONFIG no cargada.");
       return;
     }
     const lang = currentLang();
     const L = LABELS[lang] || LABELS.es;
+    const o = CONFIG.catalogo.obras[index];
+    if (!o) {
+      console.warn("[lightbox] Índice de obra inválido:", index);
+      return;
+    }
 
-    // Elementos del modal (asegurarse que existan)
-    const imgEl = document.getElementById("modal-img");
-    const titleEl = document.getElementById("modal-title");
-    const descEl = document.getElementById("modal-desc");
-    const fichaEl = document.getElementById("modal-ficha");
-    const collectEl = document.getElementById("modal-collect");
+    const titulo = pick(o.titulo, lang);
+    const desc = pick(o.descripcion, lang);
+    const estado = pick(o.estado, lang);
 
-    if (imgEl) { imgEl.src = o.imagen; imgEl.alt = pick(o.titulo, lang) || ""; }
-    if (titleEl) titleEl.textContent = pick(o.titulo, lang) || "";
-    if (descEl) descEl.textContent = pick(o.descripcion, lang) || "";
+    const imgEl = dlg.querySelector(".lb__img");
+    const titleEl = dlg.querySelector(".lb__title");
+    const descEl = dlg.querySelector(".lb__desc");
+    const fichaEl = dlg.querySelector(".lb__ficha");
+    const reserveBtn = dlg.querySelector(".lb__reserve");
 
+    if (imgEl) { imgEl.src = o.imagen; imgEl.alt = titulo; }
+    if (titleEl) titleEl.textContent = titulo;
+    if (descEl) descEl.textContent = desc || "";
     if (fichaEl) {
-      // construir ficha con etiquetas localizadas
-      const parts = [];
-      if (o.tecnica) parts.push(`<div><dt>${L.tecnica}</dt><dd>${o.tecnica}</dd></div>`);
-      if (o.dimensiones) parts.push(`<div><dt>${L.medidas}</dt><dd>${o.dimensiones}</dd></div>`);
-      if (o.anio) parts.push(`<div><dt>${L.anio}</dt><dd>${o.anio}</dd></div>`);
-      if (o.precio) parts.push(`<div><dt>${L.precio}</dt><dd>${o.precio}</dd></div>`);
-      parts.push(`<div><dt>&nbsp;</dt><dd><span class="cat-card__badge">${pick(o.estado, lang)}</span></dd></div>`);
-      fichaEl.innerHTML = parts.join("");
+      fichaEl.innerHTML = `
+        ${o.tecnica ? `<div><dt>${L.tecnica}</dt><dd>${o.tecnica}</dd></div>` : ""}
+        ${o.dimensiones ? `<div><dt>${L.medidas}</dt><dd>${o.dimensiones}</dd></div>` : ""}
+        ${o.anio ? `<div><dt>${L.anio}</dt><dd>${o.anio}</dd></div>` : ""}
+        ${o.precio ? `<div><dt>${L.precio}</dt><dd>${o.precio}</dd></div>` : ""}
+        <div><dt>&nbsp;</dt><dd><span class="cat-card__badge">${estado}</span></dd></div>
+      `;
     }
 
-    // actualizar link de reservar/coleccionar (modal-collect)
-    if (collectEl) {
-      const waBase = (CONFIG.contact && CONFIG.contact.whatsapp) ? CONFIG.contact.whatsapp : "https://wa.me/573155427152";
-      // si waBase ya contiene ?text o no, lo manejamos concat correctamente
-      const text = encodeURIComponent((lang === "en") ? `Hello, I'm interested in "${pick(o.titulo, lang)}".` : (lang === "fr") ? `Bonjour, je m'intéresse à "${pick(o.titulo, lang)}".` : `Hola, estoy interesado(a) en "${pick(o.titulo, lang)}".`);
-      collectEl.href = waBase + (waBase.includes("?") ? "&" : "?") + "text=" + text;
-      collectEl.setAttribute("target", "_blank");
-      collectEl.setAttribute("rel", "noopener");
-      collectEl.textContent = L.reservar;
+    if (reserveBtn) {
+      // Manejar distintos formatos en CONFIG.contact.whatsapp: puede ser URL completa o número
+      let waUrl = "https://wa.me/573155427152";
+      try {
+        const cfgWa = CONFIG.contact && CONFIG.contact.whatsapp ? CONFIG.contact.whatsapp : "";
+        if (cfgWa) {
+          if (/^https?:\/\//i.test(cfgWa)) {
+            waUrl = cfgWa;
+          } else {
+            // limpiar caracteres no numéricos
+            const digits = cfgWa.replace(/\D+/g, "");
+            waUrl = digits ? `https://wa.me/${digits}` : waUrl;
+          }
+        }
+      } catch (err) {
+        console.warn("[lightbox] error leyendo CONFIG.contact.whatsapp:", err);
+      }
+      const reserveText = `Hola, quiero reservar la obra "${titulo}".`;
+      reserveBtn.setAttribute("href", waUrl + "?text=" + encodeURIComponent(reserveText));
+      reserveBtn.setAttribute("target", "_blank");
+      reserveBtn.setAttribute("rel", "noopener");
+      reserveBtn.textContent = L.reservar || "Reservar";
     }
 
-    // mostrar modal (usa atributo aria-hidden en tu HTML)
-    modal.setAttribute("aria-hidden", "false");
-    // poner foco en el cierre para accesibilidad
-    const closeBtn = modal.querySelector("[data-close]");
-    if (closeBtn) closeBtn.focus();
-    // bloquear scroll si quieres (opcional)
-    document.documentElement.classList.add("modal-open");
-  }
-
-  function closeLightbox() {
-    const modal = document.getElementById("obra-modal");
-    if (!modal) return;
-    modal.setAttribute("aria-hidden", "true");
-    document.documentElement.classList.remove("modal-open");
+    // Abrir diálogo con fallback
+    try {
+      if (typeof dlg.showModal === "function") {
+        dlg.showModal();
+        dlg.setAttribute("aria-hidden", "false");
+      } else {
+        dlg.setAttribute("open", "");
+        dlg.style.display = "block";
+        dlg.setAttribute("aria-hidden", "false");
+      }
+      console.debug("[lightbox] Abriendo obra:", titulo);
+    } catch (err) {
+      // Fallback si algo falla
+      dlg.setAttribute("open", "");
+      dlg.style.display = "block";
+      dlg.setAttribute("aria-hidden", "false");
+      console.warn("[lightbox] Fallback open:", err);
+    }
   }
 
   function setupLightboxClose() {
-    const modal = document.getElementById("obra-modal");
-    if (!modal) return;
-
-    // Botones con data-close (cerrar)
-    modal.querySelectorAll("[data-close]").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        closeLightbox();
-      });
-    });
-
-    // Click en backdrop (asumiendo .modal__backdrop)
-    const backdrop = modal.querySelector(".modal__backdrop");
-    if (backdrop) {
-      backdrop.addEventListener("click", (e) => {
-        closeLightbox();
-      });
+    const dlg = document.getElementById("cat-lightbox");
+    if (!dlg) {
+      console.warn("[lightbox] No existe #cat-lightbox para setupClose.");
+      return;
     }
-
-    // Cerrar con ESC
-    document.addEventListener("keydown", (e) => {
+    const closeBtn = dlg.querySelector(".lb__close");
+    if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
+    // Cerrar al hacer clic fuera del panel
+    dlg.addEventListener("click", function (e) {
+      // si el click es en el propio dialog (backdrop), cerramos
+      if (e.target === dlg) closeLightbox();
+    });
+    // Escape key
+    document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") {
-        const open = modal.getAttribute("aria-hidden") === "false";
-        if (open) closeLightbox();
+        // solo cerrar si el dialog parece abierto
+        if (dlg.hasAttribute("open") || dlg.getAttribute("aria-hidden") === "false") closeLightbox();
       }
     });
 
-    // Click fuera del panel (si el modal no usa backdrop) - fallback
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) closeLightbox();
-    });
+    function closeLightbox() {
+      try {
+        if (typeof dlg.close === "function") dlg.close();
+        else dlg.removeAttribute("open");
+      } catch (err) {
+        dlg.removeAttribute("open");
+      }
+      dlg.style.display = "none";
+      dlg.setAttribute("aria-hidden", "true");
+    }
+
+    // Exponer closeLightbox para uso desde fuera
+    window.closeLightbox = closeLightbox;
   }
 
   /* ---------- 4) SCHEMA.ORG del catálogo (SEO + IA) ---------- */
@@ -255,4 +280,29 @@
       .then(init)
       .catch((err) => {
         console.warn("[catálogo] No se pudo leer data/config.json. " +
-          "Si abri
+          "Si abriste el archivo con doble clic (file://), usa un servidor local: " +
+          "python3 -m http.server  → http://localhost:8000", err);
+      });
+
+    // Redibujar el catálogo cuando cambie el idioma (evento de i18n.js)
+    window.addEventListener("langchange", function () {
+      if (CONFIG) renderCatalog();
+    });
+  });
+})();
+
+// Attach WhatsApp reserve handler to catalogue reserve buttons (fallback)
+document.addEventListener('DOMContentLoaded', function () {
+  const WHATSAPP_NUMBER = '573155427152';
+  const email = 'vinapc2611@gmail.com';
+  document.querySelectorAll('.catalog-reserve, .reserve-btn, [data-catalog-reserve]').forEach(btn => {
+    if (btn.dataset.reserveAttached === '1') return;
+    btn.dataset.reserveAttached = '1';
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      const title = btn.dataset.title || btn.getAttribute('data-title') || document.querySelector('[data-i18n="obra_nombre"]')?.textContent || '';
+      const msg = `Hola, quiero reservar la obra "${title}". Mi correo: ${email}`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+  });
+});
