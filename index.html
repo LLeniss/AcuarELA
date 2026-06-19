@@ -3,81 +3,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AcuarELA — Catálogo</title>
-  <meta name="description" content="Catálogo de obras - AcuarELA">
-  <link rel="stylesheet" href="styles.css">
+  <title data-i18n="meta.title">Galería - AcuarELA</title>
+  <meta name="description" content="" data-i18n-attr="content:meta.description" />
+  <!-- Otros meta / OpenGraph ya presentes en tu proyecto pueden ir aquí -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Header / nav (presérvalos si ya están en tu versión actual) -->
   <header class="site-header">
-    <div class="container header-inner">
-      <h1 class="site-title">AcuarELA</h1>
-
-      <!-- Selector de idioma simple -->
-      <nav class="lang-switch">
-        <button data-lang="es" class="lang-btn">ES</button>
-        <button data-lang="en" class="lang-btn">EN</button>
-        <button data-lang="fr" class="lang-btn">FR</button>
-      </nav>
-    </div>
+    <nav>
+      <a href="/" class="brand">AcuarELA</a>
+      <!-- navegación con data-i18n... -->
+    </nav>
   </header>
 
-  <main>
-    <section id="catalogo" class="section">
+  <!-- HERO (preservar si ya está) -->
+  <main id="main">
+    <section id="hero" class="hero">
       <div class="container">
-        <h2 class="section__title" data-i18n="catalogo_title">Colección</h2>
-        <p class="section__lead" data-i18n="catalogo_lead">Explora las piezas</p>
-
-        <!-- Aquí inyecta app.js las tarjetas -->
-        <div id="catalogo-grid" class="catalogo__grid"></div>
+        <h1 data-i18n="hero.title">Título principal</h1>
+        <p data-i18n="hero.lead">Descripción principal</p>
       </div>
     </section>
-  </main>
 
-  <!-- Lightbox/Dialog para ficha ampliada -->
-  <dialog id="cat-lightbox" class="cat-lightbox" aria-hidden="true">
-    <button class="lb__close" aria-label="Cerrar">&times;</button>
-    <div class="lb__inner">
-      <div class="lb__media">
-        <img class="lb__img" src="" alt="">
-      </div>
-      <div class="lb__body">
-        <h2 class="lb__title"></h2>
-        <div class="lb__desc"></div>
-        <div class="lb__ficha"></div>
-        <div class="lb__actions">
-          <button class="btn btn--primary lb__reserve">Reservar</button>
+    <!-- CATALOGO: aquí app.js inyecta las tarjetas dentro de #catalogo-grid -->
+    <section id="catalogo" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title" data-i18n="catalogo.title">Catálogo</h2>
+          <p class="section-lead" data-i18n="catalogo.lead">Explora las obras</p>
+        </div>
+
+        <!-- CONTENEDOR donde app.js pinta las tarjetas -->
+        <div id="catalogo-grid" class="catalogo-grid" aria-live="polite">
+          <!-- tarjetas inyectadas dinámicamente por app.js -->
         </div>
       </div>
-    </div>
-  </dialog>
+    </section>
+
+    <!-- DIALOG / LIGHTBOX (opcional): app.js puede integrarlo; lo dejamos disponible -->
+    <dialog id="cat-lightbox" class="cat-lightbox" aria-hidden="true">
+      <button class="lb-close" aria-label="Cerrar">×</button>
+      <div class="lb-inner">
+        <div class="lb-media">
+          <img class="lb-img" src="" alt="">
+        </div>
+        <div class="lb-body">
+          <h2 class="lb-title"></h2>
+          <div class="lb-desc"></div>
+          <div class="lb-ficha"></div>
+          <div class="lb-actions">
+            <button class="btn lb-reserve">Reservar</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Resto del contenido... -->
+  </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>&copy; AcuarELA</p>
+      <p data-i18n="footer.copy">© 2026 AcuarELA</p>
     </div>
   </footer>
 
-  <!-- Cargar i18n antes de app para que idioma esté disponible en render -->
+  <!-- SCRIPTS: carga primero i18n, luego app -->
   <script src="i18n.js"></script>
   <script src="app.js"></script>
-
-  <script>
-    // Enlazar botones del selector de idioma
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          const lang = btn.getAttribute('data-lang');
-          if (window.i18n && typeof window.i18n.setLanguage === 'function') {
-            window.i18n.setLanguage(lang);
-          } else {
-            localStorage.setItem('lang', lang);
-            // si i18n no está listo, fijamos atributo y forzamos event
-            document.documentElement.setAttribute('lang', lang);
-            window.dispatchEvent(new Event('langchange'));
-          }
-        });
-      });
-    });
-  </script>
 </body>
 </html>
