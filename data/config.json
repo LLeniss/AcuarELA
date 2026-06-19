@@ -1,77 +1,79 @@
 {
-  "obras": [
-    {
-      "id": "obra-1",
-      "imagen": "images/obra-1.jpg",
-      "titulo": {
-        "es": "Armonía en la naturaleza",
-        "en": "Harmony in Nature",
-        "fr": "Harmonie dans la nature"
+  "site": {
+    "name": "Eduvina Parada Cáceres",
+    "year": 2026
+  },
+  "catalogo": {
+    "obras": [
+      {
+        "id": "armonia-en-la-naturaleza",
+        "imagen": "images/obra-1.jpg",
+        "titulo": {
+          "es": "Armonía en la naturaleza",
+          "en": "Armonía en la naturaleza",
+          "fr": "Armonía en la naturaleza"
+        },
+        "descripcion": {
+          "es": "Esta obra captura la unión y la compañía que encontramos en el mundo natural. Colores vivos y pinceladas ligeras para transmitir alegría, afecto y vida.",
+          "en": "This work captures the unity and companionship found in the natural world. Vivid colors and light brushwork convey joy, affection and life.",
+          "fr": "Cette œuvre saisit l'union et la compagnie que l'on trouve dans le monde naturel. Des couleurs vives et des traits légers transmettent la joie, l'affection et la vie."
+        },
+        "tecnica": "Acuarela sobre papel de grano fino 300GSM",
+        "dimensiones": "10 × 8 in",
+        "anio": "2026",
+        "precio": "$350.000 COP",
+        "estado": {
+          "es": "Disponible",
+          "en": "Available",
+          "fr": "Disponible"
+        }
       },
-      "descripcion": {
-        "es": "Acuarela original que explora matices del paisaje y la luz.",
-        "en": "Original watercolor exploring landscape hues and light.",
-        "fr": "Aquarelle originale explorant les nuances du paysage et la lumière."
+      {
+        "id": "Un gato",
+        "imagen": "images/gato.jpg",
+        "titulo": {
+          "es": "Un gato (en proceso)",
+          "en": "A cat (in progress)",
+          "fr": "Un chat (en cours)"
+        },
+        "descripcion": {
+          "es": "Pieza en desarrollo.",
+          "en": "Piece in development.",
+          "fr": "Œuvre en développement."
+        },
+        "tecnica": "Acuarela sobre papel de grano fino 300GSM",
+        "dimensiones": "10 × 8 in",
+        "anio": "2026",
+        "precio": "--",
+        "estado": {
+          "es": "En proceso",
+          "en": "In progress",
+          "fr": "En cours"
+        }
       },
-      "tecnica": "Acuarela sobre papel 300GSM",
-      "dimensiones": "25 × 20 cm",
-      "anio": "2026",
-      "precio": "$350.000 COP",
-      "estado": {
-        "es":"Disponible - pieza única",
-        "en":"Available - unique piece",
-        "fr":"Disponible - pièce unique"
+      {
+        "id": "Manzanilla",
+        "imagen": "images/manzanilla.jpg",
+        "titulo": {
+          "es": "Manzanilla (en proceso)",
+          "en": "Chamomile (in progress)",
+          "fr": "Camomille (en cours)"
+        },
+        "descripcion": {
+          "es": "Pieza en desarrollo.",
+          "en": "Piece in development.",
+          "fr": "Œuvre en développement."
+        },
+        "tecnica": "Acuarela sobre papel de grano fino 300GSM",
+        "dimensiones": "10 × 8 in",
+        "anio": "2026",
+        "precio": "--",
+        "estado": {
+          "es": "En proceso",
+          "en": "In progress",
+          "fr": "En cours"
+        }
       }
-    },
-    {
-      "id": "obra-2",
-      "imagen": "images/inprogress-1.jpg",
-      "titulo": {
-        "es": "Estudio de pétalos (en progreso)",
-        "en": "Study of Petals (in progress)",
-        "fr": "Étude de pétales (en cours)"
-      },
-      "descripcion": {
-        "es": "Serie en desarrollo; exploración de textura y color.",
-        "en": "Work in progress; exploring texture and color.",
-        "fr": "Œuvre en cours ; exploration de la texture et de la couleur."
-      },
-      "tecnica": "Acuarela",
-      "dimensiones": "En desarrollo",
-      "anio": "2026",
-      "precio": null,
-      "estado": {
-        "es":"En progreso",
-        "en":"In progress",
-        "fr":"En cours"
-      }
-    },
-    {
-      "id": "obra-3",
-      "imagen": "images/inprogress-2.jpg",
-      "titulo": {
-        "es": "Boceto floral (en progreso)",
-        "en": "Floral Sketch (in progress)",
-        "fr": "Croquis floral (en cours)"
-      },
-      "descripcion": {
-        "es": "Trabajo temprano; se espera finalización pronto.",
-        "en": "Early-stage work; expected to be finished soon.",
-        "fr": "Travail au stade initial ; fin prévue prochainement."
-      },
-      "tecnica": "Acuarela",
-      "dimensiones": "En desarrollo",
-      "anio": "2026",
-      "precio": null,
-      "estado": {
-        "es":"En progreso",
-        "en":"In progress",
-        "fr":"En cours"
-      }
-    }
-  ],
-  "contact": {
-    "email": "mailto:vinapc2611@gmail.com",
-    "whatsapp": "https://wa.me/573155427152"
+    ]
   }
 }
