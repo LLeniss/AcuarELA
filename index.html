@@ -1,48 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title data-i18n="meta_title">Eduvina Parada Cáceres · Su primera obra</title>
+  <title data-i18n="meta_title">Vina Acuarela · El color como una forma de florecer</title>
   <meta name="description" data-i18n-attr="content:meta_desc" content="" />
 
-  <!-- Canonical / Open Graph / Twitter -->
   <link rel="canonical" href="https://www.vina-acuarela.com/" />
   <meta property="og:url" content="https://www.vina-acuarela.com/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Eduvina Parada Cáceres · Su primera obra" />
+  <meta property="og:title" content="Vina Acuarela · El color como una forma de florecer" />
   <meta property="og:description" content="" data-i18n-attr="content:meta_desc" />
-  <!-- <meta property="og:image" content="https://www.vina-acuarela.com/images/og-image.jpg" /> -->
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://www.vina-acuarela.com/" />
-  <meta name="twitter:title" content="Eduvina Parada Cáceres · Su primera obra" />
-  <meta name="twitter:description" content="" data-i18n-attr="content:meta_desc" />
-
-  <!-- Basic Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "url": "https://www.vina-acuarela.com/",
-    "name": "Vina Acuarela",
-    "description": ""
-  }
-  </script>
 
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header">
     <nav class="nav container" aria-label="Navegación principal">
-      <a href="#inicio" class="nav__logo" data-i18n="site_name">Eduvina Parada Cáceres</a>
-      <ul class="nav__links">
-        <li><a href="#artista" data-i18n="nav_artista">La artista</a></li>
-        <li><a href="#coleccion" data-i18n="nav_coleccion">Colección</a></li>
-        <li><a href="#proceso" data-i18n="nav_proceso">Proceso creativo</a></li>
-        <li><a href="#ela" data-i18n="nav_ela">ELA</a></li>
-        <li><a href="#respaldar" data-i18n="nav_respaldar">Respaldar</a></li>
-        <li><a href="#contacto" data-i18n="nav_contacto">Contacto</a></li>
+      <a href="#inicio" class="nav__logo" data-i18n="site_name">Vina Acuarela</a>
+
+      <ul class="nav__links" role="menubar" aria-label="Menú principal">
+        <li role="none"><a role="menuitem" href="#artista" data-i18n="nav_artista">La artista</a></li>
+        <li role="none"><a role="menuitem" href="#coleccion" data-i18n="nav_coleccion">Colección</a></li>
+        <li role="none"><a role="menuitem" href="#proceso" data-i18n="nav_proceso">Proceso creativo</a></li>
+        <li role="none"><a role="menuitem" href="#ela" data-i18n="nav_ela">ELA</a></li>
+        <li role="none"><a role="menuitem" href="#respaldar" data-i18n="nav_respaldar">Respaldar</a></li>
+        <li role="none"><a role="menuitem" href="#contacto" data-i18n="nav_contacto">Contacto</a></li>
       </ul>
 
       <div class="nav__right">
@@ -57,147 +40,97 @@
 
   <main>
     <!-- HERO -->
-    <section class="hero" id="inicio">
-      <div class="hero__bg" style="background-image: url('images/hero.jpg');"></div>
-      <div class="hero__overlay"></div>
-      <div class="hero__content container">
-        <h1 class="hero__title" data-i18n-html="hero_title">El color como una forma de florecer</h1>
-        <p class="hero__lead" data-i18n-html="hero_lead"></p>
-        <div class="hero__actions">
-          <a href="#coleccion" class="btn btn--primary" data-i18n="hero_btn_coleccion">Ver colección</a>
-          <a href="#artista" class="btn btn--ghost" data-i18n="hero_btn_artista">Conocer a la artista</a>
+    <section class="hero" id="inicio" aria-label="Hero">
+      <div class="hero__inner container">
+        <div class="hero__media">
+          <img src="images/hero.jpg" alt="Vina pintando" loading="lazy" />
+        </div>
+        <div class="hero__text">
+          <h1 class="hero__title" data-i18n-html="hero_title">El color como una forma de florecer</h1>
+          <p class="hero__lead" data-i18n-html="hero_lead"></p>
+          <div class="hero__actions">
+            <a href="#coleccion" class="btn btn--primary" data-i18n="hero_btn_coleccion">Ver colección</a>
+            <a href="#artista" class="btn btn--ghost" data-i18n="hero_btn_artista">Conocer a la artista</a>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- SEPARATOR -->
+    <div class="separator container" aria-hidden="true"></div>
+
     <!-- LA ARTISTA -->
-    <section class="artista section" id="artista">
-      <div class="container artista__grid">
+    <section class="section container" id="artista" aria-labelledby="artista-title">
+      <div class="section__inner">
         <div class="artista__media">
-          <img src="images/artista.jpg" alt="Foto de la artista" class="artista__img" id="artist-photo" loading="lazy" />
+          <img src="images/artista.jpg" alt="Foto de la artista" class="artista__img" loading="lazy" />
         </div>
-        <div class="artista__text">
-          <h2 class="section__title" data-i18n="artista_title">Una mirada hecha color</h2>
+        <div class="artista__content">
+          <h2 id="artista-title" class="section__title" data-i18n="artista_title">Una mirada hecha color</h2>
           <p data-i18n-html="artista_p1"></p>
           <p data-i18n-html="artista_p2"></p>
         </div>
       </div>
     </section>
 
-    <!-- COLECCIÓN -->
-    <section class="coleccion section section--alt" id="coleccion">
-      <div class="container">
-        <h2 class="section__title" data-i18n="coleccion_title">Colección</h2>
-        <p class="section__lead" data-i18n-html="coleccion_lead"></p>
+    <hr class="section-divider" />
 
-        <div id="catalogo-grid" class="catalogo__grid">
-          <!-- Cards will be injected from config.json by app.js -->
-        </div>
+    <!-- COLECCIÓN -->
+    <section class="section container section--gallery" id="coleccion" aria-labelledby="coleccion-title">
+      <h2 id="coleccion-title" class="section__title" data-i18n="coleccion_title">Colección</h2>
+      <p class="section__lead" data-i18n-html="coleccion_lead"></p>
+
+      <div id="catalogo-grid" class="catalogo__grid" aria-live="polite">
+        <!-- app.js inyecta las tarjetas -->
       </div>
+
+      <p id="catalogo-empty" class="catalogo__empty" hidden data-i18n="catalog_empty">No hay obras para mostrar.</p>
     </section>
+
+    <hr class="section-divider" />
 
     <!-- PROCESO CREATIVO -->
-    <section class="proceso section" id="proceso">
-      <div class="container">
-        <h2 class="section__title" data-i18n="proceso_title">Proceso creativo</h2>
-        <p data-i18n-html="proceso_lead"></p>
-        <div class="proceso__media">
-          <img src="images/proceso-1.jpg" alt="Vina pintando" loading="lazy" />
-          <img src="images/proceso-2.jpg" alt="Pinceles y bocetos" loading="lazy" />
-        </div>
+    <section class="section container" id="proceso" aria-labelledby="proceso-title">
+      <h2 id="proceso-title" class="section__title" data-i18n="proceso_title">Proceso creativo</h2>
+      <p data-i18n-html="proceso_lead"></p>
+
+      <div class="proceso__grid">
+        <figure class="proceso__item">
+          <img src="images/proceso-1.jpg" alt="" loading="lazy" />
+          <figcaption data-i18n="proceso_img1">Vina pintando</figcaption>
+        </figure>
+        <figure class="proceso__item">
+          <img src="images/proceso-2.jpg" alt="" loading="lazy" />
+          <figcaption data-i18n="proceso_img2">Pinceles y bocetos</figcaption>
+        </figure>
       </div>
     </section>
 
-    <!-- ELA (informativa) -->
-    <section class="ela section section--alt" id="ela">
-      <div class="container">
-        <h2 class="section__title" data-i18n="ela_title">Sobre la ELA (contexto)</h2>
+    <hr class="section-divider" />
 
-        <div class="ela__grid">
-          <div>
-            <p data-i18n-html="ela_intro"></p>
-            <p data-i18n-html="ela_bulbar"></p>
-            <p data-i18n-html="ela_sources"></p>
-            <ul class="ela__links">
-              <li><a href="https://www.als.org/" target="_blank" rel="noopener">ALS Association — Información general</a></li>
-              <li><a href="https://www.acelaweb.org/" target="_blank" rel="noopener">ACELA — Asociación Colombiana de ELA</a></li>
-              <li><a href="https://targetals.org/news/what-is-bulbar-onset-als-six-things-to-know/" target="_blank" rel="noopener">Target ALS — Bulbar-onset ALS</a></li>
-            </ul>
-          </div>
-        </div>
+    <!-- ELA -->
+    <section class="section container" id="ela" aria-labelledby="ela-title">
+      <h2 id="ela-title" class="section__title" data-i18n="ela_title">Sobre la ELA (contexto)</h2>
+
+      <div class="ela__content">
+        <p data-i18n-html="ela_intro"></p>
+        <p data-i18n-html="ela_bulbar"></p>
+        <p data-i18n-html="ela_sources"></p>
+
+        <ul class="ela__links">
+          <li><a href="https://www.als.org/" target="_blank" rel="noopener">ALS Association — Información</a></li>
+          <li><a href="https://targetals.org/news/what-is-bulbar-onset-als-six-things-to-know/" target="_blank" rel="noopener">Target ALS — Bulbar-onset ALS</a></li>
+          <li><a href="https://www.acelaweb.org/" target="_blank" rel="noopener">ACELA — Asociación Colombiana de ELA</a></li>
+        </ul>
       </div>
     </section>
+
+    <hr class="section-divider" />
 
     <!-- RESPALDAR -->
-    <section class="respaldar section" id="respaldar">
-      <div class="container">
-        <h2 class="section__title" data-i18n="respaldar_title">Respaldar</h2>
-        <p data-i18n-html="respaldar_lead"></p>
+    <section class="section container" id="respaldar" aria-labelledby="respaldar-title">
+      <h2 id="respaldar-title" class="section__title" data-i18n="respaldar_title">Respaldar</h2>
+      <p data-i18n-html="respaldar_lead"></p>
 
-        <div class="donaciones__grid donaciones__grid--center">
-          <div class="donacion-card">
-            <h3 class="donacion-card__title" data-i18n="breb_title">Bre‑B (Colombia)</h3>
-            <p class="donacion-card__detail" data-i18n-html="breb_num">Número: <strong>315 542 7152</strong></p>
-            <p class="donacion-card__name" data-i18n="breb_name">A nombre de Eduvina Parada</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACTO -->
-    <section class="contacto section section--alt" id="contacto">
-      <div class="container contacto__wrap">
-        <h2 class="section__title" data-i18n="contacto_title">¿Hablamos?</h2>
-
-        <div class="contacto__links">
-          <a id="contact-mail" data-i18n-attr="href:contact_mail" class="contacto__link contacto__link--box">
-            <span class="contacto__link-label" data-i18n="contacto_email_label">Correo</span>
-            <span class="contacto__link-value" data-i18n="contact_email">vinapc2611@gmail.com</span>
-          </a>
-
-          <a id="contact-wa" class="contacto__link contacto__link--box" target="_blank" rel="noopener">
-            <span class="contacto__link-label" data-i18n="contacto_wa_label">WhatsApp</span>
-            <span class="contacto__link-value" data-i18n="contact_whatsapp_text">315 542 7152</span>
-          </a>
-
-          <button id="share-btn" class="contacto__link contacto__link--box">
-            <span class="contacto__link-label" data-i18n="contacto_share_label">Compartir</span>
-            <span class="contacto__link-value" data-i18n="contacto_share_value">Vina Acuarela</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="site-footer">
-    <div class="container" style="text-align:center;">
-      <p>© 2026 <span data-i18n="site_name">Eduvina Parada Cáceres</span> · <span data-i18n="footer_copy">Hecho con cariño y esperanza.</span></p>
-    </div>
-  </footer>
-
-  <!-- Modal para ver obra -->
-  <div id="obra-modal" class="modal" aria-hidden="true">
-    <div class="modal__backdrop" data-close></div>
-    <div class="modal__panel" role="dialog" aria-modal="true">
-      <button class="modal__close" data-close>&times;</button>
-      <div class="modal__content">
-        <img id="modal-img" src="" alt="" />
-        <div class="modal__info">
-          <h3 id="modal-title"></h3>
-          <p id="modal-desc"></p>
-          <ul id="modal-ficha" class="ficha"></ul>
-          <div class="modal__actions">
-            <a id="modal-collect" class="btn btn--primary" target="_blank" rel="noopener">Coleccionar</a>
-            <button class="btn btn--ghost" data-close>Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="i18n.js"></script>
-  <script src="config.json" type="application/json"></script>
-  <script src="app.js"></script>
-</body>
-</html>
+      <div class="donaciones__grid">
+        <div class="donacion-card">
