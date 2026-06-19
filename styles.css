@@ -446,3 +446,52 @@ a:hover { color: var(--color-primary-dark); }
 }
 .section#contacto { background: var(--color-bg); }
 .contacto__link--box .contacto__link-label { color: var(--color-primary); }
+
+/* ===== Arreglo rápido: título visible en la sección donar ===== */
+/* Ajusta selectores si tu sección usa otros nombres de clase/id. */
+#donar, .donar-section, .section-donar {
+  position: relative; /* necesario si usamos overlay */
+}
+
+/* TÍTULO: blanco, peso y sombra ligera para mejor legibilidad */
+.donar__titulo-principal,
+#donar h2,
+.donar-section h2 {
+  color: #ffffff !important;         /* blanco puro */
+  font-weight: 700;                  /* semibold/strong */
+  font-size: 2.2rem;                 /* ajusta según diseño */
+  letter-spacing: 0.6px;
+  text-align: center;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.45); /* ayuda en fondos texturados */
+  z-index: 2;
+}
+
+/* Subtítulo / lead: un blanco suave legible */
+.donar__lead,
+#donar p,
+.donar-section p {
+  color: rgba(255,255,255,0.85) !important;
+  max-width: 760px;
+  margin: 0.25rem auto 2rem auto;
+  z-index: 2;
+}
+
+/* Si el fondo tiene gradiente/imagen y necesitas mayor separación,
+   crea una capa overlay para oscurecer el fondo detrás del texto */
+.donar-section::before,
+#donar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.40), rgba(0,0,0,0.40));
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Asegura que el contenido quede por encima del overlay */
+.donar-section > .container,
+#donar > .container {
+  position: relative;
+  z-index: 2;
+}
