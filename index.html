@@ -1,111 +1,208 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title data-i18n="meta_title">Eduvina Parada Cáceres · Artista</title>
-  <meta name="description" data-i18n="meta_desc" content="" />
-
-  <!-- Estilos -->
-  <link rel="stylesheet" href="/styles.css" />
-
-  <!-- Open Graph / Twitter u otras metas está bien mantenerlas como estaban -->
+  <title data-i18n="meta_title">Eduvina Parada Cáceres · Su primera obra</title>
+  <meta name="description" data-i18n-attr="content:meta_desc" content=""/>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header">
-    <nav>
-      <ul>
+    <nav class="nav container" aria-label="Navegación principal">
+      <a href="#inicio" class="nav__logo" data-i18n="site_name">Eduvina Parada Cáceres</a>
+      <ul class="nav__links">
         <li><a href="#historia" data-i18n="nav_historia">Historia</a></li>
         <li><a href="#obra" data-i18n="nav_obra">La obra</a></li>
         <li><a href="#catalogo" data-i18n="nav_catalogo">Catálogo</a></li>
         <li><a href="#ayudar" data-i18n="nav_ayudar">Cómo ayudar</a></li>
         <li><a href="#evento" data-i18n="nav_evento">Evento</a></li>
-        <li><a class="cta" href="#donar" data-i18n="nav_cta">Donar</a></li>
+        <li><a href="#donar" data-i18n="nav_cta">Donar</a></li>
       </ul>
-    </nav>
 
-    <!-- Language switcher (ejemplo) -->
-    <div class="lang-switcher" aria-label="Language">
-      <button type="button" onclick="window.setLanguage && window.setLanguage('es')">ES</button>
-      <button type="button" onclick="window.setLanguage && window.setLanguage('en')">EN</button>
-      <button type="button" onclick="window.setLanguage && window.setLanguage('fr')">FR</button>
-    </div>
+      <div class="nav__right">
+        <div class="lang-switch" role="group" aria-label="Idioma">
+          <button class="lang-switch__btn" data-lang="es" aria-pressed="true">ES</button>
+          <button class="lang-switch__btn" data-lang="en" aria-pressed="false">EN</button>
+          <button class="lang-switch__btn" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+      </div>
+    </nav>
   </header>
 
   <main>
-    <section id="hero" class="hero">
-      <div class="kicker" data-i18n="hero_kicker">Primera obra en exposición</div>
-      <h1 data-i18n="hero_title">Ella es artista. Y esto recién empieza.</h1>
-      <p data-i18n="hero_subtitle">Eduvina Parada —Vina— presenta su primera acuarela.</p>
-      <div class="hero-ctas">
-        <a class="btn" href="#donar" data-i18n="hero_btn_donar">Donar ahora</a>
-        <a class="btn" href="#obra" data-i18n="hero_btn_comprar">Reservar / comprar</a>
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+      <div class="hero__content container">
+        <span class="hero__kicker" data-i18n="hero_kicker">Primera obra en exposición</span>
+        <h1 class="hero__title" data-i18n-html="hero_title">Ella es artista. Y esto recién empieza.</h1>
+        <p class="hero__subtitle" data-i18n-html="hero_subtitle">
+          Eduvina Parada —Vina— presenta su primera acuarela. Tu apoyo hace posible que siga creando.
+        </p>
+        <div class="hero__actions">
+          <a href="#donar" class="btn btn--primary" data-i18n="hero_btn_donar">❤ Donar ahora</a>
+          <!-- boton reservar: data-reserve activa handler en i18n.js, se puede añadir data-title con el título de la obra -->
+          <button class="btn btn--accent" data-reserve data-title="" data-i18n="hero_btn_reservar">🖼 Reservar / comprar</button>
+        </div>
       </div>
     </section>
 
-    <section id="historia">
-      <small data-i18n="historia_eyebrow">Quién es Eduvina</small>
-      <h2 data-i18n="historia_title">Una artista que encontró su voz en el color</h2>
-      <p data-i18n="historia_p1">Texto P1...</p>
-      <p data-i18n="historia_p2">Texto P2...</p>
-      <p data-i18n="historia_p3">Texto P3...</p>
-    </section>
-
-    <section id="obra">
-      <small data-i18n="obra_eyebrow">La obra</small>
-      <h2 data-i18n="obra_title">Su primera acuarela a la venta</h2>
-
-      <div class="ficha">
-        <div><strong data-i18n="obra_ficha_tecnica_label">Técnica</strong>: <span data-i18n="obra_ficha_tecnica">Acuarela</span></div>
-        <div><strong data-i18n="obra_ficha_medidas_label">Medidas</strong>: <span data-i18n="obra_ficha_medidas">30 × 40 cm</span></div>
-        <div><strong data-i18n="obra_ficha_anio_label">Año</strong>: <span data-i18n="obra_ficha_anio">2026</span></div>
-        <div><strong data-i18n="obra_ficha_estado_label">Disponibilidad</strong>: <span data-i18n="obra_ficha_estado">Disponible</span></div>
-        <div><strong data-i18n="obra_precio_label">Precio</strong>: <span data-i18n="obra_precio">[$ 000.000 COP]</span></div>
-      </div>
-
-      <button class="btn" data-i18n="obra_btn">Reservar esta obra</button>
-    </section>
-
-    <!-- Resto de secciones (catalogo, ayudar, evento, faq, contacto, footer) -->
-    <section id="catalogo">
-      <small data-i18n="catalogo_eyebrow">Catálogo</small>
-      <h2 data-i18n="catalogo_title">Una colección que crece</h2>
-      <p data-i18n="catalogo_lead">Explora las piezas disponibles.</p>
-    </section>
-
-    <section id="ayudar">
-      <small data-i18n="ayudar_eyebrow">3 formas de ayudar</small>
-      <h2 data-i18n="ayudar_title">Elige cómo acompañar este camino</h2>
-      <!-- cards -->
-    </section>
-
-    <section id="evento">
-      <small data-i18n="evento_eyebrow">El evento</small>
-      <h2 data-i18n="evento_title">Exposición pública</h2>
-      <div><strong data-i18n="evento_fecha_label">Fecha</strong>: <span data-i18n="evento_fecha">19 de Junio de 2026</span></div>
-      <div><strong data-i18n="evento_lugar_label">Lugar</strong>: <span data-i18n="evento_lugar">Museo Casa Galán, Bucaramanga</span></div>
-      <img src="/image.png" alt="" data-i18n-attr="alt:evento_flyer_alt" />
-    </section>
-
-    <section id="faq">
-      <small data-i18n="faq_eyebrow">Preguntas frecuentes</small>
-      <h2 data-i18n="faq_title">Resolvemos tus dudas</h2>
-      <div class="faq-item">
-        <h3 data-i18n="faq_q1">¿Cómo reservo o compro la obra?</h3>
-        <p data-i18n="faq_a1">Respuesta.</p>
+    <!-- HISTORIA -->
+    <section class="historia section" id="historia">
+      <div class="container">
+        <h2 class="section__title" data-i18n="historia_title">Una artista que encontró su voz en el color</h2>
+        <p data-i18n-html="historia_p1"></p>
+        <p data-i18n-html="historia_p2"></p>
+        <p data-i18n-html="historia_p3"></p>
       </div>
     </section>
 
-    <footer>
-      <p data-i18n="footer_copy">Hecho con cariño y esperanza.</p>
-      <div class="contact">
-        <strong data-i18n="contacto_email_label">Correo</strong>: <a href="mailto:vinapc2611@gmail.com" data-i18n="contacto_email">vinapc2611@gmail.com</a>
+    <!-- OBRA -->
+    <section class="obra section" id="obra">
+      <div class="container">
+        <h2 class="section__title" data-i18n="obra_title">Su primera acuarela a la venta</h2>
+
+        <div class="obra-card">
+          <div class="obra-card__media">
+            <img src="images/obra-1.jpg" alt="" id="obra-1-img" loading="lazy" />
+          </div>
+          <div class="obra-card__body">
+            <h3 id="obra-1-title" data-i18n="obra_nombre">[TÍTULO]</h3>
+            <ul class="ficha">
+              <li><strong data-i18n="obra_ficha_tecnica_label">Técnica:</strong> <span data-i18n="obra_ficha_tecnica">Acuarela sobre papel de algodón</span></li>
+              <li><strong data-i18n="obra_ficha_medidas_label">Medidas:</strong> <span data-i18n="obra_ficha_medidas">30 × 40 cm</span></li>
+              <li><strong data-i18n="obra_ficha_anio_label">Año:</strong> <span data-i18n="obra_ficha_anio">2026</span></li>
+              <li><strong data-i18n="obra_ficha_estado_label">Disponibilidad:</strong> <span data-i18n="obra_ficha_estado">Disponible</span></li>
+            </ul>
+
+            <p class="obra-card__price">
+              <span data-i18n="obra_precio_label">Precio / aporte sugerido:</span>
+              <strong data-i18n="obra_precio">[$ 000.000 COP]</strong>
+            </p>
+
+            <!-- botón reservar: incluir data-title con nombre de obra para personalizar mensaje -->
+            <button class="btn btn--block" data-reserve data-title="" data-i18n="obra_btn">Reservar esta obra</button>
+          </div>
+        </div>
       </div>
-    </footer>
+    </section>
+
+    <!-- CATÁLOGO -->
+    <section class="catalogo section" id="catalogo">
+      <div class="container">
+        <h2 class="section__title" data-i18n="catalogo_title">Una colección que crece</h2>
+        <p data-i18n="catalogo_lead">Explora las piezas disponibles. Cada compra apoya su cuidado y nuevos materiales.</p>
+        <div id="catalogo-grid"></div>
+      </div>
+    </section>
+
+    <!-- CÓMO AYUDAR -->
+    <section class="ayudar section" id="ayudar">
+      <div class="container">
+        <h2 class="section__title" data-i18n="ayudar_title">Elige cómo acompañar este camino</h2>
+        <div class="ayudar__grid">
+          <div class="ayuda-card">
+            <h3 data-i18n="ayudar_1_title">Donar</h3>
+            <p data-i18n="ayudar_1_text">Aporta lo que puedas para su cuidado y su arte.</p>
+            <a href="#donar" class="btn" data-i18n="ayudar_1_btn">Donar por Bre‑B</a>
+          </div>
+          <div class="ayuda-card">
+            <h3 data-i18n="ayudar_2_title">Reservar</h3>
+            <p data-i18n="ayudar_2_text">Reserva una acuarela y contribuye directamente.</p>
+            <button class="btn" data-reserve data-title="" data-i18n="ayudar_2_btn">Reservar obra</button>
+          </div>
+          <div class="ayuda-card">
+            <h3 data-i18n="ayudar_3_title">Compartir</h3>
+            <p data-i18n="ayudar_3_text">Comparte la historia y el evento con tu red.</p>
+            <button class="btn" data-share data-i18n="ayudar_3_btn">Compartir</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DONAR (solo Bre-B) -->
+    <section class="donar section" id="donar">
+      <div class="container">
+        <h2 class="section__title" data-i18n="donar_title">Dona por Bre‑B</h2>
+        <p class="section__lead" data-i18n="donar_lead"></p>
+
+        <div class="donaciones__grid">
+          <div class="donacion-card">
+            <h3 data-i18n="donar_breb_title">Bre‑B</h3>
+            <p data-i18n-html="donar_breb_num">Número: <strong>315 542 7152</strong></p>
+            <p data-i18n="donar_breb_name">A nombre de Eduvina Parada</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRANSPARENCIA (4 bloques) -->
+    <section class="fondos section" id="fondos">
+      <div class="container">
+        <h2 class="section__title" data-i18n="fondos_title">¿A dónde va tu aporte?</h2>
+        <div class="fondos__grid">
+          <div class="fondo-card">
+            <h3 data-i18n="fondos_1_title">Tratamiento y terapias</h3>
+            <p data-i18n="fondos_1_text"></p>
+          </div>
+          <div class="fondo-card">
+            <h3 data-i18n="fondos_2_title">Comunicación asistida</h3>
+            <p data-i18n="fondos_2_text"></p>
+          </div>
+          <div class="fondo-card">
+            <h3 data-i18n="fondos_3_title">Materiales de arte</h3>
+            <p data-i18n="fondos_3_text"></p>
+          </div>
+          <div class="fondo-card">
+            <h3 data-i18n="fondos_4_title">Cuidado diario</h3>
+            <p data-i18n="fondos_4_text"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTO: incluye flyer -->
+    <section class="evento section" id="evento">
+      <div class="container">
+        <h2 class="section__title" data-i18n="evento_title">Exposición pública</h2>
+        <div class="evento-info">
+          <p><strong data-i18n="evento_fecha_label">Fecha:</strong> <span data-i18n="evento_fecha"></span></p>
+          <p><strong data-i18n="evento_lugar_label">Lugar:</strong> <span data-i18n="evento_lugar"></span></p>
+        </div>
+
+        <!-- Flyer: pon aquí images/flyer.jpg en tu servidor -->
+        <div class="evento-flyer">
+          <img src="images/flyer.jpg" alt="" id="event-flyer" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="contacto section" id="contacto">
+      <div class="container">
+        <h2 class="section__title" data-i18n="contacto_title">¿Hablamos?</h2>
+        <div class="contacto__links">
+          <a href="mailto:vinapc2611@gmail.com" class="contacto__link">
+            <span class="contacto__link-label">Correo</span>
+            <span class="contacto__link-value">vinapc2611@gmail.com</span>
+          </a>
+          <a href="https://wa.me/573155427152" target="_blank" rel="noopener" class="contacto__link">
+            <span class="contacto__link-label">WhatsApp</span>
+            <span class="contacto__link-value">315 542 7152</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Scripts -->
-  <!-- Preferir ruta absoluta para evitar problemas de basePath -> ajusta si tu deployment usa subcarpeta -->
-  <script src="/i18n.js" defer></script>
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year">2026</span> <span data-i18n="site_name">Eduvina Parada Cáceres</span></p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="i18n.js"></script>
 </body>
 </html>
