@@ -1,198 +1,221 @@
-// app.js - carga config.json mediante fetch, renderiza catálogo, modal y enlaces de contacto
-(function(){
-  const CONFIG_URL = "config.json?t=" + Date.now();
+/* =================================================================
+   app.js  ·  TEMA EDITABLE + CATÁLOGO DINÁMICO (desde data/config.json)
+   -----------------------------------------------------------------
+   QUÉ HACE ESTE ARCHIVO (no necesitas editarlo):
+   1) Lee data/config.json
+   2) Aplica la paleta de colores y las fuentes que definiste ahí
+   3) Dibuja el catálogo de obras (N obras) leyendo el JSON
+   4) Abre cada obra ampliada en una ventana (lightbox) con su ficha
+   5) Genera datos estructurados (Schema.org) de cada obra para SEO/IA
 
-  async function loadConfig(){
-    try{
-      const res = await fetch(CONFIG_URL, { cache: "no-store" });
-      if(!res.ok) throw new Error("HTTP " + res.status);
-      const json = await res.json();
-      return json;
-    } catch(err){
-      console.error("[app] No se pudo cargar config.json:", err.message);
-      return null;
-    }
+   NOTA IMPORTANTE: la lectura del JSON (fetch) funciona en Cloudflare
+   Pages y en cualquier servidor web. Para PROBAR EN TU COMPUTADORA,
+   abre una terminal en esta carpeta y ejecuta:
+        python3 -m http.server 8000
+   y entra a  http://localhost:8000   (abrir el index.html con doble
+   clic / file:// NO permite leer el JSON por seguridad del navegador).
+   ================================================================= */
+
+(function () {
+  "use strict";
+
+  // Etiquetas de la ficha del catálogo en cada idioma
+  const LABELS = {
+    es: { tecnica: "Técnica", medidas: "Medidas", anio: "Año", precio: "Precio", ver: "Ver obra", reservar: "Reservar", cerrar: "Cerrar" },
+    en: { tecnica: "Technique", medidas: "Dimensions", anio: "Year", precio: "Price", ver: "View artwork", reservar: "Reserve", cerrar: "Close" },
+    fr: { tecnica: "Technique", medidas: "Dimensions", anio: "Année", precio: "Prix", ver: "Voir l'œuvre", reservar: "Réserver", cerrar: "Fermer" }
+  };
+
+  let CONFIG = null;
+
+  function currentLang() {
+    return document.documentElement.getAttribute("lang") || "es";
   }
 
-  function formatWhatsAppMessage(obTitle, lang){
-    const baseEs = `Hola, estoy interesado(a) en la obra "${obTitle}" — me gustaría obtener más información y/o adquirirla.`;
-    const baseEn = `Hello, I'm interested in the artwork "${obTitle}" — I'd like more information or to acquire it.`;
-    const baseFr = `Bonjour, je suis intéressé(e) par l'œuvre "${obTitle}" — je souhaite plus d'informations ou l'acquérir.`;
-    const text = lang === "en" ? baseEn : (lang === "fr" ? baseFr : baseEs);
-    return encodeURIComponent(text);
+  // Devuelve el texto en el idioma actual, con respaldo en español
+  function pick(obj, lang) {
+    if (!obj) return "";
+    if (typeof obj === "string") return obj;
+    return obj[lang] || obj.es || Object.values(obj)[0] || "";
   }
 
-  function currentLang(){
-    const saved = localStorage.getItem("lang");
-    return (saved && ["es","en","fr"].includes(saved)) ? saved : (navigator.language.slice(0,2) || "es");
-  }
-
-  function showEmptyMessage(show){
-    const empty = document.getElementById("catalogo-empty");
-    if(!empty) return;
-    empty.hidden = !show;
-  }
-
-  function buildCatalog(cfg, lang){
-    const grid = document.getElementById("catalogo-grid");
-    grid.innerHTML = "";
-    if(!cfg || !Array.isArray(cfg.obras) || cfg.obras.length === 0){
-      showEmptyMessage(true);
-      return;
-    }
-    showEmptyMessage(false);
-
-    cfg.obras.forEach(ob=>{
-      const card = document.createElement("article");
-      card.className = "card";
-
-      const img = document.createElement("img");
-      img.className = "card__img";
-      img.src = ob.imagen;
-      img.alt = ob.titulo && (ob.titulo[lang] || ob.titulo.es) || "";
-      img.loading = "lazy";
-      card.appendChild(img);
-
-      const h4 = document.createElement("h4");
-      h4.textContent = ob.titulo && (ob.titulo[lang] || ob.titulo.es) || "—";
-      card.appendChild(h4);
-
-      const p = document.createElement("p");
-      p.textContent = ob.descripcion && (ob.descripcion[lang] || ob.descripcion.es) || "";
-      card.appendChild(p);
-
-      const meta = document.createElement("div");
-      meta.className = "card__meta";
-
-      const state = document.createElement("small");
-      state.textContent = ob.estado && (ob.estado[lang] || ob.estado.es) || "";
-      meta.appendChild(state);
-
-      const actions = document.createElement("div");
-      actions.style.display="flex";
-      actions.style.gap="8px";
-
-      const viewBtn = document.createElement("button");
-      viewBtn.className = "btn btn--ghost";
-      viewBtn.textContent = lang === "en" ? "View" : (lang === "fr" ? "Voir" : "Ver");
-      viewBtn.addEventListener("click", ()=> openModal(ob, lang));
-      actions.appendChild(viewBtn);
-
-      const collectLink = document.createElement("a");
-      collectLink.className = "btn btn--primary";
-      collectLink.textContent = lang === "en" ? "Collect" : (lang === "fr" ? "Collectionner" : "Coleccionar");
-      const waBase = (cfg.contact && cfg.contact.whatsapp) ? cfg.contact.whatsapp : "https://wa.me/573155427152";
-      collectLink.href = waBase + "?text=" + formatWhatsAppMessage(ob.titulo && (ob.titulo[lang] || ob.titulo.es) || "obra", lang);
-      collectLink.target = "_blank";
-      collectLink.rel = "noopener";
-      actions.appendChild(collectLink);
-
-      meta.appendChild(actions);
-      card.appendChild(meta);
-
-      grid.appendChild(card);
-    });
-  }
-
-  // Modal
-  const modal = document.getElementById("obra-modal");
-  function openModal(ob, lang){
-    modal.setAttribute("aria-hidden","false");
-    const img = document.getElementById("modal-img");
-    const title = document.getElementById("modal-title");
-    const desc = document.getElementById("modal-desc");
-    const ficha = document.getElementById("modal-ficha");
-    const collect = document.getElementById("modal-collect");
-
-    img.src = ob.imagen;
-    img.alt = ob.titulo && (ob.titulo[lang] || ob.titulo.es) || "";
-    title.textContent = ob.titulo && (ob.titulo[lang] || ob.titulo.es) || "";
-    desc.textContent = ob.descripcion && (ob.descripcion[lang] || ob.descripcion.es) || "";
-
-    ficha.innerHTML = "";
-    const makeLi = (label, val) => {
-      const li = document.createElement("li");
-      li.innerHTML = `<strong>${label}</strong> ${val || ""}`;
-      return li;
+  /* ---------- 1) APLICAR TEMA (colores + fuentes) ---------- */
+  function applyTheme(tema) {
+    if (!tema) return;
+    const root = document.documentElement.style;
+    const map = {
+      "--color-primary": tema.colorPrimario,
+      "--color-primary-dark": tema.colorPrimarioOscuro,
+      "--color-accent": tema.colorAcento,
+      "--color-accent-dark": tema.colorAcentoOscuro,
+      "--color-bg": tema.colorFondo,
+      "--color-alt": tema.colorAlterno,
+      "--color-surface": tema.colorSuperficie,
+      "--color-text": tema.colorTexto,
+      "--color-muted": tema.colorTextoSuave,
+      "--color-dark": tema.colorOscuro,
+      "--font-serif": tema.fuenteTitulos,
+      "--font-sans": tema.fuenteCuerpo
     };
-    ficha.appendChild(makeLi(lang==="en"?"Technique":"Técnica", ob.tecnica || ""));
-    ficha.appendChild(makeLi(lang==="en"?"Size":"Dimensiones", ob.dimensiones || ""));
-    ficha.appendChild(makeLi(lang==="en"?"Year":"Año", ob.anio || ""));
-    ficha.appendChild(makeLi(lang==="en"?"Status":"Estado", ob.estado && (ob.estado[lang] || ob.estado.es) || ""));
+    Object.keys(map).forEach((k) => { if (map[k]) root.setProperty(k, map[k]); });
 
-    // set collect link
-    loadConfig().then(cfg => {
-      const waBase = (cfg && cfg.contact && cfg.contact.whatsapp) ? cfg.contact.whatsapp : "https://wa.me/573155427152";
-      collect.href = waBase + "?text=" + formatWhatsAppMessage(ob.titulo && (ob.titulo[lang] || ob.titulo.es) || "obra", lang);
-      collect.target = "_blank";
-      collect.rel = "noopener";
-    });
-  }
-
-  function closeModal(){
-    modal.setAttribute("aria-hidden","true");
-  }
-
-  function setupModalEvents(){
-    document.querySelectorAll("[data-close]").forEach(btn=>{
-      btn.addEventListener("click", closeModal);
-    });
-    modal.addEventListener("click", (e)=>{
-      if(e.target.classList && e.target.classList.contains("modal__backdrop")) closeModal();
-    });
-  }
-
-  // compartir
-  function setupShare(){
-    const shareBtn = document.getElementById("share-btn");
-    shareBtn.addEventListener("click", async ()=>{
-      const url = location.href;
-      const title = document.querySelector("[data-i18n='site_name']")?.textContent || document.title;
-      if(navigator.share){
-        try{ await navigator.share({title, text: title, url}); }catch(e){}
-      } else {
-        try{
-          await navigator.clipboard.writeText(url);
-          alert((localStorage.getItem("lang")==="en") ? "Link copied to clipboard" : "Enlace copiado: " + url);
-        }catch(e){
-          window.open("mailto:?subject=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(url));
-        }
+    // Cargar Google Fonts personalizadas si se indicó una URL
+    if (tema.googleFontsUrl) {
+      const exists = [...document.querySelectorAll("link[rel=stylesheet]")]
+        .some((l) => l.href === tema.googleFontsUrl);
+      if (!exists) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = tema.googleFontsUrl;
+        document.head.appendChild(link);
       }
-    });
-  }
-
-  function setupContactLinks(cfg, lang){
-    const mail = document.getElementById("contact-mail");
-    const waBtn = document.getElementById("contact-wa");
-    if(mail && cfg && cfg.contact && cfg.contact.email) mail.setAttribute("href", cfg.contact.email);
-    if(waBtn && cfg && cfg.contact && cfg.contact.whatsapp){
-      waBtn.setAttribute("href", cfg.contact.whatsapp + "?text=" + encodeURIComponent(lang==="en"?"Hello, I would like to learn about your works.":"Hola, quisiera saber más sobre sus obras."));
     }
   }
 
-  // initialize
-  document.addEventListener("DOMContentLoaded", async ()=>{
+  /* ---------- 2) DIBUJAR CATÁLOGO ---------- */
+  function renderCatalog() {
+    const grid = document.getElementById("catalogo-grid");
+    if (!grid || !CONFIG || !CONFIG.catalogo) return;
     const lang = currentLang();
-    const cfg = await loadConfig();
-    if(!cfg){
-      // show empty state and console error
-      document.getElementById("catalogo-grid").innerHTML = "";
-      showEmptyMessage(true);
-    } else {
-      buildCatalog(cfg, lang);
-      setupContactLinks(cfg, lang);
-    }
+    const L = LABELS[lang] || LABELS.es;
+    const obras = CONFIG.catalogo.obras || [];
 
-    setupModalEvents();
-    setupShare();
+    grid.innerHTML = obras.map((o, i) => {
+      const titulo = pick(o.titulo, lang);
+      const estado = pick(o.estado, lang);
+      const alt = titulo + " — " + (o.tecnica || "acuarela") + " de Eduvina Parada Cáceres";
+      return `
+      <article class="cat-card" data-index="${i}">
+        <button class="cat-card__media" type="button" data-open="${i}" aria-label="${L.ver}: ${titulo}">
+          <img src="${o.imagen}" alt="${alt}" loading="lazy" class="cat-card__img" />
+          <span class="cat-card__zoom">${L.ver} ⤢</span>
+        </button>
+        <div class="cat-card__body">
+          <div class="cat-card__head">
+            <h3 class="cat-card__title">${titulo}</h3>
+            <span class="cat-card__badge">${estado}</span>
+          </div>
+          <p class="cat-card__meta">${o.tecnica || ""}${o.dimensiones ? " · " + o.dimensiones : ""}${o.anio ? " · " + o.anio : ""}</p>
+          ${o.precio ? `<p class="cat-card__price">${o.precio}</p>` : ""}
+          <div class="cat-card__actions">
+            <button class="btn btn--ghost-dark btn--sm" type="button" data-open="${i}">${L.ver}</button>
+            <a class="btn btn--accent btn--sm" href="#contacto">${L.reservar}</a>
+          </div>
+        </div>
+      </article>`;
+    }).join("");
 
-    // listen language changes (from i18n)
-    window.addEventListener("storage", (e)=>{
-      if(e.key === "lang"){
-        const newLang = e.newValue || "es";
-        loadConfig().then(cfg2 => { buildCatalog(cfg2 || {obras:[]}, newLang); setupContactLinks(cfg2, newLang); });
-      }
+    // Activar apertura de lightbox
+    grid.querySelectorAll("[data-open]").forEach((el) => {
+      el.addEventListener("click", () => openLightbox(parseInt(el.getAttribute("data-open"), 10)));
+    });
+  }
+
+  /* ---------- 3) LIGHTBOX (ventana de obra ampliada) ---------- */
+  function openLightbox(index) {
+    const dlg = document.getElementById("cat-lightbox");
+    if (!dlg || !CONFIG) return;
+    const lang = currentLang();
+    const L = LABELS[lang] || LABELS.es;
+    const o = CONFIG.catalogo.obras[index];
+    if (!o) return;
+
+    const titulo = pick(o.titulo, lang);
+    const desc = pick(o.descripcion, lang);
+    const estado = pick(o.estado, lang);
+
+    dlg.querySelector(".lb__img").src = o.imagen;
+    dlg.querySelector(".lb__img").alt = titulo;
+    dlg.querySelector(".lb__title").textContent = titulo;
+    dlg.querySelector(".lb__desc").textContent = desc;
+    dlg.querySelector(".lb__ficha").innerHTML = `
+      ${o.tecnica ? `<div><dt>${L.tecnica}</dt><dd>${o.tecnica}</dd></div>` : ""}
+      ${o.dimensiones ? `<div><dt>${L.medidas}</dt><dd>${o.dimensiones}</dd></div>` : ""}
+      ${o.anio ? `<div><dt>${L.anio}</dt><dd>${o.anio}</dd></div>` : ""}
+      ${o.precio ? `<div><dt>${L.precio}</dt><dd>${o.precio}</dd></div>` : ""}
+      <div><dt>&nbsp;</dt><dd><span class="cat-card__badge">${estado}</span></dd></div>`;
+    dlg.querySelector(".lb__reserve").textContent = L.reservar;
+    dlg.querySelector(".lb__close").setAttribute("aria-label", L.cerrar);
+
+    if (typeof dlg.showModal === "function") dlg.showModal();
+    else dlg.setAttribute("open", "");
+  }
+
+  function setupLightboxClose() {
+    const dlg = document.getElementById("cat-lightbox");
+    if (!dlg) return;
+    dlg.querySelector(".lb__close").addEventListener("click", () => dlg.close());
+    // Cerrar al hacer clic fuera del contenido
+    dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+  }
+
+  /* ---------- 4) SCHEMA.ORG del catálogo (SEO + IA) ---------- */
+  function injectCatalogSchema() {
+    if (!CONFIG || !CONFIG.catalogo) return;
+    const obras = CONFIG.catalogo.obras || [];
+    const itemList = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Catálogo de obras de Eduvina Parada Cáceres",
+      "itemListElement": obras.map((o, i) => ({
+        "@type": "ListItem",
+        "position": i + 1,
+        "item": {
+          "@type": "VisualArtwork",
+          "name": pick(o.titulo, "es"),
+          "description": pick(o.descripcion, "es"),
+          "artform": "Acuarela",
+          "artMedium": o.tecnica || "Acuarela",
+          "dateCreated": o.anio || "",
+          "creator": { "@type": "Person", "name": "Eduvina Parada Cáceres" },
+          "image": o.imagen
+        }
+      }))
+    };
+    const s = document.createElement("script");
+    s.type = "application/ld+json";
+    s.textContent = JSON.stringify(itemList);
+    document.head.appendChild(s);
+  }
+
+  /* ---------- ARRANQUE ---------- */
+  function init(config) {
+    CONFIG = config;
+    applyTheme(config.tema);
+    renderCatalog();
+    injectCatalogSchema();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    setupLightboxClose();
+    fetch("data/config.json", { cache: "no-store" })
+      .then((r) => r.json())
+      .then(init)
+      .catch((err) => {
+        console.warn("[catálogo] No se pudo leer data/config.json. " +
+          "Si abriste el archivo con doble clic (file://), usa un servidor local: " +
+          "python3 -m http.server  → http://localhost:8000", err);
+      });
+
+    // Redibujar el catálogo cuando cambie el idioma (evento de i18n.js)
+    window.addEventListener("langchange", function () {
+      if (CONFIG) renderCatalog();
     });
   });
-
 })();
+
+// Attach WhatsApp reserve handler to catalogue reserve buttons (fallback)
+document.addEventListener('DOMContentLoaded', function () {
+  const WHATSAPP_NUMBER = '573155427152';
+  const email = 'vinapc2611@gmail.com';
+  document.querySelectorAll('.catalog-reserve, .reserve-btn, [data-catalog-reserve]').forEach(btn => {
+    if (btn.dataset.reserveAttached === '1') return;
+    btn.dataset.reserveAttached = '1';
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      const title = btn.dataset.title || btn.getAttribute('data-title') || document.querySelector('[data-i18n="obra_nombre"]')?.textContent || '';
+      const msg = `Hola, quiero reservar la obra "${title}". Mi correo: ${email}`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+  });
+});
