@@ -127,18 +127,16 @@
       return;
     }
 
-    // Elementos del lightbox (se asume que existen o se ignoran silenciosamente)
     const imgEl = dlg.querySelector(".lb__img");
     const panel = dlg.querySelector(".lb__panel");
     const meta = dlg.querySelector(".lb__meta");
     const closeBtn = dlg.querySelector(".lb__close");
 
-    // Configurar sólo la imagen: esconder meta/textos para enfatizar obra
-    if (meta) {
-      meta.style.display = "none"; // ocultar ficha y textos
-    }
+    // Ocultar la meta (solo mostrar imagen)
+    if (meta) meta.style.display = "none";
+
+    // Panel compacto y centrado
     if (panel) {
-      // panel compacto para centrar imagen
       panel.style.maxWidth = "95vw";
       panel.style.padding = "8px";
       panel.style.background = "transparent";
@@ -146,8 +144,8 @@
       panel.style.justifyContent = "center";
       panel.style.alignItems = "center";
     }
+
     if (closeBtn) {
-      // darle espacio desde los bordes para que no quede pegado
       closeBtn.style.right = "18px";
       closeBtn.style.top = "12px";
       closeBtn.style.zIndex = "10001";
@@ -165,7 +163,6 @@
     if (imgEl) {
       imgEl.src = o.imagen;
       imgEl.alt = (typeof o.titulo === "string" ? o.titulo : pick(o.titulo, currentLang()));
-      // estilos inline para centrar / escalar correctamente
       imgEl.style.maxWidth = "95vw";
       imgEl.style.maxHeight = "90vh";
       imgEl.style.width = "auto";
@@ -175,23 +172,32 @@
       imgEl.style.margin = "0 auto";
       imgEl.style.borderRadius = "6px";
       imgEl.style.boxShadow = "0 12px 30px rgba(0,0,0,0.25)";
-      imgEl.loading = "eager"; // preferimos mostrar la imagen directamente
+      imgEl.loading = "eager";
     }
 
-    // Abrir diálogo con fallback. Nos aseguramos de que siempre quede visible y usable.
+    // Asegurar estado limpio antes de abrir
     try {
+      // Quitar atributo open y forzar display para evitar estados inconsistentes
+      dlg.removeAttribute("open");
+      dlg.style.display = "flex";
+      dlg.setAttribute("aria-hidden", "false");
+
+      // Usar showModal cuando esté disponible; si falla, fallback al estilo display
+      const alreadyOpen = !!dlg.open || dlg.hasAttribute("open");
       if (typeof dlg.showModal === "function") {
-        // Si ya está abierto, cerramos y reabrimos para forzar estado limpio (evita escenarios raros)
-        if (dlg.open) {
+        if (alreadyOpen) {
           try { dlg.close(); } catch (e) { /* ignore */ }
         }
-        dlg.showModal();
-        dlg.setAttribute("aria-hidden", "false");
+        // pequeña pausa para que close() termine en navegadores problemáticos
+        setTimeout(() => {
+          try { dlg.showModal(); } catch (err) {
+            dlg.setAttribute("open", "");
+            dlg.style.display = "flex";
+          }
+        }, 50);
       } else {
-        dlg.removeAttribute("hidden");
         dlg.setAttribute("open", "");
         dlg.style.display = "flex";
-        dlg.setAttribute("aria-hidden", "false");
       }
       console.debug("[lightbox] Abriendo obra (solo imagen):", imgEl?.alt || index);
     } catch (err) {
@@ -210,36 +216,39 @@
       return;
     }
 
-    // Close handler (se declara fuera para poder reutilizarlo)
+    // closeLightbox declarado en el mismo scope para permitir removeEventListener
     function closeLightbox() {
+      // Intentar cerrar usando la API del dialog cuando exista
       try {
         if (typeof dlg.close === "function") dlg.close();
         else dlg.removeAttribute("open");
       } catch (err) {
         dlg.removeAttribute("open");
       }
+
+      // Aplicar ocultamiento visual y atributo aria
       dlg.style.display = "none";
       dlg.setAttribute("aria-hidden", "true");
 
-      // limpiar imagen src para liberar memoria / evitar problemas de caching
+      // Limpiar src de la imagen con pequeña demora para evitar race conditions
       const imgEl = dlg.querySelector(".lb__img");
       if (imgEl) {
-        // pequeña demora para evitar flicker si se abre inmediatamente otra vez
         setTimeout(() => {
-          imgEl.src = "";
-        }, 100);
+          try { imgEl.src = ""; } catch (e) { /* ignore */ }
+        }, 180);
       }
     }
 
     const closeBtn = dlg.querySelector(".lb__close");
     if (closeBtn) {
-      // remover listeners previos para evitar duplicados si setup se llama varias veces
-      closeBtn.removeEventListener("click", closeLightbox);
+      // remover listener previo y añadir el handler limpio
+      try { closeBtn.removeEventListener("click", closeLightbox); } catch (e) { /* ignore */ }
       closeBtn.addEventListener("click", closeLightbox);
     }
 
     // Cerrar al hacer clic fuera del panel (backdrop)
-    dlg.removeEventListener("click", backdropClickHandler);
+    // eliminar previamente el handler para evitar duplicados
+    try { dlg.removeEventListener("click", backdropClickHandler); } catch (e) { /* ignore */ }
     dlg.addEventListener("click", backdropClickHandler);
 
     function backdropClickHandler(e) {
@@ -247,7 +256,7 @@
     }
 
     // Escape key (global)
-    document.removeEventListener("keydown", escHandler);
+    try { document.removeEventListener("keydown", escHandler); } catch (e) { /* ignore */ }
     document.addEventListener("keydown", escHandler);
 
     function escHandler(e) {
