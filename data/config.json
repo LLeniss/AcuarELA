@@ -1,79 +1,77 @@
 {
   "site": {
-    "name": "Eduvina Parada Cáceres",
+    "name": "Vina Acuarela",
     "year": 2026
   },
-  "catalogo": {
-    "obras": [
-      {
-        "id": "armonia-en-la-naturaleza",
-        "imagen": "images/obra-1.jpg",
-        "titulo": {
-          "es": "Armonía en la naturaleza",
-          "en": "Armonía en la naturaleza",
-          "fr": "Armonía en la naturaleza"
-        },
-        "descripcion": {
-          "es": "Esta obra captura la unión y la compañía que encontramos en el mundo natural. Colores vivos y pinceladas ligeras para transmitir alegría, afecto y vida.",
-          "en": "This work captures the unity and companionship found in the natural world. Vivid colors and light brushwork convey joy, affection and life.",
-          "fr": "Cette œuvre saisit l'union et la compagnie que l'on trouve dans le monde naturel. Des couleurs vives et des traits légers transmettent la joie, l'affection et la vie."
-        },
-        "tecnica": "Acuarela sobre papel de grano fino 300GSM",
-        "dimensiones": "10 × 8 in",
-        "anio": "2026",
-        "precio": "$350.000 COP",
-        "estado": {
-          "es": "Disponible",
-          "en": "Available",
-          "fr": "Disponible"
-        }
+  "obras": [
+    {
+      "id": "obra-1",
+      "imagen": "images/obra-1.jpg",
+      "titulo": {
+        "es": "Armonía en la naturaleza",
+        "en": "Harmony in Nature",
+        "fr": "Harmonie dans la nature"
       },
-      {
-        "id": "Un gato",
-        "imagen": "images/gato.jpg",
-        "titulo": {
-          "es": "Un gato (en proceso)",
-          "en": "A cat (in progress)",
-          "fr": "Un chat (en cours)"
-        },
-        "descripcion": {
-          "es": "Pieza en desarrollo.",
-          "en": "Piece in development.",
-          "fr": "Œuvre en développement."
-        },
-        "tecnica": "Acuarela sobre papel de grano fino 300GSM",
-        "dimensiones": "10 × 8 in",
-        "anio": "2026",
-        "precio": "--",
-        "estado": {
-          "es": "En proceso",
-          "en": "In progress",
-          "fr": "En cours"
-        }
+      "descripcion": {
+        "es": "Una pieza que explora el ritmo de las hojas y la luz.",
+        "en": "A piece exploring the rhythm of leaves and light.",
+        "fr": "Une pièce qui explore le rythme des feuilles et de la lumière."
       },
-      {
-        "id": "Manzanilla",
-        "imagen": "images/manzanilla.jpg",
-        "titulo": {
-          "es": "Manzanilla (en proceso)",
-          "en": "Chamomile (in progress)",
-          "fr": "Camomille (en cours)"
-        },
-        "descripcion": {
-          "es": "Pieza en desarrollo.",
-          "en": "Piece in development.",
-          "fr": "Œuvre en développement."
-        },
-        "tecnica": "Acuarela sobre papel de grano fino 300GSM",
-        "dimensiones": "10 × 8 in",
-        "anio": "2026",
-        "precio": "--",
-        "estado": {
-          "es": "En proceso",
-          "en": "In progress",
-          "fr": "En cours"
-        }
+      "tecnica": "Acuarela sobre papel 300gsm",
+      "dimensiones": "25 × 20 cm",
+      "anio": 2026,
+      "precio": "COP 350.000",
+      "estado": {
+        "es": "Disponible",
+        "en": "Available",
+        "fr": "Disponible"
       }
-    ]
-  }
+    },
+    {
+      "id": "obra-2",
+      "imagen": "images/obra-2.jpg",
+      "titulo": {
+        "es": "Flores del tiempo",
+        "en": "Flowers of Time",
+        "fr": "Fleurs du temps"
+      },
+      "descripcion": {
+        "es": "Serie de estudios sobre pétalos y memoria.",
+        "en": "Series of studies on petals and memory.",
+        "fr": "Série d'études sur les pétales et la mémoire."
+      },
+      "tecnica": "Acuarela y collage",
+      "dimensiones": "30 × 22 cm",
+      "anio": 2025,
+      "precio": "COP 420.000",
+      "estado": {
+        "es": "Reservada",
+        "en": "Reserved",
+        "fr": "Réservée"
+      }
+    },
+    {
+      "id": "obra-3",
+      "imagen": "images/obra-3.jpg",
+      "titulo": {
+        "es": "Pequeños milagros",
+        "en": "Little Miracles",
+        "fr": "Petits miracles"
+      },
+      "descripcion": {
+        "es": "Estudio íntimo sobre lo cotidiano transformado.",
+        "en": "An intimate study on the everyday transformed.",
+        "fr": "Une étude intime sur le quotidien transformé."
+      },
+      "tecnica": "Acuarela y tinta",
+      "dimensiones": "18 × 14 cm",
+      "anio": 2026,
+      "precio": "COP 280.000",
+      "estado": {
+        "es": "Disponible",
+        "en": "Available",
+        "fr": "Disponible"
+      }
+    }
+  ]
 }
