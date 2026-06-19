@@ -1,3 +1,28 @@
+// === BLOQUE DE DIAGNÓSTICO (BORRAR CUANDO FUNCIONE) ===
+(async function() {
+    console.group("🔍 Diagnóstico de Textos");
+    const testUrl = "/data/textos.json?v=" + Date.now();
+    console.log("Intentando descargar desde:", testUrl);
+
+    try {
+        const r = await fetch(testUrl, { cache: "no-store" });
+        console.log("Status HTTP:", r.status);
+        
+        if (r.ok) {
+            const txt = await r.text();
+            console.log("✅ ¡ÉXITO! Primeros 50 caracteres del archivo:", txt.substring(0, 50));
+            window._DEBUG_TEXTOS = JSON.parse(txt); // Lo guardamos en una variable global para que lo veas
+        } else {
+            console.error("❌ ERROR: El servidor respondió, pero no encontró el archivo (404) o está prohibido (403).");
+            console.warn("Revisa si la carpeta 'data' está escrita en minúsculas en GitHub.");
+        }
+    } catch (e) {
+        console.error("❌ ERROR DE RED: No se pudo ni siquiera intentar la descarga.", e);
+    }
+    console.groupEnd();
+})();
+// === FIN DEL BLOQUE DE DIAGNÓSTICO ===
+
 (function () {
   // --- 1. TRADUCCIONES DE RESPALDO (Fallback) ---
   // Si el JSON falla, la web usará esto. 
