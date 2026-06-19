@@ -7,7 +7,7 @@
     "obras": [
       {
         "id": "armonia-en-la-naturaleza",
-        "imagen": "img/obras/obra-1.jpg",
+        "imagen": "images/obra-1.jpg",
         "titulo": {
           "es": "Armonía en la naturaleza",
           "en": "Armonía en la naturaleza",
@@ -30,7 +30,7 @@
       },
       {
         "id": "Un gato",
-        "imagen": "img/obras/gato.jpg",
+        "imagen": "images/gato.jpg",
         "titulo": {
           "es": "Un gato (proceso)",
           "en": "A cat (in progress)",
@@ -53,7 +53,7 @@
       },
       {
         "id": "Manzanilla",
-        "imagen": "img/obras/pmanzanilla.jpg",
+        "imagen": "images/manzanilla.jpg",
         "titulo": {
           "es": "SManzanilla (proceso)",
           "en": "Chamomile (in progress)",
