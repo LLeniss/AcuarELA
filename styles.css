@@ -437,3 +437,12 @@ a:hover { color: var(--color-primary-dark); }
 }
 
 /* Fin del archivo */
+
+/* Mejora contraste en las cajas de contacto */
+.contacto__link--box,
+.contacto__link {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+.section#contacto { background: var(--color-bg); }
+.contacto__link--box .contacto__link-label { color: var(--color-primary); }
