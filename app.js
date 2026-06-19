@@ -1,239 +1,178 @@
-/* app.js
-   Render del catálogo y handlers:
-   - carga data/config.json (data/config.json o config.json)
-   - renderiza tarjetas según idioma actual (localStorage.lang)
-   - botones: "Ver obra" => /obra.html?id=..., "Reservar" => abre WhatsApp con mensaje
-   - re-renderiza al recibir 'langchange'
-*/
+// app.js
+// Módulo responsable de renderizar catálogo y manejar botones (Reservar / Ver obra).
+// Ajustes: lee idioma desde localStorage (fallback), escucha 'langchange' y re-renderiza,
+// asegura que cada tarjeta tiene data-title y data-reserve, y usa delegación de eventos
+// para que los botones funcionen aunque las tarjetas se vuelvan a pintar.
 
 (function () {
   'use strict';
 
-  const CONFIG_PATHS = ['data/config.json', 'config.json'];
-  const WA_NUMBER = '573155427152'; // número para WhatsApp (sin + ni 00)
-  const CONTACT_EMAIL = 'vinapc2611@gmail.com';
+  // Helpers
+  function safeLog(...args) { if (window.console && window.console.log) console.log.apply(console, args); }
+  function safeWarn(...args) { if (window.console && window.console.warn) console.warn.apply(console, args); }
 
-  function log(...args) { console.info('[app]', ...args); }
-  function warn(...args) { console.warn('[app]', ...args); }
-
-  async function fetchJsonAny(paths) {
-    for (const p of paths) {
-      const url = `${p}?t=${Date.now()}`; // cache-bust temporal
-      try {
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) {
-          log('No OK', url, res.status);
-          continue;
-        }
-        const json = await res.json();
-        log('Loaded', url);
-        return json;
-      } catch (err) {
-        warn('fetch error', url, err && err.message ? err.message : err);
-      }
-    }
-    throw new Error('No config JSON found');
-  }
-
+  // Obtiene idioma actual de forma robusta
   function currentLang() {
     return localStorage.getItem('lang') ||
-           document.documentElement.getAttribute('lang') ||
-           (navigator.language || 'es').split('-')[0] ||
-           'es';
+      document.documentElement.getAttribute('lang') ||
+      (navigator.language || navigator.userLanguage || 'es').split('-')[0] ||
+      'es';
   }
 
-  // pick: si el campo es objeto con claves por idioma devuelve la correcta
-  function pickField(field, lang) {
-    if (field == null) return '';
+  // Pick helper: si es objeto por idiomas -> devuelve idioma, si es string -> devuelve directo
+  function pick(field, lang) {
+    if (!field) return '';
     if (typeof field === 'string') return field;
-    if (typeof field === 'object') {
-      return field[lang] || field.es || Object.values(field)[0] || '';
-    }
-    return String(field);
+    if (typeof field === 'object') return field[lang] || field.es || Object.values(field)[0] || '';
+    return '';
   }
 
-  // Renderiza el grid del catálogo
-  function renderCatalog(catalog, containerId = 'catalogo-grid') {
-    const container = document.getElementById(containerId);
-    if (!container) {
-      warn('#' + containerId + ' no encontrado en DOM');
+  // Load config: intenta usar window.CONFIG si ya fue inyectado; si no, intenta fetch a data/config.json
+  async function loadConfig() {
+    if (window.CONFIG) return window.CONFIG;
+    try {
+      const resp = await fetch('data/config.json?t=' + Date.now(), { cache: 'no-store' });
+      if (resp.ok) {
+        const cfg = await resp.json();
+        window.CONFIG = cfg;
+        return cfg;
+      } else {
+        safeWarn('[app] config.json not found (status ' + resp.status + ')');
+      }
+    } catch (e) {
+      safeWarn('[app] loadConfig error', e);
+    }
+    // fallback mínimo
+    window.CONFIG = window.CONFIG || {};
+    return window.CONFIG;
+  }
+
+  // Render del catálogo
+  function renderCatalog(cfg) {
+    const grid = document.querySelector('#catalogo-grid');
+    if (!grid) {
+      safeWarn('[app] #catalogo-grid no existe en DOM');
+      return;
+    }
+    const lang = currentLang();
+    const obras = (cfg && cfg.catalogo && cfg.catalogo.obras) || (cfg.obras) || [];
+
+    // Si no hay obras, mostrar mensaje
+    if (!obras.length) {
+      grid.innerHTML = `<p class="catalog-empty">No hay obras para mostrar.</p>`;
       return;
     }
 
-    const lang = currentLang();
-    const obras = (catalog && catalog.obras) || [];
-
-    const html = obras.map((o, i) => {
-      const titulo = pickField(o.titulo, lang) || '—';
-      const descripcion = pickField(o.descripcion, lang) || '';
-      const estado = pickField(o.estado, lang) || '';
+    grid.innerHTML = obras.map((o, i) => {
+      const titulo = pick(o.titulo, lang) || `Obra ${o.id || i + 1}`;
+      const descripcion = pick(o.descripcion, lang) || '';
+      const estado = pick(o.estado, lang) || '';
       const tecnica = o.tecnica || '';
-      const dimensiones = o.dimensiones || '';
+      const dims = o.dimensiones || '';
       const anio = o.anio || '';
-      const precio = o.precio ? `<div class="cat-card__price">${o.precio}</div>` : '';
-      const img = o.imagen || '';
+      const precio = o.precio || '';
+      const imagen = o.imagen || (o.image || '');
 
-      const alt = `${titulo} — ${tecnica} ${dimensiones}`.trim();
-
+      // Botones: "Ver obra" lleva a /obra.html?id=... (puedes ajustar la ruta si usas otra)
+      // "Reservar" es un botón que llevará data-title para el handler global.
       return `
-<article class="cat-card" data-id="${o.id || i}">
-  <a class="cat-card__media" href="#" data-open="${i}" aria-label="${titulo}">
-    <img class="cat-card__img" src="${img}" alt="${alt}">
-  </a>
-  <div class="cat-card__body">
-    <div class="cat-card__head">
-      <h3 class="cat-card__title">${titulo}</h3>
-      <span class="cat-card__badge">${estado}</span>
-    </div>
-    <p class="cat-card__desc">${descripcion}</p>
-    <div class="cat-card__meta">${tecnica}${dimensiones ? ' · ' + dimensiones : ''}${anio ? ' · ' + anio : ''}</div>
-    ${precio}
-    <div class="cat-card__actions">
-      <a class="btn btn--ghost view-btn" href="/obra.html?id=${encodeURIComponent(o.id || i)}" aria-label="Ver ${titulo}">Ver obra</a>
-      <button class="btn btn--primary reserve-btn" data-reserve data-title="${titulo}">Reservar</button>
-    </div>
-  </div>
-</article>
+        <article class="catalog-item" data-id="${o.id || i}">
+          <a class="catalog-media" href="/obra.html?id=${encodeURIComponent(o.id || i)}" data-open="${i}" aria-label="${titulo}">
+            <img class="catalog-thumb" src="${imagen}" alt="${titulo}">
+          </a>
+          <div class="catalog-body">
+            <div class="catalog-head">
+              <h3 class="catalog-title">${titulo}</h3>
+              ${estado ? `<span class="catalog-badge">${estado}</span>` : ''}
+            </div>
+            <p class="catalog-desc">${descripcion}</p>
+            <div class="catalog-meta">${tecnica}${dims ? ' · ' + dims : ''}${anio ? ' · ' + anio : ''}</div>
+            ${precio ? `<div class="catalog-price">${precio}</div>` : ''}
+            <div class="catalog-actions">
+              <a class="btn btn-outline view-btn" href="/obra.html?id=${encodeURIComponent(o.id || i)}" aria-label="${titulo}">Ver obra</a>
+              <button class="btn btn-primary reserve-btn" data-reserve data-title="${titulo}">Reservar</button>
+            </div>
+          </div>
+        </article>
       `;
-    }).join('\n');
-
-    container.innerHTML = html;
-
-    // Después de inyectar, enganchar listeners
-    attachCardHandlers(container, catalog);
+    }).join('');
   }
 
-  function attachCardHandlers(container, catalog) {
-    // Reserve buttons: abren WhatsApp con mensaje localizado
-    container.querySelectorAll('[data-reserve]').forEach(btn => {
-      // evitar duplicar listeners
-      btn.removeEventListener('click', onReserveClick);
-      btn.addEventListener('click', onReserveClick);
-    });
+  // Handler global para botones (delegación)
+  function setupDelegation(cfg) {
+    document.addEventListener('click', function (ev) {
+      const btn = ev.target.closest('.reserve-btn, .view-btn, [data-open]');
+      if (!btn) return;
 
-    // data-open -> abrir lightbox (si existe)
-    container.querySelectorAll('[data-open]').forEach(el => {
-      el.removeEventListener('click', onOpenClick);
-      el.addEventListener('click', onOpenClick);
-    });
-  }
+      // Reservar (abre WhatsApp)
+      if (btn.classList.contains('reserve-btn')) {
+        ev.preventDefault();
+        const title = btn.getAttribute('data-title') || btn.dataset.title || '';
+        // intentar leer contacto desde cfg
+        const whatsapp = (cfg && cfg.contact && cfg.contact.whatsapp) || (cfg.whatsapp) || '';
+        const email = (cfg && cfg.contact && cfg.contact.email) || (cfg.email) || '';
+        const waNumber = whatsapp ? whatsapp.replace(/\D/g, '') : (cfg && cfg.contact && cfg.contact.phone) || '';
+        const wa = waNumber ? waNumber.replace(/\D/g, '') : '';
 
-  function onReserveClick(e) {
-    e.preventDefault();
-    const btn = e.currentTarget;
-    const title = btn.dataset.title || (btn.closest && btn.closest('.cat-card') && btn.closest('.cat-card').querySelector('.cat-card__title')?.textContent) || '';
-    const lang = currentLang();
-
-    const templates = {
-      es: `Hola, quiero reservar la obra "${title}". ¿Me indican el proceso? Mi correo: ${CONTACT_EMAIL}`,
-      en: `Hello, I would like to reserve the artwork "${title}". Please let me know the process. My email: ${CONTACT_EMAIL}`,
-      fr: `Bonjour, je souhaite réserver l'œuvre "${title}". Merci de m'indiquer la marche à suivre. Mon email : ${CONTACT_EMAIL}`
-    };
-
-    const message = templates[lang] || templates.es;
-    const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(waUrl, '_blank', 'noopener');
-  }
-
-  function onOpenClick(e) {
-    e.preventDefault();
-    const el = e.currentTarget;
-    const idx = el.getAttribute('data-open');
-    openLightboxByIndex(Number(idx));
-  }
-
-  // LIGHTBOX simple: busca dialog#cat-lightbox
-  function openLightboxByIndex(idx) {
-    if (!window.CATALOG || !Array.isArray(window.CATALOG.obras)) return;
-    const obra = window.CATALOG.obras[idx];
-    if (!obra) return;
-    const lang = currentLang();
-    const titulo = pickField(obra.titulo, lang);
-    const desc = pickField(obra.descripcion, lang);
-    const img = obra.imagen || '';
-
-    const dlg = document.getElementById('cat-lightbox');
-    if (!dlg) {
-      // Si no existe dialog, fallback a abrir la ficha
-      window.location.href = `/obra.html?id=${encodeURIComponent(obra.id || idx)}`;
-      return;
-    }
-
-    // Rellenar contenido
-    const imgEl = dlg.querySelector('.lb__img');
-    const titleEl = dlg.querySelector('.lb__title');
-    const descEl = dlg.querySelector('.lb__desc');
-    const reserveBtn = dlg.querySelector('.lb__reserve');
-
-    if (imgEl) imgEl.src = img;
-    if (titleEl) titleEl.textContent = titulo;
-    if (descEl) descEl.textContent = desc;
-
-    if (reserveBtn) {
-      reserveBtn.onclick = () => {
+        const lang = currentLang();
+        // Mensajes por idioma básicos; si tienes plantillas en textos.json, podríamos leerlas desde window.i18n.texts
         const templates = {
-          es: `Hola, quiero reservar la obra "${titulo}". Mi correo: ${CONTACT_EMAIL}`,
-          en: `Hello, I would like to reserve the artwork "${titulo}". My email: ${CONTACT_EMAIL}`,
-          fr: `Bonjour, je souhaite réserver l'œuvre "${titulo}". Mon email : ${CONTACT_EMAIL}`
+          es: `Hola, quiero reservar la obra "${title}". Mi correo: ${email}`,
+          en: `Hello, I would like to reserve the artwork "${title}". My email: ${email}`,
+          fr: `Bonjour, je souhaite réserver l'œuvre "${title}". Mon email : ${email}`
         };
-        const message = templates[lang] || templates.es;
-        const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
-        window.open(waUrl, '_blank', 'noopener');
-      };
-    }
+        const message = (templates[lang] || templates.es);
+        if (wa) {
+          const url = `https://wa.me/${wa}?text=${encodeURIComponent(message)}`;
+          window.open(url, '_blank', 'noopener');
+        } else {
+          // fallback: si no hay WhatsApp, intentar mailto
+          if (email) {
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent('Reserva: ' + title)}&body=${encodeURIComponent(message)}`;
+          } else {
+            alert('No hay contacto configurado para reservas.');
+          }
+        }
+        return;
+      }
 
-    // Mostrar dialog
-    try {
-      dlg.showModal();
-    } catch (e) {
-      // fallback para navegadores que no soportan <dialog>
-      dlg.style.display = 'block';
-    }
-  }
+      // View (a la ficha)
+      if (btn.classList.contains('view-btn')) {
+        // default behaviour is a link; allow navigation.
+        return;
+      }
 
-  function closeLightbox() {
-    const dlg = document.getElementById('cat-lightbox');
-    if (!dlg) return;
-    try {
-      dlg.close();
-    } catch (e) {
-      dlg.style.display = 'none';
-    }
-  }
-
-  // Inicialización
-  async function init() {
-    // Listener para cerrar lightbox
-    document.addEventListener('click', (e) => {
-      if (e.target.matches('#cat-lightbox .lb__close') || e.target.id === 'cat-lightbox') {
-        closeLightbox();
+      // [data-open] (abrir lightbox si implementado)
+      const opener = ev.target.closest('[data-open]');
+      if (opener) {
+        // si tienes un lightbox/diálogo implementado, abrirlo aquí.
+        // De momento dejamos que el enlace navegue a /obra.html?id=...
+        // Si quieres que abra un dialog la implementación puede añadirse.
+        return;
       }
     });
-
-    // Cargar config
-    let config = null;
-    try {
-      config = await fetchJsonAny(CONFIG_PATHS);
-      window.CATALOG = config; // disponible globalmente si hace falta
-    } catch (e) {
-      warn('No se pudo cargar config.json:', e);
-      config = { obras: [] };
-      window.CATALOG = config;
-    }
-
-    // Render inicial
-    renderCatalog(config, 'catalogo-grid');
-
-    // Re-render al cambiar idioma
-    window.addEventListener('langchange', () => {
-      log('langchange recibido -> re-render catalogo');
-      renderCatalog(window.CATALOG, 'catalogo-grid');
-    });
-
-    log('app inicializada');
   }
 
-  // Ejecutar al DOMContentLoaded
+  // Inicializador
+  async function init() {
+    try {
+      const cfg = await loadConfig();
+      renderCatalog(cfg);
+      setupDelegation(cfg);
+
+      // Re-render cuando cambie el idioma (i18n.js dispatchEvent('langchange'))
+      window.addEventListener('langchange', function () {
+        safeLog('[app] langchange event received - re-rendering catalog');
+        renderCatalog(window.CONFIG || cfg);
+      });
+
+      // También re-render si window.CONFIG cambia (poco probable)
+      safeLog('[app] initialized catalog');
+    } catch (e) {
+      safeWarn('[app] init error', e);
+    }
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
