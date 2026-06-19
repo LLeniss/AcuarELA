@@ -203,3 +203,19 @@
     });
   });
 })();
+
+// Attach WhatsApp reserve handler to catalogue reserve buttons (fallback)
+document.addEventListener('DOMContentLoaded', function () {
+  const WHATSAPP_NUMBER = '573155427152';
+  const email = 'vinapc2611@gmail.com';
+  document.querySelectorAll('.catalog-reserve, .reserve-btn, [data-catalog-reserve]').forEach(btn => {
+    if (btn.dataset.reserveAttached === '1') return;
+    btn.dataset.reserveAttached = '1';
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      const title = btn.dataset.title || btn.getAttribute('data-title') || document.querySelector('[data-i18n="obra_nombre"]')?.textContent || '';
+      const msg = `Hola, quiero reservar la obra "${title}". Mi correo: ${email}`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+  });
+});
