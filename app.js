@@ -1,221 +1,186 @@
-/* =================================================================
-   app.js  ·  TEMA EDITABLE + CATÁLOGO DINÁMICO (desde data/config.json)
-   -----------------------------------------------------------------
-   QUÉ HACE ESTE ARCHIVO (no necesitas editarlo):
-   1) Lee data/config.json
-   2) Aplica la paleta de colores y las fuentes que definiste ahí
-   3) Dibuja el catálogo de obras (N obras) leyendo el JSON
-   4) Abre cada obra ampliada en una ventana (lightbox) con su ficha
-   5) Genera datos estructurados (Schema.org) de cada obra para SEO/IA
+// app.js
+// Construye el catálogo (desde config.json), lightbox y manejo de reservas/WhatsApp.
+// Requiere: config.json en la raíz y data/textos.json en data/
 
-   NOTA IMPORTANTE: la lectura del JSON (fetch) funciona en Cloudflare
-   Pages y en cualquier servidor web. Para PROBAR EN TU COMPUTADORA,
-   abre una terminal en esta carpeta y ejecuta:
-        python3 -m http.server 8000
-   y entra a  http://localhost:8000   (abrir el index.html con doble
-   clic / file:// NO permite leer el JSON por seguridad del navegador).
-   ================================================================= */
+(() => {
+  const DEFAULT_LANG = 'es';
 
-(function () {
-  "use strict";
+  function q(sel){ return document.querySelector(sel); }
+  function qa(sel){ return Array.from(document.querySelectorAll(sel)); }
 
-  // Etiquetas de la ficha del catálogo en cada idioma
-  const LABELS = {
-    es: { tecnica: "Técnica", medidas: "Medidas", anio: "Año", precio: "Precio", ver: "Ver obra", reservar: "Reservar", cerrar: "Cerrar" },
-    en: { tecnica: "Technique", medidas: "Dimensions", anio: "Year", precio: "Price", ver: "View artwork", reservar: "Reserve", cerrar: "Close" },
-    fr: { tecnica: "Technique", medidas: "Dimensions", anio: "Année", precio: "Prix", ver: "Voir l'œuvre", reservar: "Réserver", cerrar: "Fermer" }
-  };
-
-  let CONFIG = null;
-
-  function currentLang() {
-    return document.documentElement.getAttribute("lang") || "es";
-  }
-
-  // Devuelve el texto en el idioma actual, con respaldo en español
-  function pick(obj, lang) {
-    if (!obj) return "";
-    if (typeof obj === "string") return obj;
-    return obj[lang] || obj.es || Object.values(obj)[0] || "";
-  }
-
-  /* ---------- 1) APLICAR TEMA (colores + fuentes) ---------- */
-  function applyTheme(tema) {
-    if (!tema) return;
-    const root = document.documentElement.style;
-    const map = {
-      "--color-primary": tema.colorPrimario,
-      "--color-primary-dark": tema.colorPrimarioOscuro,
-      "--color-accent": tema.colorAcento,
-      "--color-accent-dark": tema.colorAcentoOscuro,
-      "--color-bg": tema.colorFondo,
-      "--color-alt": tema.colorAlterno,
-      "--color-surface": tema.colorSuperficie,
-      "--color-text": tema.colorTexto,
-      "--color-muted": tema.colorTextoSuave,
-      "--color-dark": tema.colorOscuro,
-      "--font-serif": tema.fuenteTitulos,
-      "--font-sans": tema.fuenteCuerpo
-    };
-    Object.keys(map).forEach((k) => { if (map[k]) root.setProperty(k, map[k]); });
-
-    // Cargar Google Fonts personalizadas si se indicó una URL
-    if (tema.googleFontsUrl) {
-      const exists = [...document.querySelectorAll("link[rel=stylesheet]")]
-        .some((l) => l.href === tema.googleFontsUrl);
-      if (!exists) {
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = tema.googleFontsUrl;
-        document.head.appendChild(link);
-      }
+  async function loadConfig(){
+    try {
+      const r = await fetch('config.json', {cache: 'no-store'});
+      return await r.json();
+    } catch(e){
+      console.error('No se pudo cargar config.json', e);
+      return null;
     }
   }
 
-  /* ---------- 2) DIBUJAR CATÁLOGO ---------- */
-  function renderCatalog() {
-    const grid = document.getElementById("catalogo-grid");
-    if (!grid || !CONFIG || !CONFIG.catalogo) return;
-    const lang = currentLang();
-    const L = LABELS[lang] || LABELS.es;
-    const obras = CONFIG.catalogo.obras || [];
+  function createCatalogCard(obra, lang, cfg){
+    const title = (obra.titulo && (obra.titulo[lang] || obra.titulo.es)) || 'Obra';
+    const meta = obra.tecnica || '';
+    const price = obra.precio || '';
+    const status = (obra.estado && (obra.estado[lang] || obra.estado.es)) || '';
 
-    grid.innerHTML = obras.map((o, i) => {
-      const titulo = pick(o.titulo, lang);
-      const estado = pick(o.estado, lang);
-      const alt = titulo + " — " + (o.tecnica || "acuarela") + " de Eduvina Parada Cáceres";
-      return `
-      <article class="cat-card" data-index="${i}">
-        <button class="cat-card__media" type="button" data-open="${i}" aria-label="${L.ver}: ${titulo}">
-          <img src="${o.imagen}" alt="${alt}" loading="lazy" class="cat-card__img" />
-          <span class="cat-card__zoom">${L.ver} ⤢</span>
-        </button>
-        <div class="cat-card__body">
-          <div class="cat-card__head">
-            <h3 class="cat-card__title">${titulo}</h3>
-            <span class="cat-card__badge">${estado}</span>
-          </div>
-          <p class="cat-card__meta">${o.tecnica || ""}${o.dimensiones ? " · " + o.dimensiones : ""}${o.anio ? " · " + o.anio : ""}</p>
-          ${o.precio ? `<p class="cat-card__price">${o.precio}</p>` : ""}
-          <div class="cat-card__actions">
-            <button class="btn btn--ghost-dark btn--sm" type="button" data-open="${i}">${L.ver}</button>
-            <a class="btn btn--accent btn--sm" href="#contacto">${L.reservar}</a>
-          </div>
+    const card = document.createElement('article');
+    card.className = 'cat-card';
+
+    card.innerHTML = `
+      <button class="cat-card__media" aria-label="${title}" data-id="${obra.id}">
+        <img class="cat-card__img" src="${obra.imagen}" alt="${title}" loading="lazy" />
+        <span class="cat-card__zoom">Ver obra</span>
+      </button>
+      <div class="cat-card__body">
+        <div class="cat-card__head">
+          <h3 class="cat-card__title">${title}</h3>
+          <div class="cat-card__badge">${status}</div>
         </div>
-      </article>`;
-    }).join("");
+        <div class="cat-card__meta">${meta}</div>
+        <div class="cat-card__price">${price}</div>
+        <div class="cat-card__actions">
+          <button class="btn btn--ghost-dark btn--sm view-btn" data-id="${obra.id}">Ver obra</button>
+          <a class="btn btn--primary btn--sm collect-btn" data-id="${obra.id}" href="#" target="_blank" rel="noopener">Coleccionar</a>
+        </div>
+      </div>
+    `.trim();
 
-    // Activar apertura de lightbox
-    grid.querySelectorAll("[data-open]").forEach((el) => {
-      el.addEventListener("click", () => openLightbox(parseInt(el.getAttribute("data-open"), 10)));
+    // click en la imagen o ver-btn abre lightbox
+    card.querySelector('.cat-card__media').addEventListener('click', ()=> openLightbox(obra, cfg));
+    card.querySelector('.view-btn').addEventListener('click', ()=> openLightbox(obra, cfg));
+
+    // coleccionar -> whatsapp (se completará en open)
+    return card;
+  }
+
+  function openLightbox(obra, cfg){
+    const lang = document.documentElement.getAttribute('lang') || DEFAULT_LANG;
+    const title = obra.titulo[lang] || obra.titulo.es;
+    const desc = obra.descripcion ? (obra.descripcion[lang] || obra.descripcion.es) : '';
+    const tecnica = obra.tecnica || '';
+    const dimensiones = obra.dimensiones || '';
+    const anio = obra.anio || '';
+    const precio = obra.precio || '';
+
+    const lb = q('#lightbox');
+    q('#lb-img').src = obra.imagen;
+    q('#lb-img').alt = title;
+    q('#lb-title').textContent = title;
+    q('#lb-desc').innerHTML = desc;
+    const ficha = q('#lb-ficha');
+    ficha.innerHTML = `
+      <div><dt>Técnica</dt><dd>${tecnica}</dd></div>
+      <div><dt>Dimensiones</dt><dd>${dimensiones}</dd></div>
+      <div><dt>Año</dt><dd>${anio}</dd></div>
+      <div><dt>Precio</dt><dd>${precio}</dd></div>
+    `;
+
+    // construir link de whatsapp para "Coleccionar"
+    const contact = (cfg && cfg.contact) || {};
+    const waRaw = (contact.whatsapp || '').replace(/\D/g,''); // solo dígitos
+    const phone = waRaw.startsWith('57') ? waRaw : (waRaw ? ('57'+waRaw) : waRaw); // prefijo CO si el número no lo tiene
+    const pageUrl = window.location.href;
+    const text = encodeURIComponent(`${title} · Estoy interesado en coleccionar esta obra. ${pageUrl}`);
+    const waLink = phone ? `https://wa.me/${phone}?text=${text}` : `https://wa.me/?text=${text}`;
+
+    const collectBtn = q('#lb-collect');
+    collectBtn.href = waLink;
+
+    // show dialog
+    try {
+      lb.showModal();
+      lb.setAttribute('aria-hidden', 'false');
+    } catch(e){
+      // fallback si dialog no soportado
+      window.open(obra.imagen, '_blank');
+    }
+  }
+
+  function closeLightbox(){
+    const lb = q('#lightbox');
+    try {
+      lb.close();
+      lb.setAttribute('aria-hidden', 'true');
+    } catch(e){
+      // ignore
+    }
+  }
+
+  // inicializa catálogo
+  async function initCatalog(){
+    const cfg = await loadConfig();
+    if (!cfg) return;
+    const grid = q('#catalogo-grid');
+    grid.innerHTML = '';
+
+    // asegurar que exista config.catalogo.obras
+    const obras = (cfg.catalogo && cfg.catalogo.obras) || [];
+    const lang = document.documentElement.getAttribute('lang') || DEFAULT_LANG;
+
+    obras.forEach(obra => {
+      // Para obras marcadas "En progreso" (o similar), override badge text si existe traducción
+      if (obra.estado && typeof obra.estado === 'string') {
+        // nada
+      }
+      const card = createCatalogCard(obra, lang, cfg);
+      grid.appendChild(card);
     });
-  }
 
-  /* ---------- 3) LIGHTBOX (ventana de obra ampliada) ---------- */
-  function openLightbox(index) {
-    const dlg = document.getElementById("cat-lightbox");
-    if (!dlg || !CONFIG) return;
-    const lang = currentLang();
-    const L = LABELS[lang] || LABELS.es;
-    const o = CONFIG.catalogo.obras[index];
-    if (!o) return;
+    // asignar enlaces "Coleccionar" en cada tarjeta ahora que tenemos cfg
+    qa('.collect-btn').forEach(btn => {
+      const id = btn.getAttribute('data-id');
+      const obra = obras.find(o => o.id === id);
+      if (!obra) return;
+      const title = (obra.titulo && (obra.titulo[document.documentElement.getAttribute('lang')] || obra.titulo.es)) || obra.id;
+      const pageUrl = window.location.href;
+      const phoneRaw = (cfg.contact && cfg.contact.whatsapp) ? (cfg.contact.whatsapp.replace(/\D/g,'')) : '';
+      const phone = phoneRaw.startsWith('57') ? phoneRaw : (phoneRaw? '57'+phoneRaw : '');
+      const text = encodeURIComponent(`${title} · Estoy interesado en coleccionar esta obra. ${pageUrl}`);
+      const waLink = phone ? `https://wa.me/${phone}?text=${text}` : `https://wa.me/?text=${text}`;
+      btn.href = waLink;
+    });
 
-    const titulo = pick(o.titulo, lang);
-    const desc = pick(o.descripcion, lang);
-    const estado = pick(o.estado, lang);
-
-    dlg.querySelector(".lb__img").src = o.imagen;
-    dlg.querySelector(".lb__img").alt = titulo;
-    dlg.querySelector(".lb__title").textContent = titulo;
-    dlg.querySelector(".lb__desc").textContent = desc;
-    dlg.querySelector(".lb__ficha").innerHTML = `
-      ${o.tecnica ? `<div><dt>${L.tecnica}</dt><dd>${o.tecnica}</dd></div>` : ""}
-      ${o.dimensiones ? `<div><dt>${L.medidas}</dt><dd>${o.dimensiones}</dd></div>` : ""}
-      ${o.anio ? `<div><dt>${L.anio}</dt><dd>${o.anio}</dd></div>` : ""}
-      ${o.precio ? `<div><dt>${L.precio}</dt><dd>${o.precio}</dd></div>` : ""}
-      <div><dt>&nbsp;</dt><dd><span class="cat-card__badge">${estado}</span></dd></div>`;
-    dlg.querySelector(".lb__reserve").textContent = L.reservar;
-    dlg.querySelector(".lb__close").setAttribute("aria-label", L.cerrar);
-
-    if (typeof dlg.showModal === "function") dlg.showModal();
-    else dlg.setAttribute("open", "");
-  }
-
-  function setupLightboxClose() {
-    const dlg = document.getElementById("cat-lightbox");
-    if (!dlg) return;
-    dlg.querySelector(".lb__close").addEventListener("click", () => dlg.close());
-    // Cerrar al hacer clic fuera del contenido
-    dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
-  }
-
-  /* ---------- 4) SCHEMA.ORG del catálogo (SEO + IA) ---------- */
-  function injectCatalogSchema() {
-    if (!CONFIG || !CONFIG.catalogo) return;
-    const obras = CONFIG.catalogo.obras || [];
-    const itemList = {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "Catálogo de obras de Eduvina Parada Cáceres",
-      "itemListElement": obras.map((o, i) => ({
-        "@type": "ListItem",
-        "position": i + 1,
-        "item": {
-          "@type": "VisualArtwork",
-          "name": pick(o.titulo, "es"),
-          "description": pick(o.descripcion, "es"),
-          "artform": "Acuarela",
-          "artMedium": o.tecnica || "Acuarela",
-          "dateCreated": o.anio || "",
-          "creator": { "@type": "Person", "name": "Eduvina Parada Cáceres" },
-          "image": o.imagen
-        }
-      }))
-    };
-    const s = document.createElement("script");
-    s.type = "application/ld+json";
-    s.textContent = JSON.stringify(itemList);
-    document.head.appendChild(s);
-  }
-
-  /* ---------- ARRANQUE ---------- */
-  function init(config) {
-    CONFIG = config;
-    applyTheme(config.tema);
-    renderCatalog();
-    injectCatalogSchema();
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    setupLightboxClose();
-    fetch("data/config.json", { cache: "no-store" })
-      .then((r) => r.json())
-      .then(init)
-      .catch((err) => {
-        console.warn("[catálogo] No se pudo leer data/config.json. " +
-          "Si abriste el archivo con doble clic (file://), usa un servidor local: " +
-          "python3 -m http.server  → http://localhost:8000", err);
+    // reserva rápida para obra principal
+    const reservaMain = q('#reserve-obra-main');
+    if (reservaMain) {
+      reservaMain.addEventListener('click', () => {
+        const phoneRaw = (cfg.contact && cfg.contact.whatsapp) ? (cfg.contact.whatsapp.replace(/\D/g,'')) : '';
+        const phone = phoneRaw.startsWith('57') ? phoneRaw : (phoneRaw? '57'+phoneRaw : '');
+        const text = encodeURIComponent(`Hola, quiero reservar la obra principal: ${document.querySelector('[data-i18n=\"obra_nombre\"]').textContent}.`);
+        const waLink = phone ? `https://wa.me/${phone}?text=${text}` : `https://wa.me/?text=${text}`;
+        window.open(waLink, '_blank');
       });
+    }
 
-    // Redibujar el catálogo cuando cambie el idioma (evento de i18n.js)
-    window.addEventListener("langchange", function () {
-      if (CONFIG) renderCatalog();
+    // reserve compact
+    const reserveCompact = q('#reserve-obra-compact');
+    if (reserveCompact) {
+      reserveCompact.addEventListener('click', () => {
+        const phoneRaw = (cfg.contact && cfg.contact.whatsapp) ? (cfg.contact.whatsapp.replace(/\D/g,'')) : '';
+        const phone = phoneRaw.startsWith('57') ? phoneRaw : (phoneRaw? '57'+phoneRaw : '');
+        const text = encodeURIComponent(`Hola, quiero reservar información sobre la obra.`);
+        const waLink = phone ? `https://wa.me/${phone}?text=${text}` : `https://wa.me/?text=${text}`;
+        window.open(waLink, '_blank');
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await initCatalog();
+
+    // Lightbox close
+    const lbClose = q('#lb-close');
+    if (lbClose) lbClose.addEventListener('click', closeLightbox);
+
+    // cerrar con ESC
+    document.addEventListener('keydown', (e)=> {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // re-render del catálogo cuando cambia el idioma (i18n.js dispara 'langchange')
+    window.addEventListener('langchange', async () => {
+      await initCatalog();
     });
   });
 })();
-
-// Attach WhatsApp reserve handler to catalogue reserve buttons (fallback)
-document.addEventListener('DOMContentLoaded', function () {
-  const WHATSAPP_NUMBER = '573155427152';
-  const email = 'vinapc2611@gmail.com';
-  document.querySelectorAll('.catalog-reserve, .reserve-btn, [data-catalog-reserve]').forEach(btn => {
-    if (btn.dataset.reserveAttached === '1') return;
-    btn.dataset.reserveAttached = '1';
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      const title = btn.dataset.title || btn.getAttribute('data-title') || document.querySelector('[data-i18n="obra_nombre"]')?.textContent || '';
-      const msg = `Hola, quiero reservar la obra "${title}". Mi correo: ${email}`;
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
-    });
-  });
-});
