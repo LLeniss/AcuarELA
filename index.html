@@ -49,7 +49,6 @@
 
   <!-- ==== -->
   <!-- SCHEMA.ORG · Datos estructurados (Artista + Evento + Obra)     -->
-  <!-- EDITA los valores entre [ ] con los datos reales.             -->
   <!-- ==== -->
   <script type="application/ld+json">
   {
@@ -97,7 +96,7 @@
   }
   </script>
 
-  <!-- SCHEMA.ORG · FAQ (mejora la visibilidad en Google y en buscadores con IA) -->
+  <!-- SCHEMA.ORG · FAQ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -130,9 +129,7 @@
 
 <body>
 
-  <!-- ==== -->
-  <!-- HEADER · navegación + selector de idioma                    -->
-  <!-- ==== -->
+  <!-- HEADER · navegación + selector de idioma -->
   <header class="site-header">
     <nav class="nav container" aria-label="Navegación principal">
       <a href="#inicio" class="nav__logo">Eduvina Parada Cáceres</a>
@@ -146,7 +143,6 @@
       </ul>
 
       <div class="nav__right">
-        <!-- SELECTOR DE IDIOMA · para añadir uno, copia un botón y cambia data-lang -->
         <div class="lang-switch" role="group" aria-label="Selector de idioma">
           <button class="lang-switch__btn" data-lang="es" aria-pressed="true">ES</button>
           <button class="lang-switch__btn" data-lang="en" aria-pressed="false">EN</button>
@@ -159,11 +155,8 @@
 
   <main>
 
-    <!-- ==== -->
-    <!-- 1. HERO · foto potente + título + 3 CTAs                    -->
-    <!-- ==== -->
+    <!-- HERO -->
     <section class="hero" id="inicio">
-      <!-- EDITAR IMAGEN: reemplaza images/hero.jpg por la foto de la obra o de la artista. -->
       <div class="hero__bg" style="background-image: url('images/hero.jpg');" role="img" aria-label="Obra de Eduvina Parada Cáceres"></div>
       <div class="hero__overlay"></div>
       <div class="hero__content container">
@@ -180,13 +173,10 @@
       </div>
     </section>
 
-    <!-- ==== -->
-    <!-- 2. HISTORIA BREVE (3 párrafos)                    -->
-    <!-- ==== -->
+    <!-- HISTORIA -->
     <section class="historia section" id="historia">
       <div class="container historia__grid">
         <div class="historia__media">
-          <!-- EDITAR IMAGEN: foto de la artista en images/artista.jpg (vertical) -->
           <img src="images/artista.jpg" alt="Retrato de Eduvina Parada Cáceres, artista de acuarela" loading="lazy" class="historia__img" />
         </div>
         <div class="historia__text">
@@ -199,9 +189,7 @@
       </div>
     </section>
 
-    <!-- ==== -->
-    <!-- 3. LA OBRA · ficha técnica + precio/disponibilidad          -->
-    <!-- ==== -->
+    <!-- LA OBRA -->
     <section class="obra-section section section--alt" id="obra">
       <div class="container">
         <div class="section__head">
@@ -212,13 +200,11 @@
 
         <div class="obra-card">
           <div class="obra-card__media">
-            <!-- EDITAR IMAGEN: la obra principal en images/obra-1.jpg -->
             <img src="images/obra-1.jpg" alt="Obra de Eduvina Parada Cáceres" loading="lazy" class="obra-card__img" />
           </div>
           <div class="obra-card__body">
             <h3 class="obra-card__title" data-i18n="obra_nombre">[TÍTULO DE LA OBRA]</h3>
 
-            <!-- Ficha técnica -->
             <dl class="ficha">
               <div class="ficha__row">
                 <dt data-i18n="obra_ficha_tecnica_label">Técnica</dt>
@@ -250,10 +236,7 @@
       </div>
     </section>
 
-    <!-- ==== -->
-    <!-- 3b. CATÁLOGO DE OBRAS · se genera desde data/config.json     -->
-    <!--     (estilo galería de museo · N obras · clic para ampliar)  -->
-    <!-- ==== -->
+    <!-- CATÁLOGO -->
     <section class="catalogo section" id="catalogo">
       <div class="container">
         <div class="section__head">
@@ -262,31 +245,13 @@
           <p class="section__lead" data-i18n="catalogo_lead">Cada acuarela es una pieza única. Explóralas, ábrelas para ver el detalle y resérvalas. El catálogo se ampliará con cada nueva obra.</p>
         </div>
 
-        <!-- El contenido se inyecta desde app.js leyendo data/config.json.
-             Para AÑADIR O EDITAR OBRAS, edita data/config.json (sección "catalogo"). -->
         <div class="catalogo__grid" id="catalogo-grid">
           <noscript>Activa JavaScript para ver el catálogo de obras.</noscript>
         </div>
       </div>
     </section>
 
-    <!-- Ventana ampliada (lightbox) del catálogo · usa <dialog> nativo -->
-    <dialog class="cat-lightbox" id="cat-lightbox" aria-label="Obra ampliada">
-      <button class="lb__close" type="button" aria-label="Cerrar">×</button>
-      <div class="lb__inner">
-        <div class="lb__media"><img class="lb__img" src="" alt="" /></div>
-        <div class="lb__body">
-          <h3 class="lb__title"></h3>
-          <p class="lb__desc"></p>
-          <dl class="lb__ficha"></dl>
-          <a class="btn btn--accent btn--lg btn--block lb__reserve" href="#contacto">Reservar</a>
-        </div>
-      </div>
-    </dialog>
-
-    <!-- ==== -->
-    <!-- 4. CÓMO AYUDAR · 3 formas (donar / comprar / compartir)     -->
-    <!-- ==== -->
+    <!-- CÓMO AYUDAR -->
     <section class="ayudar section" id="ayudar">
       <div class="container">
         <div class="section__head">
@@ -318,9 +283,7 @@
       </div>
     </section>
 
-    <!-- ==== -->
-    <!-- 5. MEDIOS DE DONACIÓN                    -->
-    <!-- ==== -->
+    <!-- MEDIOS DE DONACIÓN (solo Bre-B) -->
     <section class="donar section section--cta" id="donar">
       <div class="container">
         <div class="section__head">
@@ -330,40 +293,18 @@
         </div>
 
         <div class="donaciones__grid">
-          <!-- EDITAR: datos reales de cada cuenta -->
-          <div class="donacion-card">
-            <span class="donacion-card__icon">📱</span>
-            <h3 class="donacion-card__title" data-i18n="donar_nequi_title">Nequi</h3>
-            <p class="donacion-card__detail" data-i18n-html="donar_nequi_num">Número: <strong>[300 000 0000]</strong></p>
-            <p class="donacion-card__name" data-i18n="donar_nequi_name">A nombre de [Nombre completo]</p>
-          </div>
-          <div class="donacion-card">
-            <span class="donacion-card__icon">💜</span>
-            <h3 class="donacion-card__title" data-i18n="donar_davi_title">Daviplata</h3>
-            <p class="donacion-card__detail" data-i18n-html="donar_davi_num">Número: <strong>[300 000 0000]</strong></p>
-            <p class="donacion-card__name" data-i18n="donar_davi_name">A nombre de [Nombre completo]</p>
-          </div>
-          <div class="donacion-card">
-            <span class="donacion-card__icon">🏦</span>
-            <h3 class="donacion-card__title" data-i18n="donar_banco_title">Transferencia bancaria</h3>
-            <p class="donacion-card__detail" data-i18n="donar_banco_l1">[Banco] · Cuenta [Ahorros]</p>
-            <p class="donacion-card__detail" data-i18n-html="donar_banco_l2">N.º <strong>[000-0000-00]</strong></p>
-            <p class="donacion-card__name" data-i18n="donar_banco_name">A nombre de [Nombre completo]</p>
-          </div>
+          <!-- SOLO Bre-B -->
           <div class="donacion-card donacion-card--highlight">
-            <span class="donacion-card__icon">🌍</span>
-            <h3 class="donacion-card__title" data-i18n="donar_gfm_title">GoFundMe</h3>
-            <p class="donacion-card__detail" data-i18n="donar_gfm_text">Dona con tarjeta desde cualquier país.</p>
-            <!-- EDITAR: enlace a tu campaña de GoFundMe -->
-            <a href="[https://www.gofundme.com/tu-campana]" target="_blank" rel="noopener" class="btn btn--light btn--sm" data-i18n="donar_gfm_btn">Donar en GoFundMe</a>
+            <span class="donacion-card__icon">📱</span>
+            <h3 class="donacion-card__title" data-i18n="donar_breb_title">Bre-B</h3>
+            <p class="donacion-card__detail" data-i18n-html="donar_breb_num">Número: <strong>315 542 7152</strong></p>
+            <p class="donacion-card__name" data-i18n="donar_breb_name">A nombre de Eduvina Parada</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==== -->
-    <!-- 6. DESTINO DE FONDOS · transparencia                    -->
-    <!-- ==== -->
+    <!-- DESTINO DE FONDOS -->
     <section class="fondos section" id="fondos">
       <div class="container">
         <div class="section__head">
@@ -396,9 +337,7 @@
       </div>
     </section>
 
-    <!-- ==== -->
-    <!-- 7. ESTO RECIÉN EMPIEZA · continuidad del proyecto          -->
-    <!-- ==== -->
+    <!-- FUTURO -->
     <section class="futuro section section--alt" id="futuro">
       <div class="container futuro__inner">
         <span class="eyebrow" data-i18n="futuro_eyebrow">Esto recién empieza</span>
@@ -409,9 +348,7 @@
       </div>
     </section>
 
-    <!-- ==== -->
-    <!-- 8. EVENTO DE MAÑANA                    -->
-    <!-- ==== -->
+    <!-- EVENTO -->
     <section class="evento section" id="evento">
       <div class="container">
         <div class="section__head">
@@ -419,7 +356,7 @@
           <h2 class="section__title" data-i18n="evento_title">Su primera exposición pública</h2>
           <p class="section__lead" data-i18n="evento_lead">Una muestra colectiva...</p>
         </div>
-        <!-- EDITAR: datos reales del evento -->
+
         <div class="evento-info">
           <div class="evento-info__item">
             <span class="evento-info__label" data-i18n="evento_fecha_label">📅 Fecha</span>
@@ -441,16 +378,14 @@
       </div>
     </section>
 
-    <!-- ==== -->
-    <!-- 9. FAQ CORTA                    -->
-    <!-- ==== -->
+    <!-- FAQ -->
     <section class="faq section section--alt" id="faq">
       <div class="container faq__inner">
         <div class="section__head">
           <span class="eyebrow" data-i18n="faq_eyebrow">Preguntas frecuentes</span>
           <h2 class="section__title" data-i18n="faq_title">Resolvemos tus dudas</h2>
         </div>
-        <!-- Acordeón nativo con <details> (cero JavaScript) -->
+
         <details class="faq-item">
           <summary data-i18n="faq_q1">¿Cómo reservo o compro la obra?</summary>
           <p data-i18n="faq_a1">Escríbenos por WhatsApp...</p>
@@ -470,15 +405,12 @@
       </div>
     </section>
 
-    <!-- ==== -->
-    <!-- CONTACTO                    -->
-    <!-- ==== -->
+    <!-- CONTACTO -->
     <section class="contacto section section--cta" id="contacto">
       <div class="container contacto__inner">
         <span class="eyebrow eyebrow--light" data-i18n="contacto_eyebrow">Contacto</span>
         <h2 class="section__title section__title--light" data-i18n="contacto_title">¿Hablamos?</h2>
         <p class="section__lead section__lead--light" data-i18n="contacto_lead">Para reservas, compras o cualquier pregunta...</p>
-        <!-- EDITAR: datos de contacto reales -->
         <div class="contacto__links">
           <a href="mailto:[correo@ejemplo.com]" class="contacto__link">
             <span class="contacto__link-label" data-i18n="contacto_email_label">Correo</span>
@@ -498,9 +430,7 @@
 
   </main>
 
-  <!-- ==== -->
-  <!-- PIE DE PÁGINA                    -->
-  <!-- ==== -->
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container site-footer__inner">
       <p class="site-footer__brand">Eduvina Parada Cáceres</p>
@@ -510,7 +440,6 @@
   </footer>
 
   <!-- JavaScript mínimo: motor de idiomas (i18n) + tema/catálogo (app) -->
- 
   <script src="app.js"></script>
   <script src="i18n.js"></script>
 </body>
