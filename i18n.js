@@ -1,19 +1,21 @@
-/ i18n.js
- *  Intenta cargar data/textos.json (cache-busted). Si falla, usa TRANSLATIONS embebidas.
- *  Soporta atributos: data-i18n (textContent), data-i18n-html (innerHTML), data-i18n-attr ("attr:key")
- */ 
+/**
+ * i18n.js - carga data/textos.json?t=TIMESTAMP (cache-busted) y aplica traducciones.
+ * - Soporta data-i18n, data-i18n-html, data-i18n-attr ("attr:key").
+ * - Maneja selector de idioma [data-lang].
+ * - Añade handlers para:
+ *    - [data-reserve] -> abre WhatsApp con mensaje pre-llenado (usa data-reserve-title-key para título)
+ *    - [data-share] -> Web Share o fallback
+ */
 
 (function () {
   'use strict';
 
-  // Número de WhatsApp en formato internacional sin + (Colombia)
-  const WHATSAPP_NUMBER = '573155427152';
+  const WHATSAPP_NUMBER = '573155427152'; // formato internacional (sin +)
 
-  // Fallback translations (mínimas). Puedes ampliarlas en data/textos.json.
   const TRANSLATIONS = {
     "es": {
       "meta_title": "Eduvina Parada Cáceres · Su primera obra",
-      "meta_desc": "Eduvina Parada Cáceres presenta su primera acuarela. Aporta para su cuidado y su arte.",
+      "meta_desc": "Eduvina Parada —Vina— presenta su primera acuarela. Tu aporte ayuda a financiar su cuidado y su arte.",
       "site_name": "Eduvina Parada Cáceres",
       "nav_historia": "Historia",
       "nav_obra": "La obra",
@@ -71,17 +73,21 @@
       "fondos_4_text": "Apoyo para alimentación, transporte y cuidados básicos.",
       "evento_title": "Exposición pública",
       "evento_fecha_label": "Fecha:",
-      "evento_fecha": "19 de Junio de 2026",
+      "evento_fecha": "Viernes 19 de junio de 2026",
       "evento_lugar_label": "Lugar:",
-      "evento_lugar": "Museo Casa Galán, Bucaramanga",
+      "evento_lugar": "Museo Casa Galán · Calle 36 # 24-74, Bucaramanga",
       "contacto_title": "¿Hablamos?",
-      "whatsapp_reserve_msg": "Hola, quiero reservar la obra \"{title}\". ¿Me indican el proceso, por favor?",
+      "contact_email": "vinapc2611@gmail.com",
+      "contact_mail": "mailto:vinapc2611@gmail.com",
+      "contact_whatsapp_text": "315 542 7152",
+      "contact_whatsapp_href": "https://wa.me/573155427152",
+      "whatsapp_reserve_msg": "Hola, quiero reservar la obra \"{title}\". ¿Me indican el proceso, por favor? Mi correo: vinapc2611@gmail.com",
       "whatsapp_contact_msg": "Hola, deseo información sobre la obra y el evento. Muchas gracias.",
       "footer_copy": "Hecho con cariño y esperanza."
     },
     "en": {
       "meta_title": "Eduvina Parada Cáceres · Her first artwork",
-      "meta_desc": "Eduvina Parada Cáceres presents her first watercolor. Support her care and art.",
+      "meta_desc": "Eduvina Parada —Vina— presents her first watercolor. Your contribution helps fund her care and art.",
       "site_name": "Eduvina Parada Cáceres",
       "nav_historia": "Story",
       "nav_obra": "Artwork",
@@ -96,8 +102,8 @@
       "hero_btn_reservar": "🖼 Reserve / buy",
       "historia_title": "An artist who found her voice in color",
       "historia_p1": "Eduvina Parada Cáceres —Vina— is an artist from Bucaramanga. In her watercolors, materials and emotions meet to create light and moments of serenity.",
-      "historia_p2": "She lives with bulbar ALS, a condition that initially affects speech and swallowing and progressively weakens physical abilities. However, she retains her cognitive abilities intact; painting is her way of communicating now that her body and words encounter limits.",
-      "historia_p3": "On June 19, 2026 her work is exhibited publicly for the first time. Each watercolor that finds a home makes it possible for Vina to keep painting and fund the care she needs.",
+      "historia_p2": "She lives with bulbar ALS, a condition that initially affects speech and swallowing and progressively weakens physical abilities. However, she retains her cognitive abilities; painting is her way of communicating now that her body and words encounter limits.",
+      "historia_p3": "On June 19, 2026 her work is exhibited publicly for the first time. Each watercolor that finds a home makes it possible for Vina to keep painting and funding the care she needs.",
       "obra_title": "Her first watercolor for sale",
       "obra_nombre": "First watercolor",
       "obra_ficha_tecnica_label": "Technique:",
@@ -139,17 +145,21 @@
       "fondos_4_text": "Support for food, transport and basic care.",
       "evento_title": "Public exhibition",
       "evento_fecha_label": "Date:",
-      "evento_fecha": "June 19, 2026",
+      "evento_fecha": "Friday, June 19, 2026",
       "evento_lugar_label": "Location:",
-      "evento_lugar": "Museo Casa Galán, Bucaramanga",
+      "evento_lugar": "Museo Casa Galán · Calle 36 # 24-74, Bucaramanga",
       "contacto_title": "Let's talk",
-      "whatsapp_reserve_msg": "Hello, I would like to reserve the artwork \"{title}\". Could you please tell me the process?",
+      "contact_email": "vinapc2611@gmail.com",
+      "contact_mail": "mailto:vinapc2611@gmail.com",
+      "contact_whatsapp_text": "315 542 7152",
+      "contact_whatsapp_href": "https://wa.me/573155427152",
+      "whatsapp_reserve_msg": "Hello, I would like to reserve the artwork \"{title}\". Could you please tell me the process? My email: vinapc2611@gmail.com",
       "whatsapp_contact_msg": "Hello, I want information about the artwork and the event. Thank you.",
       "footer_copy": "Made with care and hope."
     },
     "fr": {
       "meta_title": "Eduvina Parada Cáceres · Sa première œuvre",
-      "meta_desc": "Eduvina Parada Cáceres présente sa première aquarelle. Soutenez ses soins et son art.",
+      "meta_desc": "Eduvina Parada —Vina— présente sa première aquarelle. Votre contribution aide à financer ses soins et son art.",
       "site_name": "Eduvina Parada Cáceres",
       "nav_historia": "Histoire",
       "nav_obra": "Œuvre",
@@ -164,7 +174,7 @@
       "hero_btn_reservar": "🖼 Réserver / acheter",
       "historia_title": "Une artiste qui a trouvé sa voix dans la couleur",
       "historia_p1": "Eduvina Parada Cáceres —Vina— est une artiste de Bucaramanga. Dans ses aquarelles, matériaux et émotions se rencontrent pour créer lumière et instants de sérénité.",
-      "historia_p2": "Elle vit avec la SLA bulbaire, une affection qui affecte d'abord la parole et la déglutition et qui affaiblit progressivement les capacités physiques. Cependant, elle conserve intactes ses capacités cognitives ; peindre est son moyen de communiquer maintenant que son corps et ses mots trouvent leurs limites.",
+      "historia_p2": "Elle vit avec la SLA bulbaire, une affection progressive qui affecte d'abord la parole et la déglutition et qui affaiblit progressivement les capacités physiques. Cependant, elle conserve intactes ses capacités cognitives ; peindre est son moyen de communiquer maintenant que son corps et ses mots trouvent leurs limites.",
       "historia_p3": "Le 19 juin 2026, son travail est exposé publiquement pour la première fois. Chaque aquarelle qui trouve un foyer permet à Vina de continuer à peindre et à financer les soins nécessaires.",
       "obra_title": "Sa première aquarelle à la vente",
       "obra_nombre": "Première aquarelle",
@@ -203,49 +213,46 @@
       "fondos_2_text": "Dispositifs pour qu'elle puisse communiquer et être entendue.",
       "fondos_3_title": "Matériaux d'art",
       "fondos_3_text": "Aquarelles, papier et fournitures pour continuer à créer.",
-      "fondos_4_title": "Soin quotidien",
+      "fondos_4_title": "Soins quotidiens",
       "fondos_4_text": "Soutien pour alimentation, transport et soins de base.",
       "evento_title": "Exposition publique",
       "evento_fecha_label": "Date :",
       "evento_fecha": "19 juin 2026",
       "evento_lugar_label": "Lieu :",
-      "evento_lugar": "Museo Casa Galán, Bucaramanga",
+      "evento_lugar": "Museo Casa Galán · Calle 36 # 24-74, Bucaramanga",
       "contacto_title": "Contact",
-      "whatsapp_reserve_msg": "Bonjour, je souhaite réserver l'œuvre \"{title}\". Pouvez-vous m'indiquer la procédure ?",
+      "contact_email": "vinapc2611@gmail.com",
+      "contact_mail": "mailto:vinapc2611@gmail.com",
+      "contact_whatsapp_text": "315 542 7152",
+      "contact_whatsapp_href": "https://wa.me/573155427152",
+      "whatsapp_reserve_msg": "Bonjour, je souhaite réserver l'œuvre \"{title}\". Pouvez-vous m'indiquer la procédure ? Mon email : vinapc2611@gmail.com",
       "whatsapp_contact_msg": "Bonjour, je souhaite des informations sur l'œuvre et l'événement. Merci.",
       "footer_copy": "Fait avec soin et espoir."
     }
   };
 
-  // Current translations loaded from JSON or fallback
   let translations = TRANSLATIONS;
 
-  // Helper: safe get translation
   function t(lang, key) {
     return (translations[lang] && translations[lang][key]) || (TRANSLATIONS['es'] && TRANSLATIONS['es'][key]) || '';
   }
 
-  // Apply translations to DOM
   function applyTranslations(lang) {
     try {
-      // simple text nodes
       document.querySelectorAll('[data-i18n]').forEach(function (el) {
         const key = el.getAttribute('data-i18n');
         const v = t(lang, key);
         if (v !== '') el.textContent = v;
       });
 
-      // html content
       document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
         const key = el.getAttribute('data-i18n-html');
         const v = t(lang, key);
         if (v !== '') el.innerHTML = v;
       });
 
-      // attributes: format data-i18n-attr="attrName:key"
       document.querySelectorAll('[data-i18n-attr]').forEach(function (el) {
         const spec = el.getAttribute('data-i18n-attr');
-        // can be multiple separated by ;
         spec.split(';').forEach(function (pair) {
           const parts = pair.split(':');
           if (parts.length === 2) {
@@ -257,7 +264,6 @@
         });
       });
 
-      // meta title and desc
       const mt = t(lang, 'meta_title');
       if (mt) document.title = mt;
       const md = t(lang, 'meta_desc');
@@ -265,23 +271,27 @@
         document.querySelectorAll('meta[name="description"]').forEach(m => m.setAttribute('content', md));
       }
 
-      // store chosen language
-      localStorage.setItem('lang', lang);
+      // set contact mail/href & whatsapp link if present (fallbacks already handled via data-i18n-attr)
+      document.querySelectorAll('[data-reserve]').forEach(function (btn) {
+        // if element has data-reserve-title-key, set data-title to translated title
+        const k = btn.getAttribute('data-reserve-title-key');
+        if (k) {
+          const title = t(lang, k) || '';
+          btn.setAttribute('data-title', title);
+        }
+      });
 
-      // update reserve buttons (set title placeholder if available)
       attachReserveHandlers(lang);
-
-      console.log(`[i18n] Applied translations for "${lang}"`);
+      localStorage.setItem('lang', lang);
+      console.log('[i18n] Applied translations for', lang);
     } catch (err) {
       console.error('[i18n] Error applying translations', err);
     }
   }
 
-  // Attach click handlers for reserve buttons that open WhatsApp with prefilled message
   function attachReserveHandlers(lang) {
     const msgTemplate = t(lang, 'whatsapp_reserve_msg') || TRANSLATIONS['es']['whatsapp_reserve_msg'];
     document.querySelectorAll('[data-reserve]').forEach(function (btn) {
-      // read data-title (if presence will substitute {title})
       btn.removeEventListener('click', reserveHandler);
       btn.addEventListener('click', reserveHandler);
     });
@@ -291,7 +301,84 @@
       const btn = ev.currentTarget;
       const title = (btn.getAttribute('data-title') || '').trim();
       let msg = msgTemplate.replace('{title}', title || '');
-      // fallback language formatting if empty
       msg = msg.replace(/\s+/g, ' ').trim();
       const encoded = encodeURIComponent(msg);
-      const url = `https://
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+      window.open(url, '_blank');
+    }
+
+    document.querySelectorAll('[data-share]').forEach(function (el) {
+      el.removeEventListener('click', shareHandler);
+      el.addEventListener('click', shareHandler);
+    });
+
+    function shareHandler(ev) {
+      ev.preventDefault();
+      const langMsg = t(lang, 'hero_subtitle') || '';
+      const shareData = {
+        title: document.title,
+        text: langMsg,
+        url: location.href
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        window.prompt('Copy this link to share', location.href);
+      }
+    }
+  }
+
+  function initLangSwitcher(defaultLang) {
+    const stored = localStorage.getItem('lang');
+    const initial = stored || defaultLang || 'es';
+    document.querySelectorAll('[data-lang]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const chosen = btn.getAttribute('data-lang');
+        setActiveLangButton(chosen);
+        applyTranslations(chosen);
+      });
+    });
+    setActiveLangButton(initial);
+    applyTranslations(initial);
+  }
+
+  function setActiveLangButton(lang) {
+    document.querySelectorAll('[data-lang]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+  }
+
+  function loadTranslations() {
+    const url = 'data/textos.json?t=' + Date.now();
+    fetch(url, { cache: 'no-store' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        translations = data;
+        console.log('[i18n] Loaded data/textos.json (ok)');
+        initLangSwitcher(detectBrowserLang());
+      })
+      .catch(function (err) {
+        console.warn('[i18n] Using fallback translations (could not load data/textos.json):', err);
+        translations = TRANSLATIONS;
+        initLangSwitcher(detectBrowserLang());
+      });
+  }
+
+  function detectBrowserLang() {
+    const stored = localStorage.getItem('lang');
+    if (stored) return stored;
+    const nav = navigator.language || navigator.userLanguage || 'es';
+    const lang = nav.toLowerCase().indexOf('fr') === 0 ? 'fr' : (nav.toLowerCase().indexOf('en') === 0 ? 'en' : 'es');
+    return lang;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadTranslations);
+  } else {
+    loadTranslations();
+  }
+
+})();
