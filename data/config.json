@@ -1,8 +1,4 @@
 {
-  "site": {
-    "name": "Vina Acuarela",
-    "year": 2026
-  },
   "obras": [
     {
       "id": "obra-1",
@@ -13,65 +9,69 @@
         "fr": "Harmonie dans la nature"
       },
       "descripcion": {
-        "es": "Una pieza que explora el ritmo de las hojas y la luz.",
-        "en": "A piece exploring the rhythm of leaves and light.",
-        "fr": "Une pièce qui explore le rythme des feuilles et de la lumière."
+        "es": "Acuarela original que explora matices del paisaje y la luz.",
+        "en": "Original watercolor exploring landscape hues and light.",
+        "fr": "Aquarelle originale explorant les nuances du paysage et la lumière."
       },
-      "tecnica": "Acuarela sobre papel 300gsm",
+      "tecnica": "Acuarela sobre papel 300GSM",
       "dimensiones": "25 × 20 cm",
-      "anio": 2026,
-      "precio": "COP 350.000",
+      "anio": "2026",
+      "precio": "$350.000 COP",
       "estado": {
-        "es": "Disponible",
-        "en": "Available",
-        "fr": "Disponible"
+        "es":"Disponible - pieza única",
+        "en":"Available - unique piece",
+        "fr":"Disponible - pièce unique"
       }
     },
     {
       "id": "obra-2",
-      "imagen": "images/obra-2.jpg",
+      "imagen": "images/inprogress-1.jpg",
       "titulo": {
-        "es": "Flores del tiempo",
-        "en": "Flowers of Time",
-        "fr": "Fleurs du temps"
+        "es": "Estudio de pétalos (en progreso)",
+        "en": "Study of Petals (in progress)",
+        "fr": "Étude de pétales (en cours)"
       },
       "descripcion": {
-        "es": "Serie de estudios sobre pétalos y memoria.",
-        "en": "Series of studies on petals and memory.",
-        "fr": "Série d'études sur les pétales et la mémoire."
+        "es": "Serie en desarrollo; exploración de textura y color.",
+        "en": "Work in progress; exploring texture and color.",
+        "fr": "Œuvre en cours ; exploration de la texture et de la couleur."
       },
-      "tecnica": "Acuarela y collage",
-      "dimensiones": "30 × 22 cm",
-      "anio": 2025,
-      "precio": "COP 420.000",
+      "tecnica": "Acuarela",
+      "dimensiones": "En desarrollo",
+      "anio": "2026",
+      "precio": null,
       "estado": {
-        "es": "Reservada",
-        "en": "Reserved",
-        "fr": "Réservée"
+        "es":"En progreso",
+        "en":"In progress",
+        "fr":"En cours"
       }
     },
     {
       "id": "obra-3",
-      "imagen": "images/obra-3.jpg",
+      "imagen": "images/inprogress-2.jpg",
       "titulo": {
-        "es": "Pequeños milagros",
-        "en": "Little Miracles",
-        "fr": "Petits miracles"
+        "es": "Boceto floral (en progreso)",
+        "en": "Floral Sketch (in progress)",
+        "fr": "Croquis floral (en cours)"
       },
       "descripcion": {
-        "es": "Estudio íntimo sobre lo cotidiano transformado.",
-        "en": "An intimate study on the everyday transformed.",
-        "fr": "Une étude intime sur le quotidien transformé."
+        "es": "Trabajo temprano; se espera finalización pronto.",
+        "en": "Early-stage work; expected to be finished soon.",
+        "fr": "Travail au stade initial ; fin prévue prochainement."
       },
-      "tecnica": "Acuarela y tinta",
-      "dimensiones": "18 × 14 cm",
-      "anio": 2026,
-      "precio": "COP 280.000",
+      "tecnica": "Acuarela",
+      "dimensiones": "En desarrollo",
+      "anio": "2026",
+      "precio": null,
       "estado": {
-        "es": "Disponible",
-        "en": "Available",
-        "fr": "Disponible"
+        "es":"En progreso",
+        "en":"In progress",
+        "fr":"En cours"
       }
     }
-  ]
+  ],
+  "contact": {
+    "email": "mailto:vinapc2611@gmail.com",
+    "whatsapp": "https://wa.me/573155427152"
+  }
 }
