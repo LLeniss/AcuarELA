@@ -1,19 +1,9 @@
 /* =================================================================
    app.js  ·  TEMA EDITABLE + CATÁLOGO DINÁMICO (desde data/config.json)
    -----------------------------------------------------------------
-   QUÉ HACE ESTE ARCHIVO (no necesitas editarlo):
-   1) Lee data/config.json
-   2) Aplica la paleta de colores y las fuentes que definiste ahí
-   3) Dibuja el catálogo de obras (N obras) leyendo el JSON
-   4) Abre cada obra ampliada en una ventana (lightbox) con su ficha
-   5) Genera datos estructurados (Schema.org) de cada obra para SEO/IA
-
-   NOTA IMPORTANTE: la lectura del JSON (fetch) funciona en Cloudflare
-   Pages y en cualquier servidor web. Para PROBAR EN TU COMPUTADORA,
-   abre una terminal en esta carpeta y ejecuta:
-        python3 -m http.server 8000
-   y entra a  http://localhost:8000   (abrir el index.html con doble
-   clic / file:// NO permite leer el JSON por seguridad del navegador).
+   Adaptado para usar el modal existente #obra-modal (ids: modal-img,
+   modal-title, modal-desc, modal-ficha, modal-collect) en lugar de
+   buscar #cat-lightbox.
    ================================================================= */
 
 (function () {
@@ -29,7 +19,8 @@
   let CONFIG = null;
 
   function currentLang() {
-    return document.documentElement.getAttribute("lang") || "es";
+    // toma lang desde <html lang="..."> si existe, sino fallback a 'es'
+    return document.documentElement.getAttribute("lang") || localStorage.getItem("lang") || "es";
   }
 
   // Devuelve el texto en el idioma actual, con respaldo en español
@@ -105,48 +96,116 @@
       </article>`;
     }).join("");
 
-    // Activar apertura de lightbox
+    // Activar apertura de lightbox (usa el modal existente #obra-modal)
     grid.querySelectorAll("[data-open]").forEach((el) => {
-      el.addEventListener("click", () => openLightbox(parseInt(el.getAttribute("data-open"), 10)));
+      el.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        const idx = parseInt(el.getAttribute("data-open"), 10);
+        if (Number.isFinite(idx)) openLightbox(idx);
+      });
     });
   }
 
-  /* ---------- 3) LIGHTBOX (ventana de obra ampliada) ---------- */
+  /* ---------- 3) LIGHTBOX (ventana de obra ampliada) ----------
+     Esta versión usa el modal existente con id="obra-modal" y nodos:
+     #modal-img, #modal-title, #modal-desc, #modal-ficha, #modal-collect
+  ----------------------------------------------------------------- */
   function openLightbox(index) {
-    const dlg = document.getElementById("cat-lightbox");
-    if (!dlg || !CONFIG) return;
+    const modal = document.getElementById("obra-modal");
+    if (!modal || !CONFIG || !CONFIG.catalogo) {
+      console.warn("[catalogo] Modal o CONFIG no disponible", modal, CONFIG);
+      return;
+    }
+    const obras = CONFIG.catalogo.obras || [];
+    const o = obras[index];
+    if (!o) {
+      console.warn("[catalogo] Obra no encontrada index=", index);
+      return;
+    }
     const lang = currentLang();
     const L = LABELS[lang] || LABELS.es;
-    const o = CONFIG.catalogo.obras[index];
-    if (!o) return;
 
-    const titulo = pick(o.titulo, lang);
-    const desc = pick(o.descripcion, lang);
-    const estado = pick(o.estado, lang);
+    // Elementos del modal (asegurarse que existan)
+    const imgEl = document.getElementById("modal-img");
+    const titleEl = document.getElementById("modal-title");
+    const descEl = document.getElementById("modal-desc");
+    const fichaEl = document.getElementById("modal-ficha");
+    const collectEl = document.getElementById("modal-collect");
 
-    dlg.querySelector(".lb__img").src = o.imagen;
-    dlg.querySelector(".lb__img").alt = titulo;
-    dlg.querySelector(".lb__title").textContent = titulo;
-    dlg.querySelector(".lb__desc").textContent = desc;
-    dlg.querySelector(".lb__ficha").innerHTML = `
-      ${o.tecnica ? `<div><dt>${L.tecnica}</dt><dd>${o.tecnica}</dd></div>` : ""}
-      ${o.dimensiones ? `<div><dt>${L.medidas}</dt><dd>${o.dimensiones}</dd></div>` : ""}
-      ${o.anio ? `<div><dt>${L.anio}</dt><dd>${o.anio}</dd></div>` : ""}
-      ${o.precio ? `<div><dt>${L.precio}</dt><dd>${o.precio}</dd></div>` : ""}
-      <div><dt>&nbsp;</dt><dd><span class="cat-card__badge">${estado}</span></dd></div>`;
-    dlg.querySelector(".lb__reserve").textContent = L.reservar;
-    dlg.querySelector(".lb__close").setAttribute("aria-label", L.cerrar);
+    if (imgEl) { imgEl.src = o.imagen; imgEl.alt = pick(o.titulo, lang) || ""; }
+    if (titleEl) titleEl.textContent = pick(o.titulo, lang) || "";
+    if (descEl) descEl.textContent = pick(o.descripcion, lang) || "";
 
-    if (typeof dlg.showModal === "function") dlg.showModal();
-    else dlg.setAttribute("open", "");
+    if (fichaEl) {
+      // construir ficha con etiquetas localizadas
+      const parts = [];
+      if (o.tecnica) parts.push(`<div><dt>${L.tecnica}</dt><dd>${o.tecnica}</dd></div>`);
+      if (o.dimensiones) parts.push(`<div><dt>${L.medidas}</dt><dd>${o.dimensiones}</dd></div>`);
+      if (o.anio) parts.push(`<div><dt>${L.anio}</dt><dd>${o.anio}</dd></div>`);
+      if (o.precio) parts.push(`<div><dt>${L.precio}</dt><dd>${o.precio}</dd></div>`);
+      parts.push(`<div><dt>&nbsp;</dt><dd><span class="cat-card__badge">${pick(o.estado, lang)}</span></dd></div>`);
+      fichaEl.innerHTML = parts.join("");
+    }
+
+    // actualizar link de reservar/coleccionar (modal-collect)
+    if (collectEl) {
+      const waBase = (CONFIG.contact && CONFIG.contact.whatsapp) ? CONFIG.contact.whatsapp : "https://wa.me/573155427152";
+      // si waBase ya contiene ?text o no, lo manejamos concat correctamente
+      const text = encodeURIComponent((lang === "en") ? `Hello, I'm interested in "${pick(o.titulo, lang)}".` : (lang === "fr") ? `Bonjour, je m'intéresse à "${pick(o.titulo, lang)}".` : `Hola, estoy interesado(a) en "${pick(o.titulo, lang)}".`);
+      collectEl.href = waBase + (waBase.includes("?") ? "&" : "?") + "text=" + text;
+      collectEl.setAttribute("target", "_blank");
+      collectEl.setAttribute("rel", "noopener");
+      collectEl.textContent = L.reservar;
+    }
+
+    // mostrar modal (usa atributo aria-hidden en tu HTML)
+    modal.setAttribute("aria-hidden", "false");
+    // poner foco en el cierre para accesibilidad
+    const closeBtn = modal.querySelector("[data-close]");
+    if (closeBtn) closeBtn.focus();
+    // bloquear scroll si quieres (opcional)
+    document.documentElement.classList.add("modal-open");
+  }
+
+  function closeLightbox() {
+    const modal = document.getElementById("obra-modal");
+    if (!modal) return;
+    modal.setAttribute("aria-hidden", "true");
+    document.documentElement.classList.remove("modal-open");
   }
 
   function setupLightboxClose() {
-    const dlg = document.getElementById("cat-lightbox");
-    if (!dlg) return;
-    dlg.querySelector(".lb__close").addEventListener("click", () => dlg.close());
-    // Cerrar al hacer clic fuera del contenido
-    dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+    const modal = document.getElementById("obra-modal");
+    if (!modal) return;
+
+    // Botones con data-close (cerrar)
+    modal.querySelectorAll("[data-close]").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        closeLightbox();
+      });
+    });
+
+    // Click en backdrop (asumiendo .modal__backdrop)
+    const backdrop = modal.querySelector(".modal__backdrop");
+    if (backdrop) {
+      backdrop.addEventListener("click", (e) => {
+        closeLightbox();
+      });
+    }
+
+    // Cerrar con ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        const open = modal.getAttribute("aria-hidden") === "false";
+        if (open) closeLightbox();
+      }
+    });
+
+    // Click fuera del panel (si el modal no usa backdrop) - fallback
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeLightbox();
+    });
   }
 
   /* ---------- 4) SCHEMA.ORG del catálogo (SEO + IA) ---------- */
@@ -189,33 +248,11 @@
   document.addEventListener("DOMContentLoaded", function () {
     setupLightboxClose();
     fetch("data/config.json", { cache: "no-store" })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
       .then(init)
       .catch((err) => {
         console.warn("[catálogo] No se pudo leer data/config.json. " +
-          "Si abriste el archivo con doble clic (file://), usa un servidor local: " +
-          "python3 -m http.server  → http://localhost:8000", err);
-      });
-
-    // Redibujar el catálogo cuando cambie el idioma (evento de i18n.js)
-    window.addEventListener("langchange", function () {
-      if (CONFIG) renderCatalog();
-    });
-  });
-})();
-
-// Attach WhatsApp reserve handler to catalogue reserve buttons (fallback)
-document.addEventListener('DOMContentLoaded', function () {
-  const WHATSAPP_NUMBER = '573155427152';
-  const email = 'vinapc2611@gmail.com';
-  document.querySelectorAll('.catalog-reserve, .reserve-btn, [data-catalog-reserve]').forEach(btn => {
-    if (btn.dataset.reserveAttached === '1') return;
-    btn.dataset.reserveAttached = '1';
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      const title = btn.dataset.title || btn.getAttribute('data-title') || document.querySelector('[data-i18n="obra_nombre"]')?.textContent || '';
-      const msg = `Hola, quiero reservar la obra "${title}". Mi correo: ${email}`;
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
-    });
-  });
-});
+          "Si abri
