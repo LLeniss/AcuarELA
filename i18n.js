@@ -2,16 +2,321 @@
   // --- 1. TRADUCCIONES DE RESPALDO (Fallback) ---
   const TRANSLATIONS = {
     "es": {
-      "meta_title": "Eduvina Parada Cáceres · Artista de acuarela",
+      "meta_title": "Eduvina Parada Cáceres · Artista de acuarela | Su primera obra",
+      "meta_desc": "Eduvina Parada Cáceres es artista. Vive con ELA bulbar. El 19 de junio exhibe su primera obra. Adquiérela, dona o comparte y ayuda a que este camino continúe.",
       "nav_historia": "Historia",
-      "hero_title": "Ella es artista.<br>Y esto recién empieza.",
-      "donar_nequi_num": "Número: 300 000 0000"
+      "nav_obra": "La obra",
+      "nav_catalogo": "Catálogo",
+      "nav_ayudar": "Cómo ayudar",
+      "nav_evento": "Eventos",
+      "nav_cta": "Donar",
+      "hero_kicker": "Primera obra en exposición",
+      "hero_title": "Vina, artista de acuarELA",
+      "hero_subtitle": "<strong>Eduvina Parada - Vina -</strong> es una artista que vive con ELA bulbar, descubre su voz en la pintura.",
+      "hero_btn_donar": "❤ Donar ahora",
+      "hero_btn_comprar": "🖼 Reservar la obra",
+      "hero_btn_compartir": "↗ Compartir",
+      "historia_eyebrow": "Quién es Vina",
+      "historia_title": "Una artista que encontró su voz en el color",
+      "historia_p1": "Eduvina Parada Cáceres -Vina-, es una artista bumanguesa. En sus acuarelas, los materiales y las emociones se encuentran para crear luz, emoción y serenidad.",
+      "historia_p2": "Vive con <strong>ELA bulbar</strong>, una condición que afecta el habla y la deglución. No la define como persona, pero es parte de su presente. Pintar es una forma de comunicarse ahora que las palabras se hacen difíciles.",
+      "historia_p3": "El 19 de Junio de 2026, su obra se exhibe por primera vez en público. <strong>Este es un comienzo:</strong> Eduvina seguirá pintando mientras su salud lo permita, y cada obra que encuentra un hogar hace posible la siguiente.",
+      "obra_eyebrow": "Obra inaugural",
+      "obra_title": "Su primera acuarela abierta al público",
+      "obra_lead": "Una pieza única. Si la adquieres, no solo te llevas una obra: haces posible que Vina siga creando.",
+      "obra_nombre": "Armonía en la naturaleza",
+      "obra_ficha_tecnica_label": "Técnica",
+      "obra_ficha_tecnica": "Acuarela sobre papel 300g",
+      "obra_ficha_medidas_label": "Medidas",
+      "obra_ficha_medidas": "10 x 8 in",
+      "obra_ficha_anio_label": "Año",
+      "obra_ficha_anio": "2026",
+      "obra_ficha_estado_label": "Disponibilidad",
+      "obra_ficha_estado": "Disponible",
+      "obra_precio_label": "Precio / aporte sugerido",
+      "obra_precio": "$ 350.000 COP",
+      "obra_btn": "Reservar esta obra",
+      "obra_nota": "¿Prefieres una lámina o impresión de alta calidad? También habrá ediciones accesibles. <a href=\"#contacto\">Escríbenos</a>.",
+      "catalogo_eyebrow": "Catálogo de obras",
+      "catalogo_title": "Una colección que crece",
+      "catalogo_lead": "Cada acuarela es una pieza única. Explóralas, ábrelas para ver el detalle y resérvalas. El catálogo se ampliará con cada nueva obra.",
+      "ayudar_eyebrow": "3 formas de ayudar",
+      "ayudar_title": "Elige cómo acompañar este camino",
+      "ayudar_lead": "En 30 segundos puedes marcar la diferencia. Toda ayuda, del tamaño que sea, cuenta.",
+      "ayudar_1_title": "Donar",
+      "ayudar_1_text": "Aporta lo que puedas por los medios de abajo. Cada donación sostiene su tratamiento y su arte.",
+      "ayudar_1_btn": "Ver medios de donación",
+      "ayudar_2_title": "Reservar",
+      "ayudar_2_text": "Resérvala. Es la forma más directa de apoyar a la artista.",
+      "ayudar_2_btn": "Reservar la obra",
+      "ayudar_3_title": "Compartir",
+      "ayudar_3_text": "Si no puedes donar hoy, compartir esta página también ayuda muchísimo. 🙏",
+      "ayudar_3_btn": "Compartir ahora",
+      "donar_eyebrow": "Medios de donación",
+      "donar_title": "Dona por el medio que prefieras",
+      "donar_lead": "Elige el que te resulte más cómodo. Cada aporte llega directamente al bienestar de Eduvina.",
+      "donar_breb_title": "Bre-B",
+      "donar_breb_num": "Número: <strong>315 542 7152</strong>",
+      "donar_breb_name": "A nombre de Eduvina Parada",
+      "donar_banco_title": "Transferencia bancaria",
+      "donar_banco_l1": "Bancolombia· Cuenta de Ahorros",
+      "donar_banco_l2": "N.º <strong>000-000000-00</strong>",
+      "donar_banco_name": "A nombre de [Nombre completo]",
+      "donar_gfm_title": "GoFundMe",
+      "donar_gfm_text": "Dona con tarjeta desde cualquier país del mundo.",
+      "donar_gfm_btn": "Donar en GoFundMe",
+      "fondos_eyebrow": "Transparencia total",
+      "fondos_title": "¿A dónde va tu aporte?",
+      "fondos_lead": "Queremos que sepas exactamente cómo se usa cada peso. Así se distribuye:",
+      "fondos_1_title": "Tratamiento y terapias",
+      "fondos_1_text": "Atención médica, terapias y medicamentos relacionados con la ELA bulbar.",
+      "fondos_2_title": "Comunicación y movilidad",
+      "fondos_2_text": "Equipos de comunicación asistida y adaptaciones para el día a día.",
+      "fondos_3_title": "Materiales de arte",
+      "fondos_3_text": "Acuarelas, papel y herramientas para que Vina siga pintando.",
+      "fondos_4_title": "Cuidado diario",
+      "fondos_4_text": "Apoyo en alimentación, cuidado y gastos básicos.",
+      "futuro_eyebrow": "Recién empieza",
+      "futuro_title": "El trazo de una voz que no se detiene",
+      "futuro_p1": "Esta exposición es el primer paso de un camino por recorrer y queremos acompañar cada nueva obra que nazca de sus manos.",
+      "futuro_p2": "Próximamente: nuevas acuarelas, ediciones accesibles y una galería completa. <strong>Súmate desde el inicio</strong> y sé parte de esta historia que apenas comienza.",
+      "futuro_btn": "Quiero estar al tanto",
+      "evento_eyebrow": "Evento inaugural",
+      "evento_title": "Primera exposición pública",
+      "evento_lead": "Una muestra colectiva donde Eduvina presenta su obra debut al público por primera vez. ¡Te esperamos!",
+      "evento_fecha_label": "📅 Fecha",
+      "evento_fecha": "Viernes · 19 de junio de 2026",
+      "evento_hora_label": "🕐 Hora",
+      "evento_hora": "5:00 pm",
+      "evento_lugar_label": "📍 Lugar",
+      "evento_lugar": "Museo Casa Galán, Bucaramanga, Calle 36 # 24-74",
+      "evento_entrada_label": "🎟 Entrada",
+      "evento_entrada": "Libre",
+      "faq_eyebrow": "Preguntas frecuentes",
+      "faq_title": "Resolvemos tus dudas",
+      "faq_q1": "¿Cómo reservo o compro la obra?",
+      "faq_a1": "Escríbenos por WhatsApp o correo y te guiamos en el proceso de reserva, pago y entrega.",
+      "faq_q2": "¿Mi donación llega directamente a Eduvina?",
+      "faq_a2": "Sí. Todos los aportes se destinan a su tratamiento, cuidado y materiales de arte, como se detalla en la sección de transparencia.",
+      "faq_q4": "¿Habrá más obras en el futuro?",
+      "faq_a4": "Sí. Eduvina seguirá pintando mientras su salud lo permita. Habrá nuevas obras y ediciones accesibles próximamente.",
+      "contacto_eyebrow": "Contacto",
+      "contacto_title": "¿Hablamos?",
+      "contacto_lead": "Para reservas o cualquier pregunta, escríbenos por el medio que prefieras.",
+      "contacto_email_label": "Correo",
+      "contacto_wa_label": "WhatsApp",
+      "contacto_ig_label": "Instagram",
+      "footer_tagline": "Vina | Artista de acuarELA",
+      "footer_copy": "Hecho con cariño y esperanza.",
+      "share_copied": "¡Enlace copiado! Compártelo con quien quieras 💛"
     },
     "en": {
-      "meta_title": "Eduvina Parada Cáceres · Watercolor artist",
+      "meta_title": "Eduvina Parada Cáceres · Watercolor artist | Her first artwork",
+      "meta_desc": "Eduvina Parada Cáceres is an artist living with bulbar ALS. On June 19, 2026, she debuts her first work. Buy it, donate, or share to help this journey continue.",
       "nav_historia": "Story",
-      "hero_title": "She is an artist.<br>And this is just beginning.",
-      "donar_nequi_num": "Number: 300 000 0000"
+      "nav_obra": "The artwork",
+      "nav_catalogo": "Catalog",
+      "nav_ayudar": "How to help",
+      "nav_evento": "Events",
+      "nav_cta": "Donate",
+      "hero_kicker": "First artwork on display",
+      "hero_title": "Vina — watercolor artist",
+      "hero_subtitle": "<strong>Eduvina Parada — Vina —</strong> is an artist living with bulbar ALS who has found her voice in painting.",
+      "hero_btn_donar": "❤ Donate now",
+      "hero_btn_comprar": "🖼 Reserve the artwork",
+      "hero_btn_compartir": "↗ Share",
+      "historia_eyebrow": "Who Vina is",
+      "historia_title": "An artist who found her voice in color",
+      "historia_p1": "Eduvina Parada Cáceres — Vina — is an artist from Bucaramanga. In her watercolors, materials and emotions meet to create light, feeling and serenity.",
+      "historia_p2": "She lives with <strong>bulbar ALS</strong>, a condition that affects speech and swallowing. Painting is now a way for her to communicate when words become difficult.",
+      "historia_p3": "On June 19, 2026, her work is shown publicly for the first time. <strong>This is the beginning:</strong> Eduvina will continue painting as long as her health allows.",
+      "obra_eyebrow": "Inaugural artwork",
+      "obra_title": "Her first watercolor on public display",
+      "obra_lead": "A unique piece. By acquiring it, you make it possible for Vina to keep creating.",
+      "obra_nombre": "Harmony in Nature",
+      "obra_ficha_tecnica_label": "Technique",
+      "obra_ficha_tecnica": "Watercolor on 300g paper",
+      "obra_ficha_medidas_label": "Dimensions",
+      "obra_ficha_medidas": "10 x 8 in",
+      "obra_ficha_anio_label": "Year",
+      "obra_ficha_anio": "2026",
+      "obra_ficha_estado_label": "Availability",
+      "obra_ficha_estado": "Available",
+      "obra_precio_label": "Price / suggested contribution",
+      "obra_precio": "$ 350,000 COP",
+      "obra_btn": "Reserve this artwork",
+      "obra_note": "Prefer a high-quality print? Affordable editions will also be available. <a href=\"#contacto\">Write to us</a>.",
+      "catalogo_eyebrow": "Artwork catalog",
+      "catalogo_title": "A growing collection",
+      "catalogo_lead": "Each watercolor is a unique piece. The catalog will grow with every new artwork.",
+      "ayudar_eyebrow": "3 ways to help",
+      "ayudar_title": "Choose how to accompany this journey",
+      "ayudar_lead": "In 30 seconds you can make a difference.",
+      "ayudar_1_title": "Donate",
+      "ayudar_1_text": "Give what you can. Every donation sustains her treatment and her art.",
+      "ayudar_1_btn": "See donation methods",
+      "ayudar_2_title": "Reserve",
+      "ayudar_2_text": "Reserve it. It's the most direct way to support the artist.",
+      "ayudar_2_btn": "Reserve the artwork",
+      "ayudar_3_title": "Share",
+      "ayudar_3_text": "Sharing this page helps enormously too. 🙏",
+      "ayudar_3_btn": "Share now",
+      "donar_eyebrow": "Donation methods",
+      "donar_title": "Donate however you prefer",
+      "donar_breb_title": "Bre-B",
+      "donar_breb_num": "Number: <strong>315 542 7152</strong>",
+      "donar_breb_name": "Account holder: Eduvina Parada",
+      "donar_banco_title": "Bank transfer",
+      "donar_banco_l1": "Bancolombia · [Savings] account",
+      "donar_banco_l2": "No. <strong>000-000000-00</strong>",
+      "donar_banco_name": "Account holder: [Full Name]",
+      "donar_gfm_title": "GoFundMe",
+      "donar_gfm_text": "Donate by card from anywhere in the world.",
+      "donar_gfm_btn": "Donate on GoFundMe",
+      "fondos_eyebrow": "Full transparency",
+      "fondos_title": "Where does your contribution go?",
+      "fondos_1_title": "Treatment & therapies",
+      "fondos_1_text": "Medical care, therapies and medication related to bulbar ALS.",
+      "fondos_2_title": "Communication & mobility",
+      "fondos_2_text": "Assisted communication devices and everyday adaptations.",
+      "fondos_3_title": "Art materials",
+      "fondos_3_text": "Watercolors, paper and tools so Vina can keep painting.",
+      "fondos_4_title": "Daily care",
+      "fondos_4_text": "Support for food, care and basic expenses.",
+      "futuro_eyebrow": "This is just beginning",
+      "futuro_title": "The stroke of a voice that keeps going",
+      "futuro_p1": "This exhibition is the first step on a path to come. Eduvina will continue painting as long as her health allows.",
+      "futuro_p2": "Coming soon: new watercolors and affordable editions. <strong>Join from the very start</strong>.",
+      "futuro_btn": "Keep me posted",
+      "evento_eyebrow": "Inaugural event",
+      "evento_title": "First public exhibition",
+      "evento_lead": "A group show where Eduvina debuts her work to the public for the first time.",
+      "evento_fecha_label": "📅 Date",
+      "evento_fecha": "Friday · June 19, 2026",
+      "evento_hora_label": "🕐 Time",
+      "evento_hora": "5:00 pm",
+      "evento_lugar_label": "📍 Venue",
+      "evento_lugar": "Museo Casa Galán, Bucaramanga, Calle 36 # 24-74",
+      "evento_entrada_label": "🎟 Entry",
+      "evento_entrada": "Free",
+      "faq_eyebrow": "Frequently asked questions",
+      "faq_title": "Your questions, answered",
+      "faq_q1": "How do I reserve or buy the artwork?",
+      "faq_a1": "Write to us via WhatsApp or email.",
+      "faq_q2": "Does my donation go directly to Eduvina?",
+      "faq_a2": "Yes. All contributions go to her treatment, care and art materials.",
+      "faq_q4": "Will there be more artworks in the future?",
+      "faq_a4": "Yes. Eduvina will continue painting as long as her health allows.",
+      "contacto_eyebrow": "Contact",
+      "contacto_title": "Let's talk",
+      "contacto_lead": "For reservations or any question, write to us however you prefer.",
+      "contacto_email_label": "Email",
+      "contacto_wa_label": "WhatsApp",
+      "contacto_ig_label": "Instagram",
+      "footer_tagline": "Vina | Watercolor artist living with bulbar ALS",
+      "footer_copy": "Made with care and hope.",
+      "share_copied": "Link copied! Share it with anyone 💛"
+    },
+    "fr": {
+      "meta_title": "Eduvina Parada Cáceres · Artiste aquarelliste | Sa première œuvre",
+      "meta_desc": "Eduvina Parada Cáceres est une artiste vivant avec une SLA bulbaire. Le 19 juin 2026, elle expose sa première œuvre.",
+      "nav_historia": "Histoire",
+      "nav_obra": "L'œuvre",
+      "nav_catalogo": "Catalogue",
+      "nav_ayudar": "Comment aider",
+      "nav_evento": "Événements",
+      "nav_cta": "Faire un don",
+      "hero_kicker": "Première œuvre en exposition",
+      "hero_title": "Vina — artiste aquarelliste",
+      "hero_subtitle": "<strong>Eduvina Parada — Vina —</strong> est une artiste qui vit avec une SLA bulbaire et a trouvé sa voix dans la peinture.",
+      "hero_btn_donar": "❤ Faire un don",
+      "hero_btn_comprar": "🖼 Réserver l'œuvre",
+      "hero_btn_compartir": "↗ Partager",
+      "historia_eyebrow": "Qui est Vina",
+      "historia_title": "Une artiste qui a trouvé sa voix dans la couleur",
+      "historia_p1": "Eduvina Parada Cáceres — Vina — est une artiste de Bucaramanga. Dans ses aquarelles, lumière, émotion et sérénité se rencontrent.",
+      "historia_p2": "Elle vit avec une <strong>SLA bulbaire</strong>. La peinture est devenue son moyen de communication lorsque les mots deviennent difficiles.",
+      "historia_p3": "Le 19 juin 2026, son œuvre est exposée pour la première fois. <strong>C'est le début :</strong> Eduvina continuera de peindre tant que sa santé le lui permettra.",
+      "obra_eyebrow": "Œuvre inaugurale",
+      "obra_title": "Sa première aquarelle ouverte au public",
+      "obra_lead": "Une pièce unique. En l'acquérant, vous permettez à Vina de continuer à créer.",
+      "obra_nombre": "Harmonie dans la nature",
+      "obra_ficha_tecnica_label": "Technique",
+      "obra_ficha_tecnica": "Aquarelle sur papier 300g",
+      "obra_ficha_medidas_label": "Dimensions",
+      "obra_ficha_medidas": "10 x 8 in",
+      "obra_ficha_anio_label": "Année",
+      "obra_ficha_anio": "2026",
+      "obra_ficha_estado_label": "Disponibilité",
+      "obra_ficha_estado": "Disponible",
+      "obra_precio_label": "Prix / contribution suggérée",
+      "obra_precio": "$ 350 000 COP",
+      "obra_btn": "Réserver cette œuvre",
+      "obra_note": "Des éditions accessibles seront également disponibles.",
+      "catalogo_eyebrow": "Catalogue d'œuvres",
+      "catalogo_title": "Une collection qui grandit",
+      "catalogo_lead": "Chaque aquarelle est une pièce unique.",
+      "ayudar_eyebrow": "3 façons d'aider",
+      "ayudar_title": "Choisissez comment accompagner ce chemin",
+      "ayudar_lead": "En 30 secondes, vous pouvez faire la différence.",
+      "ayudar_1_title": "Faire un don",
+      "ayudar_1_text": "Chaque don soutient son traitement et son art.",
+      "ayudar_1_btn": "Voir les moyens de don",
+      "ayudar_2_title": "Réserver",
+      "ayudar_2_text": "C'est la manière la plus directe de soutenir l'artiste.",
+      "ayudar_2_btn": "Réserver l'œuvre",
+      "ayudar_3_title": "Partager",
+      "ayudar_3_text": "Partager cette page aide énormément aussi. 🙏",
+      "ayudar_3_btn": "Partager maintenant",
+      "donar_eyebrow": "Moyens de don",
+      "donar_breb_title": "Bre-B",
+      "donar_breb_num": "Numéro : <strong>315 542 7152</strong>",
+      "donar_breb_name": "Au nom de Eduvina Parada",
+      "donar_banco_title": "Virement bancaire",
+      "donar_banco_l1": "Bancolombia · Compte d'Épargne",
+      "donar_banco_l2": "N° <strong>000-000000-00</strong>",
+      "donar_banco_name": "Au nom de [Nom Complet]",
+      "donar_gfm_title": "GoFundMe",
+      "donar_gfm_text": "Faites un don par carte depuis n'importe quel pays.",
+      "donar_gfm_btn": "Faire un don sur GoFundMe",
+      "fondos_eyebrow": "Transparence totale",
+      "fondos_title": "Où va votre contribution ?",
+      "fondos_1_title": "Traitement et thérapies",
+      "fondos_1_text": "Soins médicaux, thérapies et médicaments liés à la SLA bulbaire.",
+      "fondos_2_title": "Communication et mobilité",
+      "fondos_2_text": "Dispositifs de communication assistée et adaptations du quotidien.",
+      "fondos_3_title": "Matériel d'art",
+      "fondos_3_text": "Aquarelles, papier et outils pour qu'Eduvina continue de peindre.",
+      "fondos_4_title": "Soins quotidiens",
+      "fondos_4_text": "Soutien pour l'alimentation, les soins et les dépenses de base.",
+      "futuro_eyebrow": "Tout commence à peine",
+      "futuro_title": "Le trait d'une voix qui ne s'arrête pas",
+      "futuro_p1": "Eduvina continuera de peindre tant que sa santé le lui permettra.",
+      "futuro_p2": "Bientôt : nouvelles aquarelles et éditions accessibles.",
+      "futuro_btn": "Tenez-moi informé",
+      "evento_eyebrow": "Événement inaugural",
+      "evento_title": "Première exposition publique",
+      "evento_lead": "Eduvina présente son œuvre au public pour la première fois.",
+      "evento_fecha_label": "📅 Date",
+      "evento_fecha": "Vendredi · 19 juin 2026",
+      "evento_hora_label": "🕐 Heure",
+      "evento_hora": "17:00",
+      "evento_lugar_label": "📍 Lieu",
+      "evento_lugar": "Museo Casa Galán, Bucaramanga, Calle 36 # 24-74",
+      "evento_entrada_label": "🎟 Entrée",
+      "evento_entrada": "Libre",
+      "faq_eyebrow": "Questions fréquentes",
+      "faq_title": "Vos questions, nos réponses",
+      "faq_q1": "Comment réserver ou acheter l'œuvre ?",
+      "faq_a1": "Écrivez-nous via WhatsApp ou e-mail.",
+      "faq_q2": "Mon don va-t-il directement à Eduvina ?",
+      "faq_a2": "Oui. Toutes les contributions vont à son traitement et son matériel d'art.",
+      "faq_q4": "Y aura-t-il d'autres œuvres à l'avenir ?",
+      "faq_a4": "Oui. Eduvina continuera de peindre tant que sa santé le lui permettra.",
+      "contacto_eyebrow": "Contact",
+      "footer_tagline": "Vina | Artiste aquarelliste",
+      "footer_copy": "Fait avec soin et espoir.",
+      "share_copied": "Lien copié ! 💛"
     }
   };
 
@@ -104,6 +409,7 @@
     let finalTexts = TRANSLATIONS;
 
     try {
+      console.log("[i18n] Intentando cargar /data/textos.json (cache-bust)");
       const response = await fetch("/data/textos.json?v=" + Date.now(), { cache: "no-store" });
       if (response.ok) {
         const remoteTexts = await response.json();
@@ -111,16 +417,16 @@
         finalTexts = Object.assign({}, TRANSLATIONS, remoteTexts);
         console.log("✅ [i18n] JSON cargado y actualizado correctamente.");
       } else {
-        console.warn("⚠️ [i18n] data/textos.json respondió con status " + response.status + " — usando respaldo embebido");
+        console.warn("⚠️ [i18n] /data/textos.json respondió con status " + response.status + " — usando respaldo embebido");
       }
     } catch (e) {
-      console.error("❌ [i18n] Error cargando data/textos.json — usando respaldo embebido", e);
+      console.error("❌ [i18n] Error cargando /data/textos.json — usando respaldo embebido", e);
     }
 
     // Detectar idioma (localStorage > navegador > default "es")
     let selectedLang = localStorage.getItem("lang");
     if (!selectedLang) {
-      selectedLang = navigator.language && navigator.language.startsWith("en") ? "en" : "es";
+      selectedLang = (navigator.language && navigator.language.startsWith("en")) ? "en" : "es";
     }
 
     // Exponer y aplicar con reaplicación
@@ -145,20 +451,28 @@
   } else {
     initI18n();
   }
+
+  // --- PARCHE DE FUERZA BRUTA (dentro del IIFE, seguro) ---
+  setTimeout(() => {
+    try {
+      console.log("[i18n] Forzando reaplicación (1s)");
+      if (window.setLanguage && window.allTexts) {
+        window.setLanguage(localStorage.getItem("lang") || "es");
+      }
+    } catch (e) {
+      console.warn("[i18n] Parche 1 falló", e);
+    }
+  }, 1000);
+
+  setTimeout(() => {
+    try {
+      console.log("[i18n] Forzando reaplicación (3s)");
+      if (window.setLanguage && window.allTexts) {
+        window.setLanguage(localStorage.getItem("lang") || "es");
+      }
+    } catch (e) {
+      console.warn("[i18n] Parche 2 falló", e);
+    }
+  }, 3000);
+
 })();
-
-// --- PARCHE DE FUERZA BRUTA ---
-// Esto va a obligar a la web a poner los textos del JSON 
-// varias veces seguidas para que nadie los borre.
-setTimeout(() => {
-    console.log("Forzando textos del JSON una vez más...");
-    if(window.setLanguage && window.allTexts) {
-        window.setLanguage(localStorage.getItem("lang") || "es");
-    }
-}, 1000); // 1 segundo después
-
-setTimeout(() => {
-    if(window.setLanguage && window.allTexts) {
-        window.setLanguage(localStorage.getItem("lang") || "es");
-    }
-}, 3000); // 3 segundos después
