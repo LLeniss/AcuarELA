@@ -32,9 +32,9 @@
         "id": "Un gato",
         "imagen": "images/gato.jpg",
         "titulo": {
-          "es": "Un gato (en proceso)",
-          "en": "A cat (in progress)",
-          "fr": "Un chat (en cours)"
+          "es": "Un gato",
+          "en": "A cat",
+          "fr": "Un chat"
         },
         "descripcion": {
           "es": "Pieza en desarrollo.",
@@ -55,9 +55,9 @@
         "id": "Manzanilla",
         "imagen": "images/manzanilla.jpg",
         "titulo": {
-          "es": "Manzanilla (en proceso)",
-          "en": "Chamomile (in progress)",
-          "fr": "Camomille (en cours)"
+          "es": "Manzanilla",
+          "en": "Chamomile",
+          "fr": "Camomille"
         },
         "descripcion": {
           "es": "Pieza en desarrollo.",
