@@ -1,32 +1,5 @@
-// === BLOQUE DE DIAGNÓSTICO (BORRAR CUANDO FUNCIONE) ===
-(async function() {
-    console.group("🔍 Diagnóstico de Textos");
-    const testUrl = "/data/textos.json?v=" + Date.now();
-    console.log("Intentando descargar desde:", testUrl);
-
-    try {
-        const r = await fetch(testUrl, { cache: "no-store" });
-        console.log("Status HTTP:", r.status);
-        
-        if (r.ok) {
-            const txt = await r.text();
-            console.log("✅ ¡ÉXITO! Primeros 50 caracteres del archivo:", txt.substring(0, 50));
-            window._DEBUG_TEXTOS = JSON.parse(txt); // Lo guardamos en una variable global para que lo veas
-        } else {
-            console.error("❌ ERROR: El servidor respondió, pero no encontró el archivo (404) o está prohibido (403).");
-            console.warn("Revisa si la carpeta 'data' está escrita en minúsculas en GitHub.");
-        }
-    } catch (e) {
-        console.error("❌ ERROR DE RED: No se pudo ni siquiera intentar la descarga.", e);
-    }
-    console.groupEnd();
-})();
-// === FIN DEL BLOQUE DE DIAGNÓSTICO ===
-
 (function () {
   // --- 1. TRADUCCIONES DE RESPALDO (Fallback) ---
-  // Si el JSON falla, la web usará esto. 
-  // Edita aquí también si quieres máxima seguridad.
   const TRANSLATIONS = {
     "es": {
       "meta_title": "Eduvina Parada Cáceres · Artista de acuarela",
@@ -42,80 +15,131 @@
     }
   };
 
-  // --- 2. MOTOR DE TRADUCCIÓN ---
+  // --- 2. UTIL: aplica valor en elemento (maneja HTML y saltos) ---
+  function applyValue(el, value, isHtmlAllowed = false) {
+    if (value === undefined) return;
+    const hasHtml = /<\/?[a-z][\s\S]*>/i.test(value);
+    const hasNewlines = /\n/.test(value);
+    if (hasHtml || hasNewlines || isHtmlAllowed) {
+      el.innerHTML = hasNewlines ? value.replace(/\n/g, "<​br>") : value;
+    } else {
+      el.textContent = value;
+    }
+  }
+
+  // --- 3. MOTOR DE TRADUCCIÓN MEJORADO ---
   function applyLang(lang, texts) {
-    const dict = texts[lang] || texts["es"];
+    const dict = (texts && texts[lang]) || (texts && texts["es"]) || {};
     document.documentElement.lang = lang;
 
-    // Traducir texto simple
     document.querySelectorAll("[data-i18n]").forEach(el => {
       const key = el.getAttribute("data-i18n");
-      if (dict[key]) el.textContent = dict[key];
+      applyValue(el, dict[key], false);
     });
 
-    // Traducir HTML (para etiquetas <br> o <strong>)
     document.querySelectorAll("[data-i18n-html]").forEach(el => {
       const key = el.getAttribute("data-i18n-html");
-      if (dict[key]) el.innerHTML = dict[key];
+      applyValue(el, dict[key], true);
     });
 
-    // Traducir atributos (como placeholders)
     document.querySelectorAll("[data-i18n-attr]").forEach(el => {
       const attrPair = el.getAttribute("data-i18n-attr").split(":");
-      if (attrPair.length === 2 && dict[attrPair[1]]) {
-        el.setAttribute(attrPair[0], dict[attrPair[1]]);
+      if (attrPair.length === 2) {
+        const attr = attrPair[0].trim();
+        const key = attrPair[1].trim();
+        const val = dict[key];
+        if (val !== undefined) el.setAttribute(attr, val);
       }
     });
 
-    // Actualizar Título de la pestaña
-    if (dict["meta_title"]) document.title = dict["meta_title"];
+    if (dict["meta_title"]) {
+      document.title = dict["meta_title"];
+    }
   }
 
-  // --- 3. CARGA Y MEZCLA (EL CORAZÓN DEL FIX) ---
+  // --- 4. REAPLICACIÓN: observar cambios dinámicos en el DOM ---
+  function initApplyReapply(lang, texts) {
+    applyLang(lang, texts);
+
+    window.addEventListener("load", () => {
+      console.log("[i18n] Reaplicando traducciones tras window.load");
+      applyLang(lang, texts);
+    });
+
+    const observer = new MutationObserver((mutations) => {
+      let need = false;
+      for (const m of mutations) {
+        if (m.addedNodes && m.addedNodes.length) {
+          for (const n of m.addedNodes) {
+            if (n.nodeType === 1) {
+              if (n.hasAttribute && (n.hasAttribute("data-i18n") || n.hasAttribute("data-i18n-html") || n.hasAttribute("data-i18n-attr"))) {
+                need = true; break;
+              }
+              if (n.querySelector && n.querySelector("[data-i18n], [data-i18n-html], [data-i18n-attr]")) {
+                need = true; break;
+              }
+            }
+          }
+        }
+        if (need) break;
+      }
+      if (need) {
+        clearTimeout(window._i18n_reapply_timeout);
+        window._i18n_reapply_timeout = setTimeout(() => {
+          console.log("[i18n] Nodos nuevos detectados — reaplicando traducciones");
+          applyLang(lang, texts);
+        }, 120);
+      }
+    });
+
+    const root = document.documentElement || document.body;
+    if (root) {
+      observer.observe(root, { childList: true, subtree: true });
+      window._i18n_observer = observer;
+    }
+  }
+
+  // --- 5. CARGA Y MEZCLA (fetch + merge) ---
   async function initI18n() {
     let finalTexts = TRANSLATIONS;
 
     try {
-      // Forzamos al navegador a no usar caché con ?v= y no-store
-      const response = await fetch("data/textos.json?v=" + Date.now(), {
-        cache: "no-store"
-      });
-
+      const response = await fetch("/data/textos.json?v=" + Date.now(), { cache: "no-store" });
       if (response.ok) {
         const remoteTexts = await response.json();
-        // Mezclamos lo del JSON sobre el respaldo
+        // Merge superficial: remote override wins
         finalTexts = Object.assign({}, TRANSLATIONS, remoteTexts);
         console.log("✅ [i18n] JSON cargado y actualizado correctamente.");
       } else {
-        console.warn("⚠️ [i18n] El archivo data/textos.json respondió con error " + response.status);
+        console.warn("⚠️ [i18n] data/textos.json respondió con status " + response.status + " — usando respaldo embebido");
       }
     } catch (e) {
-      console.error("❌ [i18n] Error crítico cargando JSON, usando respaldo embebido.", e);
+      console.error("❌ [i18n] Error cargando data/textos.json — usando respaldo embebido", e);
     }
 
-    // Detectar idioma (localStorage > navegador > español)
+    // Detectar idioma (localStorage > navegador > default "es")
     let selectedLang = localStorage.getItem("lang");
     if (!selectedLang) {
-      selectedLang = navigator.language.startsWith("en") ? "en" : "es";
+      selectedLang = navigator.language && navigator.language.startsWith("en") ? "en" : "es";
     }
 
-    applyLang(selectedLang, finalTexts);
-
-    // Guardar los textos globalmente por si cambias el idioma con un botón
+    // Exponer y aplicar con reaplicación
     window.allTexts = finalTexts;
+    initApplyReapply(selectedLang, finalTexts);
+    console.log("[i18n] Idioma inicial:", selectedLang);
   }
 
-  // Función global para los botones de la web
+  // --- 6. API pública para cambiar idioma ---
   window.setLanguage = function (lang) {
     localStorage.setItem("lang", lang);
     if (window.allTexts) {
-      applyLang(lang, window.allTexts);
+      initApplyReapply(lang, window.allTexts);
     } else {
-      location.reload(); // Recarga si algo falló
+      location.reload();
     }
   };
 
-  // --- 4. ARRANQUE ---
+  // --- 7. ARRANQUE ---
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initI18n);
   } else {
