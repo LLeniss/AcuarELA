@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title data-i18n="meta_title">Eduvina Parada Cáceres · Su primera obra</title>
-  <meta name="description" data-i18n-attr="content:meta_desc" content=""/>
+  <meta name="description" data-i18n-attr="content:meta_desc" content="" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -41,19 +41,23 @@
         </p>
         <div class="hero__actions">
           <a href="#donar" class="btn btn--primary" data-i18n="hero_btn_donar">❤ Donar ahora</a>
-          <!-- boton reservar: data-reserve activa handler en i18n.js, se puede añadir data-title con el título de la obra -->
-          <button class="btn btn--accent" data-reserve data-title="" data-i18n="hero_btn_reservar">🖼 Reservar / comprar</button>
+          <button class="btn btn--accent" data-reserve data-reserve-title-key="obra_nombre" data-i18n="hero_btn_reservar">🖼 Reservar / comprar</button>
         </div>
       </div>
     </section>
 
     <!-- HISTORIA -->
     <section class="historia section" id="historia">
-      <div class="container">
-        <h2 class="section__title" data-i18n="historia_title">Una artista que encontró su voz en el color</h2>
-        <p data-i18n-html="historia_p1"></p>
-        <p data-i18n-html="historia_p2"></p>
-        <p data-i18n-html="historia_p3"></p>
+      <div class="container historia__grid">
+        <div class="historia__media">
+          <img src="images/artista.jpg" alt="" id="artist-photo" loading="lazy" />
+        </div>
+        <div class="historia__text">
+          <h2 class="section__title" data-i18n="historia_title">Una artista que encontró su voz en el color</h2>
+          <p data-i18n-html="historia_p1"></p>
+          <p data-i18n-html="historia_p2"></p>
+          <p data-i18n-html="historia_p3"></p>
+        </div>
       </div>
     </section>
 
@@ -67,7 +71,7 @@
             <img src="images/obra-1.jpg" alt="" id="obra-1-img" loading="lazy" />
           </div>
           <div class="obra-card__body">
-            <h3 id="obra-1-title" data-i18n="obra_nombre">[TÍTULO]</h3>
+            <h3 id="obra-1-title" data-i18n="obra_nombre">Su primera acuarela</h3>
             <ul class="ficha">
               <li><strong data-i18n="obra_ficha_tecnica_label">Técnica:</strong> <span data-i18n="obra_ficha_tecnica">Acuarela sobre papel de algodón</span></li>
               <li><strong data-i18n="obra_ficha_medidas_label">Medidas:</strong> <span data-i18n="obra_ficha_medidas">30 × 40 cm</span></li>
@@ -80,8 +84,7 @@
               <strong data-i18n="obra_precio">[$ 000.000 COP]</strong>
             </p>
 
-            <!-- botón reservar: incluir data-title con nombre de obra para personalizar mensaje -->
-            <button class="btn btn--block" data-reserve data-title="" data-i18n="obra_btn">Reservar esta obra</button>
+            <button class="btn btn--block" data-reserve data-reserve-title-key="obra_nombre" data-i18n="obra_btn">Reservar esta obra</button>
           </div>
         </div>
       </div>
@@ -109,7 +112,7 @@
           <div class="ayuda-card">
             <h3 data-i18n="ayudar_2_title">Reservar</h3>
             <p data-i18n="ayudar_2_text">Reserva una acuarela y contribuye directamente.</p>
-            <button class="btn" data-reserve data-title="" data-i18n="ayudar_2_btn">Reservar obra</button>
+            <button class="btn" data-reserve data-reserve-title-key="obra_nombre" data-i18n="ayudar_2_btn">Reservar obra</button>
           </div>
           <div class="ayuda-card">
             <h3 data-i18n="ayudar_3_title">Compartir</h3>
@@ -170,7 +173,6 @@
           <p><strong data-i18n="evento_lugar_label">Lugar:</strong> <span data-i18n="evento_lugar"></span></p>
         </div>
 
-        <!-- Flyer: pon aquí images/flyer.jpg en tu servidor -->
         <div class="evento-flyer">
           <img src="images/flyer.jpg" alt="" id="event-flyer" loading="lazy" />
         </div>
@@ -182,13 +184,13 @@
       <div class="container">
         <h2 class="section__title" data-i18n="contacto_title">¿Hablamos?</h2>
         <div class="contacto__links">
-          <a href="mailto:vinapc2611@gmail.com" class="contacto__link">
-            <span class="contacto__link-label">Correo</span>
-            <span class="contacto__link-value">vinapc2611@gmail.com</span>
+          <a data-i18n-attr="href:contact_mail" class="contacto__link">
+            <span class="contacto__link-label" data-i18n="contacto_email_label">Correo</span>
+            <span class="contacto__link-value" data-i18n="contact_email">vinapc2611@gmail.com</span>
           </a>
-          <a href="https://wa.me/573155427152" target="_blank" rel="noopener" class="contacto__link">
-            <span class="contacto__link-label">WhatsApp</span>
-            <span class="contacto__link-value">315 542 7152</span>
+          <a data-i18n-attr="href:contact_whatsapp_href" class="contacto__link" target="_blank" rel="noopener">
+            <span class="contacto__link-label" data-i18n="contacto_wa_label">WhatsApp</span>
+            <span class="contacto__link-value" data-i18n="contact_whatsapp_text">315 542 7152</span>
           </a>
         </div>
       </div>
@@ -198,7 +200,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>© <span id="year">2026</span> <span data-i18n="site_name">Eduvina Parada Cáceres</span></p>
+      <p>© <span id="year">2026</span> <span data-i18n="site_name">Eduvina Parada Cáceres</span> · <span data-i18n="footer_copy">Hecho con cariño y esperanza.</span></p>
     </div>
   </footer>
 
