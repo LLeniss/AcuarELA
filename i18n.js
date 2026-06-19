@@ -146,3 +146,19 @@
     initI18n();
   }
 })();
+
+// --- PARCHE DE FUERZA BRUTA ---
+// Esto va a obligar a la web a poner los textos del JSON 
+// varias veces seguidas para que nadie los borre.
+setTimeout(() => {
+    console.log("Forzando textos del JSON una vez más...");
+    if(window.setLanguage && window.allTexts) {
+        window.setLanguage(localStorage.getItem("lang") || "es");
+    }
+}, 1000); // 1 segundo después
+
+setTimeout(() => {
+    if(window.setLanguage && window.allTexts) {
+        window.setLanguage(localStorage.getItem("lang") || "es");
+    }
+}, 3000); // 3 segundos después
