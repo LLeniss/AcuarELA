@@ -1,135 +1,146 @@
+/* i18n.js
+   Mecanismo de internacionalización:
+   - Intenta cargar data/textos.json -> textos.json
+   - Si falla, usa TRANSLATIONS (vacío por defecto)
+   - Aplica traducciones a elementos con data-i18n, data-i18n-html, data-i18n-attr
+   - Establece document.documentElement.lang y lanza evento 'langchange'
+*/
+
 (function () {
   'use strict';
 
-  const WHATSAPP_NUMBER = '573155427152';
-  const CACHE_BUST = Date.now();
+  // Fallback vacío (si quieres puedes insertar aquí traducciones por defecto)
+  let TRANSLATIONS = {};
 
-  // Fallback mínimo por si no carga JSON
-  const FALLBACK = {
-    "es": {
-      "meta_title": "Eduvina Parada Cáceres · Su primera obra",
-      "site_name": "Eduvina Parada Cáceres",
-      "hero_title": "Vina - artista de acuarELA",
-      "obra_nombre": "Armonía en la naturaleza",
-      "whatsapp_reserve_msg": "Hola, quiero reservar la obra \"{title}\". ¿Me indican el proceso, por favor? Mi correo: vinapc2611@gmail.com",
-      "contact_email": "vinapc2611@gmail.com",
-      "contact_whatsapp_text": "315 542 7152"
+  const TEXT_PATHS = ['data/textos.json', 'textos.json'];
+
+  function log(...args) { console.info('[i18n]', ...args); }
+  function warn(...args) { console.warn('[i18n]', ...args); }
+
+  async function fetchJsonWithFallback(paths) {
+    for (const p of paths) {
+      const url = `${p}?t=${Date.now()}`; // cache-buster temporal
+      try {
+        const resp = await fetch(url, { cache: "no-store" });
+        if (!resp.ok) {
+          log(`No OK ${url} -> ${resp.status}`);
+          continue;
+        }
+        const json = await resp.json();
+        log('Loaded', url);
+        return json;
+      } catch (err) {
+        warn(`Fetch error for ${url}:`, err && err.message ? err.message : err);
+      }
     }
-  };
-
-  let translations = FALLBACK;
-
-  function getT(lang, key) {
-    return (translations[lang] && translations[lang][key]) || (FALLBACK['es'] && FALLBACK['es'][key]) || '';
+    throw new Error('No JSON available from candidates');
   }
 
-  function applyTranslations(lang) {
-    // textContent
+  // Aplica traducciones al DOM
+  function applyTranslations(lang, translations = TRANSLATIONS) {
+    if (!translations || typeof translations !== 'object') {
+      warn('No translations to apply');
+      return;
+    }
+
+    // Helper para obtener valor por clave, soporta keys con puntos (e.g. "hero.title")
+    function getByPath(obj, path) {
+      if (!obj || !path) return undefined;
+      const parts = path.split('.');
+      let cur = obj;
+      for (const p of parts) {
+        if (cur == null) return undefined;
+        cur = cur[p];
+      }
+      return cur;
+    }
+
+    // Devuelve string traducido: si es objeto {es, en, fr} devuelve según lang
+    function resolveValue(v) {
+      if (v == null) return '';
+      if (typeof v === 'string') return v;
+      if (typeof v === 'object') {
+        return v[lang] || v.es || Object.values(v)[0] || '';
+      }
+      return String(v);
+    }
+
+    // data-i18n => busca la clave completa en translations
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      const v = getT(lang, key);
-      if (v !== '') el.textContent = v;
+      const val = getByPath(translations, key);
+      const out = resolveValue(val);
+      if (out !== undefined) el.textContent = out;
     });
 
-    // innerHTML
+    // data-i18n-html => inyecta HTML
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
       const key = el.getAttribute('data-i18n-html');
-      const v = getT(lang, key);
-      if (v !== '') el.innerHTML = v;
+      const val = getByPath(translations, key);
+      const out = resolveValue(val);
+      if (out !== undefined) el.innerHTML = out;
     });
 
-    // attributes: format "attr:key;attr2:key2"
+    // data-i18n-attr => JSON declarativo en el atributo: {"placeholder":"form.email_placeholder"}
     document.querySelectorAll('[data-i18n-attr]').forEach(el => {
-      const spec = el.getAttribute('data-i18n-attr');
-      spec.split(';').forEach(pair => {
-        const [attr, key] = pair.split(':').map(s => s.trim());
-        const v = getT(lang, key);
-        if (attr && key && v !== '') el.setAttribute(attr, v);
-      });
+      try {
+        const spec = JSON.parse(el.getAttribute('data-i18n-attr'));
+        Object.entries(spec).forEach(([attr, key]) => {
+          const val = getByPath(translations, key);
+          const out = resolveValue(val);
+          if (out !== undefined) el.setAttribute(attr, out);
+        });
+      } catch (e) {
+        warn('Invalid JSON in data-i18n-attr for element', el, e);
+      }
     });
 
-    // reserve buttons: place data-title and attach handler
-    document.querySelectorAll('[data-reserve]').forEach(btn => {
-      const key = btn.getAttribute('data-reserve-title-key');
-      const title = key ? getT(lang, key) : '';
-      btn.setAttribute('data-title', title);
-      btn.onclick = function (e) {
-        e.preventDefault();
-        const t = btn.getAttribute('data-title') || '';
-        const tpl = getT(lang, 'whatsapp_reserve_msg') || FALLBACK['es']['whatsapp_reserve_msg'];
-        const msg = tpl.replace('{title}', t);
-        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
-      };
-    });
+    // Guarda elección e informa al resto
+    localStorage.setItem('lang', lang);
+    document.documentElement.setAttribute('lang', lang);
+    // Disparar evento para que otras partes (app.js) re-rendericen
+    window.dispatchEvent(new Event('langchange'));
+    log('Applied translations for', lang);
+  }
 
-    // share handlers
-    document.querySelectorAll('[data-share]').forEach(el => {
-      el.onclick = function (e) {
-        e.preventDefault();
-        const text = getT(lang, 'hero_title') || document.title;
-        const shareData = { title: document.title, text: text, url: location.href };
-        if (navigator.share) {
-          navigator.share(shareData).catch(() => {});
-        } else {
-          window.prompt('Copia este enlace para compartir:', location.href);
-        }
-      };
-    });
+  // Setea idioma manualmente
+  function setLanguage(lang) {
+    if (!lang) return;
+    try {
+      applyTranslations(lang, TRANSLATIONS);
+    } catch (e) {
+      warn('setLanguage error', e);
+    }
+  }
 
-    // active lang UI
-    document.querySelectorAll('[data-lang]').forEach(btn => {
-      btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === lang ? 'true' : 'false');
-    });
+  // Inicialización
+  (async function init() {
+    const initialLang = localStorage.getItem('lang') ||
+                        (navigator.language || 'es').split('-')[0] ||
+                        'es';
 
-    // meta tags
-    const mt = getT(lang, 'meta_title');
-    if (mt) document.title = mt;
-    const md = getT(lang, 'meta_desc');
-    if (md) {
-      document.querySelectorAll('meta[name="description"]').forEach(m => m.setAttribute('content', md));
+    try {
+      TRANSLATIONS = await fetchJsonWithFallback(TEXT_PATHS);
+    } catch (err) {
+      warn('Usando textos de respaldo (no se pudo leer data/textos.json ni textos.json).', err && err.message || err);
+      // TRANSLATIONS se mantiene como fallback (vacío o lo que manualmente pongas arriba)
     }
 
-    localStorage.setItem('lang', lang);
-    console.log('[i18n] applied', lang);
-  }
+    // Aplicar en primera carga
+    try {
+      applyTranslations(initialLang, TRANSLATIONS);
+    } catch (e) {
+      warn('Error aplicando traducciones iniciales:', e);
+    }
 
-  function initLangButtons() {
-    document.querySelectorAll('[data-lang]').forEach(btn => {
-      btn.addEventListener('click', function () {
-        const chosen = btn.getAttribute('data-lang');
-        applyTranslations(chosen);
-      });
-    });
-  }
+    // Exponer API global simple
+    window.i18n = {
+      get translations() { return TRANSLATIONS; },
+      setLanguage,
+      getLanguage: () => localStorage.getItem('lang') || document.documentElement.getAttribute('lang') || initialLang
+    };
 
-  function loadJSONAndInit() {
-    const url = `data/textos.json?t=${CACHE_BUST}`;
-    fetch(url, { cache: 'no-store' })
-      .then(res => {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
-      .then(data => {
-        translations = data;
-        const initial = localStorage.getItem('lang') || detectLang();
-        initLangButtons();
-        applyTranslations(initial);
-        console.log('[i18n] Loaded data/textos.json (ok)');
-      })
-      .catch(err => {
-        console.warn('[i18n] Could not load data/textos.json, using fallback. Error:', err);
-        const initial = localStorage.getItem('lang') || detectLang();
-        initLangButtons();
-        applyTranslations(initial);
-      });
-  }
+    log('i18n inicializado, idioma:', window.i18n.getLanguage());
+  })();
 
-  function detectLang() {
-    const nav = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
-    if (nav.indexOf('fr') === 0) return 'fr';
-    if (nav.indexOf('en') === 0) return 'en';
-    return 'es';
-  }
-
-  window.addEventListener('DOMContentLoaded', loadJSONAndInit);
 })();
