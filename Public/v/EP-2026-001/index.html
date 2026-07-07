@@ -3,34 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificación / Verification - Eduvina Parada</title>
+    <title>Certificado Digital - Eduvina Parada</title>
+    <!-- Fuente elegante de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Georgia', serif; line-height: 1.6; color: #333; max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; background-color: #fdfdfd; }
-        .card { border: 1px solid #ddd; padding: 30px; border-radius: 4px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .status { color: #27ae60; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .btn { display: inline-block; background: #1a1a1a; color: white; padding: 15px 25px; text-decoration: none; margin: 10px 5px; width: 85%; font-size: 0.9em; }
-        .lang-section { border-top: 1px solid #eee; margin-top: 20px; padding-top: 15px; font-size: 0.85em; color: #666; }
+        :root { --accent: #8e735b; --bg: #fcfaf8; --text: #2c2c2c; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { max-width: 500px; width: 100%; background: #fff; padding: 40px; border-radius: 2px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); border: 1px solid #eee; text-align: center; }
+        
+        /* Imagen de la obra */
+        .artwork-preview { width: 100%; height: auto; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 10px solid white; box-sizing: border-box; }
+        
+        .status-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #27ae60; border: 1px solid #27ae60; padding: 4px 12px; display: inline-block; margin-bottom: 20px; }
+        
+        h1 { font-family: 'Playfair Display', serif; font-size: 28px; margin: 0 0 10px 0; font-weight: 700; }
+        .subtitle { font-family: 'Playfair Display', serif; font-style: italic; color: #666; margin-bottom: 30px; }
+        
+        .info-grid { text-align: left; font-size: 13px; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 20px 0; margin-bottom: 30px; line-height: 1.8; }
+        .info-grid span { font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; color: var(--accent); }
+
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .btn { background: #1a1a1a; color: white; text-decoration: none; padding: 15px; font-size: 12px; letter-spacing: 1px; font-weight: 600; transition: 0.3s; border: 1px solid #1a1a1a; }
+        .btn:hover { background: white; color: #1a1a1a; }
+        .btn-ots { background: transparent; color: #666; border-color: #ddd; }
+        
+        .footer { margin-top: 30px; font-size: 10px; color: #999; letter-spacing: 0.5px; }
+        
+        /* Responsive */
+        @media (max-width: 480px) { .container { padding: 25px; } h1 { font-size: 22px; } }
     </style>
 </head>
 <body>
-    <div class="card">
-        <p class="status">✓ Original & Authentic</p>
+
+    <div class="container">
+        <div class="status-badge">✓ Original & Authentic</div>
+        
+        <!-- Si tienes una foto de la obra, cámbia la URL aquí abajo (ej: foto.jpg). 
+             Si no, puedes borrar esta etiqueta <img> -->
+        <img src="https://github.com/LLeniss/AcuarELA/blob/main/images/obra-1.jpg" alt="Obra de Eduvina Parada" class="artwork-preview">
+        
+
         <h1>Eduvina Parada</h1>
-        <p><strong>ID: EP-2026-001</strong><br>Armonía en la naturaleza</p>
-        
-        <hr>
-        
-        <p>Descargar archivos de autenticidad / Download authenticity files:</p>
-        <a href="certificado.pdf" class="btn">PDF CERTIFICATE (Español/English/Français)</a>
-        <a href="certificado.pdf.ots" class="btn" style="background:#444;">BLOCKCHAIN PROOF (.OTS)</a>
-        
-        <div class="lang-section">
-            <p>Para verificar, suba ambos archivos a <strong>opentimestamps.org</strong><br>
-            To verify, upload both files to <strong>opentimestamps.org</strong><br>
-            Pour vérifier, téléchargez les deux fichiers sur <strong>opentimestamps.org</strong></p>
+        <div class="subtitle">Armonía en la naturaleza</div>
+
+        <div class="info-grid">
+            <div><span>ID:</span> EP-2026-001</div>
+            <div><span>Medium:</span> Acuarela sobre papel 300GSM</div>
+            <div><span>Blockchain:</span> Bitcoin (OpenTimestamps)</div>
+            <div><span>Fecha / Date:</span> 7 de Julio, 2026</div>
         </div>
-        
-        <p><small>Registered on Bitcoin Blockchain: 2026-07-07</small></p>
+
+        <div class="btn-group">
+            <a href="EP-2026-001.pdf" class="btn">VER CERTIFICADO PDF</a>
+            <a href="EP-2026-001.pdf.ots" class="btn btn-ots">DESCARGAR PRUEBA BLOCKCHAIN (.OTS)</a>
+        </div>
+
+        <div class="footer">
+            © 2026 Vina Acuarela | Bucaramanga, Colombia<br>
+            vina-acuarela.com
+        </div>
     </div>
+
 </body>
 </html>
