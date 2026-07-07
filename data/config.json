@@ -21,11 +21,10 @@
         "tecnica": "Acuarela sobre papel de grano fino 300GSM",
         "dimensiones": "10 × 8 in",
         "anio": "2026",
-        "precio": "$350.000 COP",
         "estado": {
-          "es": "Disponible",
-          "en": "Available",
-          "fr": "Disponible"
+          "es": "No disponible",
+          "en": "Not available",
+          "fr": "Indisponible"
         }
       },
       {
