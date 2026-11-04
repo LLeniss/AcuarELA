@@ -7,7 +7,7 @@
   // Fallback mínimo por si no carga JSON
   const FALLBACK = {
     "es": {
-      "meta_title": "Eduvina Parada · Su primera obra",
+      "meta_title": "Eduvina Parada · Arte",
       "site_name": "Eduvina Parada",
       "hero_title": "Vina - artista de acuarELA",
       "obra_nombre": "Armonía en la naturaleza",
