@@ -7,8 +7,8 @@
   // Fallback mínimo por si no carga JSON
   const FALLBACK = {
     "es": {
-      "meta_title": "Eduvina Parada Cáceres · Su primera obra",
-      "site_name": "Eduvina Parada Cáceres",
+      "meta_title": "Eduvina Parada · Su primera obra",
+      "site_name": "Eduvina Parada",
       "hero_title": "Vina - artista de acuarELA",
       "obra_nombre": "Armonía en la naturaleza",
       "whatsapp_reserve_msg": "Hola, quiero reservar la obra \"{title}\". ¿Me indican el proceso, por favor? Mi correo: vinapc2611@gmail.com",
