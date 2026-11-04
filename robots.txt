@@ -1,4 +1,4 @@
-# robots.txt · Eduvina Parada Cáceres
+# robots.txt · Eduvina Parada
 # Permite a buscadores y a rastreadores de IA indexar todo el sitio.
 
 User-agent: *
