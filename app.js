@@ -276,7 +276,7 @@
     const itemList = {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      "name": "Catálogo de obras de Eduvina Parada Cáceres",
+      "name": "Catálogo de obras de Eduvina Parada",
       "itemListElement": obras.map((o, i) => ({
         "@type": "ListItem",
         "position": i + 1,
@@ -287,7 +287,7 @@
           "artform": "Acuarela",
           "artMedium": o.tecnica || "Acuarela",
           "dateCreated": o.anio || "",
-          "creator": { "@type": "Person", "name": "Eduvina Parada Cáceres" },
+          "creator": { "@type": "Person", "name": "Eduvina Parada" },
           "image": o.imagen
         }
       }))
