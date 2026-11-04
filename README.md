@@ -7,9 +7,9 @@ Built with HTML, CSS, and JavaScript, the website includes Spanish, English, and
 This repository documents the project and its maintenance.
 
 
-# Eduvina Parada Cáceres · Landing solidaria (multilingüe ES/EN/FR)
+# Eduvina Parada · Landing solidaria (multilingüe ES/EN/FR)
 
-Página web estática (HTML + CSS + JS mínimo) para acompañar la primera exposición de **Eduvina Parada Cáceres**, artista de acuarela que vive con ELA bulbar. El enfoque es **artista + obra + apoyo**: su obra está a la venta y el proyecto continúa más allá del evento.
+Página web estática (HTML + CSS + JS mínimo) para acompañar la primera exposición de **Eduvina Parada**, artista de acuarela que vive con ELA bulbar. El enfoque es **artista + obra + apoyo**: su obra está a la venta y el proyecto continúa más allá del evento.
 
 > **Mensaje central:** *Ella es artista. Vive con ELA bulbar. Mañana exhibe su primera obra. Puedes ayudar a que este camino continúe.*
 
